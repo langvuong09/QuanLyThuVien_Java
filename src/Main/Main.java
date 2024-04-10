@@ -1,9 +1,12 @@
 package Main;
 
 //import QuanLyThuVien.DAO.*;
+import QuanLyThuVien.DAO.MyConnect;
 import QuanLyThuVien.GUI.DangNhapGUI;
 public class Main {
     public static void main(String[] args){
+        new MyConnect();
+
         changLNF("Nimbus");
         DangNhapGUI login = new DangNhapGUI();
         login.showWindow();

@@ -3,10 +3,14 @@ package QuanLyThuVien.GUI;
 import Main.Main;
 import MyCustom.ImagePanel;
 import MyCustom.MyDialog;
+import QuanLyThuVien.BUS.DangNhapBUS;
+import QuanLyThuVien.DTO.TaiKhoan;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Vector;
 
 public class DangNhapGUI extends JFrame {
 
@@ -19,6 +23,23 @@ public class DangNhapGUI extends JFrame {
         this.setBackground(new Color(0, 0, 0, 0));
         addControls();
         addEvents();
+        xuLyTaiKhoanDaGhiNho();
+    }
+
+    private void xuLyTaiKhoanDaGhiNho() {
+        DangNhapBUS dangNhapBUS = new DangNhapBUS();
+        String line = dangNhapBUS.getTaiKhoanGhiNho();
+        try {
+            String[] arr = line.split(" | ");
+            ckbRemember.setSelected(true);
+            txtUser.setText(arr[0]);
+            txtPassword.setText(arr[2]);
+            txtUser.requestFocus();
+        } catch (Exception e) {
+            txtUser.setText("");
+            txtPassword.setText("");
+            txtUser.requestFocus();
+        }
     }
 
     private JLabel btnLogin, btnExit, btnForgot;
@@ -31,7 +52,7 @@ public class DangNhapGUI extends JFrame {
     private void addControls() {
         Container con = getContentPane();
 
-        pnMain = new ImagePanel("image/dangnhap/background-thuvien.jpg", 750, 500);
+        pnMain = new ImagePanel("image/dangnhap/background-thuvien.png");
 
         pnMain.setLayout(null);
 
@@ -106,6 +127,11 @@ public class DangNhapGUI extends JFrame {
         moveFrame();
         btnLogin.addMouseListener(new MouseAdapter() {
             @Override
+            public  void mouseClicked(MouseEvent e){
+                xuLyDangNhap();
+            }
+
+            @Override
             public void mouseEntered(MouseEvent e) {
                 btnLogin.setIcon(new ImageIcon("image/dangnhap/btn-login-hover.png"));
             }
@@ -178,6 +204,17 @@ public class DangNhapGUI extends JFrame {
 
     private void xuLyQuenMatKhau() {
         new MyDialog("Xin liên hệ Admin để giải quyết!", MyDialog.INFO_DIALOG);
+    }
+
+    private void xuLyDangNhap(){
+        DangNhapBUS dangNhapBUS = new DangNhapBUS();
+        TaiKhoan tk = dangNhapBUS.getTaiKhoanDangNhap(txtUser.getText(),txtPassword.getText(),ckbRemember.isSelected());
+        if (tk != null) {
+            this.dispose();
+            MainQuanLyGUI gui = new MainQuanLyGUI();
+            this.dispose();
+            gui.showWindow();
+        }
     }
 
     public void showWindow() {
