@@ -70,13 +70,12 @@ public class NXBDAO {
         return false;
     }
 
-    public boolean suaNXB(int ma){
+    public boolean suaNXB(int ma, String ten){
         try{
             String sql = "UPDATE nxb SET TenNXB=? WHERE MaNXB=?";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
-            NXB nxb = new NXB();
-            pre.setString(1,nxb.getTenNXB());
-            pre.setInt(2,nxb.getMaNXB());
+            pre.setString(1,ten);
+            pre.setInt(2,ma);
             return pre.executeUpdate() > 0;
         }catch (SQLException e){
         }

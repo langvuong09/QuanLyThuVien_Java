@@ -70,13 +70,12 @@ public class LoaiDAO {
         return false;
     }
 
-    public boolean suaLoai(int ma){
+    public boolean suaLoai(int ma, String ten){
         boolean result =false;
         try{
             String sql = "UPDATE loaisach SET TenLoai=? WHERE MaLoai=?";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
-            Loai l = new Loai();
-            pre.setString(1,l.getTenLoai());
+            pre.setString(1,ten);
             pre.setInt(2,ma);
             result = pre.executeUpdate() > 0;
         }catch (SQLException e){

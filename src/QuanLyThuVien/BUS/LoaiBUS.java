@@ -32,6 +32,15 @@ public class LoaiBUS {
         return "";
     }
 
+    public int getMaLoai(String ten){
+        for(Loai l : listLoai){
+            if(l.getTenLoai() == ten){
+                return l.getMaLoai();
+            }
+        }
+        return 0;
+    }
+
     public boolean themLoai(int ma, String ten){
         if(ten.trim().equals("")){
             new MyDialog("Không được để trống tên loại!!!",MyDialog.ERROR_DIALOG);
@@ -69,7 +78,7 @@ public class LoaiBUS {
             return false;
         }
         int maLoai = Integer.parseInt(ma);
-        if(loaiDAO.suaLoai(maLoai)){
+        if(loaiDAO.suaLoai(maLoai,ten)){
             new MyDialog("Sửa thành công!",MyDialog.SUCCESS_DIALOG);
             return true;
         }else {

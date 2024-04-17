@@ -1,8 +1,11 @@
 package QuanLyThuVien.GUI;
 
-import QuanLyThuVien.BUS.SachBUS;
+import QuanLyThuVien.BUS.*;
 import QuanLyThuVien.DAO.MyConnect;
 import QuanLyThuVien.DTO.Sach;
+import QuanLyThuVien.DTO.Loai;
+import QuanLyThuVien.DTO.NXB;
+import QuanLyThuVien.DTO.DocGia;
 import MyCustom.MyTable;
 
 import java.awt.*;
@@ -14,10 +17,15 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import java.text.DecimalFormat;
 
 public class DlgTimSach extends  JDialog {
     private SachBUS sachBUS = new SachBUS();
+    private LoaiBUS loaiBUS = new LoaiBUS();
+    private NXBBUS nxbBUS = new NXBBUS();
+    private TacGiaBUS tacGiaBUS = new TacGiaBUS();
     public static Sach sachTimDuoc = null;
+    protected int hang;
 
     public DlgTimSach() {
         addControls();
@@ -31,7 +39,7 @@ public class DlgTimSach extends  JDialog {
 
     private JTextField txtTuKhoa;
     private JTable tblSach;
-    private DefaultTableModel dtmSach;
+    protected DefaultTableModel dtmSach;
     private JButton btnChon;
 
     private void addControls(){
@@ -40,7 +48,7 @@ public class DlgTimSach extends  JDialog {
 
         Font font = new Font("Tahoma", Font.PLAIN, 16);
         JPanel pnTop = new JPanel();
-        JLabel lblTuKhoa = new JLabel("Từ khoá tìm");
+        JLabel lblTuKhoa = new JLabel("Nhập mã hoặc tên sách để tìm:");
         txtTuKhoa = new JTextField(20);
         lblTuKhoa.setFont(font);
         txtTuKhoa.setFont(font);
@@ -55,7 +63,7 @@ public class DlgTimSach extends  JDialog {
         dtmSach.addColumn("Loại");
         dtmSach.addColumn("NXB");
         dtmSach.addColumn("Tác giả");
-        dtmSach.addColumn("Tên");
+        dtmSach.addColumn("Tên sách");
         dtmSach.addColumn("Giá");
         dtmSach.addColumn("Ghi chú");
         tblSach = new MyTable(dtmSach);
@@ -103,30 +111,41 @@ public class DlgTimSach extends  JDialog {
         int row = tblSach.getSelectedRow();
         if (row > -1) {
             int ma = Integer.parseInt(tblSach.getValueAt(row, 0) + "");
-            int loai = Integer.parseInt(tblSach.getValueAt(row, 1) + "");
-            int nxb = Integer.parseInt(tblSach.getValueAt(row, 2) + "");
-            int tacGia = Integer.parseInt(tblSach.getValueAt(row, 3) + "");
+            String loai = String.valueOf(tblSach.getValueAt(row, 1));
+            int maLoai = loaiBUS.getMaLoai(loai);
+            String nxb = String.valueOf(tblSach.getValueAt(row, 2));
+            int maNXB = nxbBUS.getMaNXB(nxb);
+            String tacGia = String.valueOf(tblSach.getValueAt(row, 3));
+            int maTacGia = tacGiaBUS.getMaTacGia(tacGia);
             String ten = tblSach.getValueAt(row, 4) + "";
-            long gia = Long.parseLong(tblSach.getValueAt(row, 5) + "");
+            String giaMuon = tblSach.getValueAt(row, 5).toString().replace(",", "");
+            long gia = Long.parseLong(giaMuon);
             String ghiChu = tblSach.getValueAt(row,6) + "";
-            int trangThai = Integer.parseInt(tblSach.getValueAt(row, 7) + "");
 
-            sachTimDuoc = new Sach(ma, loai, nxb, tacGia, ten, gia, ghiChu, trangThai);
+            sachTimDuoc = new Sach(ma, maLoai, maNXB, maTacGia, ten, gia, ghiChu,1);
+
+            hang = row;
         }
         this.dispose();
     }
 
-    private void loadDataLenTable() {
+    public void loadDataLenTable() {
         dtmSach.setRowCount(0);
         ArrayList<Sach> dss = sachBUS.getListSach();
         if (dss != null) {
             for (Sach s : dss) {
                 Vector vec = new Vector();
                 vec.add(s.getMaSach());
-                vec.add(s.getMaLoaiSach());
-                vec.add(s.getMaNXB());
-                vec.add(s.getMaTacGia());
+                String tenLoai = loaiBUS.getTenLoai(s.getMaLoaiSach());
+                vec.add(tenLoai);
+                String tenNXB = nxbBUS.getTenNXB(s.getMaNXB());
+                vec.add(tenNXB);
+                String tenTacGia = tacGiaBUS.getTenTacGia(s.getMaTacGia());
+                vec.add(tenTacGia);
                 vec.add(s.getTenSach());
+                DecimalFormat formatter = new DecimalFormat("###,###");
+                String giaSach = formatter.format(s.getGiaSach());
+                vec.add(giaSach);
                 vec.add(s.getGiaSach());
                 vec.add(s.getGhiChu());
                 dtmSach.addRow(vec);
@@ -134,19 +153,27 @@ public class DlgTimSach extends  JDialog {
         }
     }
 
-    private void loadDataLenTable(String tuKhoa) {
+    public void loadDataLenTable(String ma) {
         dtmSach.setRowCount(0);
-        ArrayList<Sach> dss = sachBUS.timKiemSach(tuKhoa);
-        for (Sach s : dss) {
-            Vector vec = new Vector();
-            vec.add(s.getMaSach());
-            vec.add(s.getMaLoaiSach());
-            vec.add(s.getMaNXB());
-            vec.add(s.getMaTacGia());
-            vec.add(s.getTenSach());
-            vec.add(s.getGiaSach());
-            vec.add(s.getGhiChu());
-            dtmSach.addRow(vec);
+        ArrayList<Sach> dss = sachBUS.getListSach();
+        if (dss != null) {
+            for (Sach s : dss) {
+                Vector vec = new Vector();
+                vec.add(s.getMaSach());
+                String tenLoai = loaiBUS.getTenLoai(s.getMaLoaiSach());
+                vec.add(tenLoai);
+                String tenNXB = nxbBUS.getTenNXB(s.getMaNXB());
+                vec.add(tenNXB);
+                String tenTacGia = tacGiaBUS.getTenTacGia(s.getMaTacGia());
+                vec.add(tenTacGia);
+                vec.add(s.getTenSach());
+                DecimalFormat formatter = new DecimalFormat("###,###");
+                String giaSach = formatter.format(s.getGiaSach());
+                vec.add(giaSach);
+                vec.add(s.getGiaSach());
+                vec.add(s.getGhiChu());
+                dtmSach.addRow(vec);
+            }
         }
     }
 

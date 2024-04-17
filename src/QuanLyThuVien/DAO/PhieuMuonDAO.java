@@ -119,9 +119,19 @@ public class PhieuMuonDAO {
 
     public boolean xoaPhieuMuon(int maPhieuMuon){
         try{
+            // Tắt tính năng kiểm tra khóa ngoại tạm thời
+            String sqlDisableFKCheck = "SET FOREIGN_KEY_CHECKS=0";
+            Statement stDisableFKCheck = MyConnect.conn.createStatement();
+            stDisableFKCheck.execute(sqlDisableFKCheck);
+
             String sql = "DELETE FROM phieumuon WHERE MaPhieuMuon="+maPhieuMuon;
             Statement st = MyConnect.conn.createStatement();
             st.execute(sql);
+
+            // Bật lại tính năng kiểm tra khóa ngoại
+            String sqlEnableFKCheck = "SET FOREIGN_KEY_CHECKS=1";
+            Statement stEnableFKCheck = MyConnect.conn.createStatement();
+            stEnableFKCheck.execute(sqlEnableFKCheck);
             return true;
         }catch (SQLException e){
         }

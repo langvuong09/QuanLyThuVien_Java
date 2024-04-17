@@ -4,9 +4,23 @@ import QuanLyThuVien.DAO.TaiKhoanDAO;
 import QuanLyThuVien.DTO.TaiKhoan;
 import MyCustom.MyDialog;
 
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+
 public class TaiKhoanBUS {
 
     private TaiKhoanDAO taiKhoanDAO = new TaiKhoanDAO();
+    private ArrayList<TaiKhoan> listTaiKhoan;
+
+    public TaiKhoanBUS(){docListTaiKhoan();}
+
+    public void docListTaiKhoan(){this.listTaiKhoan = taiKhoanDAO.getListTaiKhoan();}
+    public ArrayList<TaiKhoan> getListTaiKhoan(){
+        if (listTaiKhoan == null){
+            docListTaiKhoan();
+        }
+        return this.listTaiKhoan;
+    }
 
     public String getTenDangNhapTheoMa(String ma) {
         int maNhanVien = Integer.parseInt(ma);

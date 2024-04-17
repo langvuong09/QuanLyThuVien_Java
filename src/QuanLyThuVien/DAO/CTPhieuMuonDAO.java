@@ -84,7 +84,7 @@ public class CTPhieuMuonDAO {
     public boolean xoaCTPhieuMuon(int maPhieuMuon, int maSach){
         boolean result = false;
         try{
-            String sql = "DELETE FROM tphieumuon WHERE MaPhieuMuon="+maPhieuMuon+" AND MaSach="+maSach;
+            String sql = "DELETE FROM ctphieumuon WHERE MaPhieuMuon="+maPhieuMuon+" AND MaSach="+maSach;
             Statement st = MyConnect.conn.createStatement();
             result = st.executeUpdate(sql) > 0;
         }catch (Exception e){
@@ -97,26 +97,9 @@ public class CTPhieuMuonDAO {
     public boolean xoaCTPhieuMuon(int maPhieuMuon){
         boolean result = false;
         try{
-            String sql = "DELETE FROM tphieumuon WHERE MaPhieuMuon="+maPhieuMuon;
+            String sql = "DELETE FROM ctphieumuon WHERE MaPhieuMuon="+maPhieuMuon;
             Statement st = MyConnect.conn.createStatement();
             result = st.executeUpdate(sql) > 0;
-        }catch (Exception e){
-            e.printStackTrace();
-            return false;
-        }
-        return result;
-    }
-
-    public boolean suaCTPhieuMuon(int maPhieuMuon, int maSach, CTPhieuMuon ctpm){
-        boolean result = false;
-        try{
-            String sql = "UPDATE ctphieumuon SET MaPhieuMuon=?, MaSach=?, ThanhTien=? " +
-                    "WHERE MaPhieuMuon="+maPhieuMuon+" MaSach="+maSach;
-            PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
-            pre.setInt(1,ctpm.getMaPhieuMMuon());
-            pre.setInt(2,ctpm.getMaSach());
-            pre.setLong(3,ctpm.getGiaTien());
-            result = pre.executeUpdate() > 0;
         }catch (Exception e){
             e.printStackTrace();
             return false;

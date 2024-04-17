@@ -13,7 +13,7 @@ public class DocGiaDAO {
 
     public ArrayList<DocGia> getListDocGia(){
         try{
-            String sql = "SELECT * FROM docgia";
+            String sql = "SELECT * FROM docgia WHERE Quyen=1";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
             ArrayList<DocGia> dsdg = new ArrayList<>();
@@ -36,7 +36,7 @@ public class DocGiaDAO {
     public DocGia getDocGia(int maDG){
         DocGia dg = null;
         try{
-            String sql = "SELECT * FROM WHERE MaDocGia="+maDG;
+            String sql = "SELECT * FROM WHERE Quyen=1 AND MaDocGia="+maDG;
             Statement st = MyConnect.conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()){
@@ -57,7 +57,7 @@ public class DocGiaDAO {
     public boolean themDocGia(DocGia dg){
         boolean result =false;
         try{
-            String sql ="INSERT INTO docgia VALUES(?,?,?,?,?,?)";
+            String sql ="INSERT INTO docgia VALUES(?,?,?,?,?,?,1)";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             pre.setInt(1,dg.getMaDocGia());
             pre.setString(2, dg.getHo());
@@ -83,12 +83,11 @@ public class DocGiaDAO {
         return false;
     }
 
-    public boolean suaDocGia(int maDG){
+    public boolean suaDocGia(int maDG, DocGia dg){
         boolean result = false;
         try{
             String sql = "UPDATE docgia SET Ho=?, Ten=?, GioiTinh=?, SDT=?, Gmail=? WHERE MaDocGia=?";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
-            DocGia dg = new DocGia();
             pre.setString(1,dg.getHo());
             pre.setString(2,dg.getTen());
             pre.setString(3,dg.getGioiTinh());

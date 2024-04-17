@@ -12,7 +12,7 @@ public class SachDAO {
 
     public ArrayList<Sach> getListSach(){
         try{
-            String sql = "SELECT * FROM  sach WHERE TinhTrang=1";
+            String sql = "SELECT * FROM  sach WHERE TrangThai=1";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
 
@@ -25,6 +25,31 @@ public class SachDAO {
                 s.setMaTacGia(rs.getInt(4));
                 s.setTenSach(rs.getString(5));
                 s.setGiaSach(rs.getLong(6));
+                s.setGhiChu(rs.getString(7));
+                dss.add(s);
+            }
+            return dss;
+        }catch (SQLException e){
+        }
+        return null;
+    }
+
+    public ArrayList<Sach> getListSachMuon(){
+        try{
+            String sql = "SELECT * FROM  sach WHERE TrangThai=0";
+            PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
+            ResultSet rs = pre.executeQuery();
+
+            ArrayList<Sach> dss = new ArrayList<>();
+            while (rs.next()){
+                Sach s = new Sach();
+                s.setMaSach(rs.getInt(1));
+                s.setMaLoaiSach(rs.getInt(2));
+                s.setMaNXB(rs.getInt(3));
+                s.setMaTacGia(rs.getInt(4));
+                s.setTenSach(rs.getString(5));
+                s.setGiaSach(rs.getLong(6));
+                s.setGhiChu(rs.getString(7));
                 dss.add(s);
             }
             return dss;
@@ -36,7 +61,7 @@ public class SachDAO {
     public Sach getSach(int ma){
         Sach s = null;
         try{
-            String sql = "SELECT * FROM sach WHERE MaSach="+ma+" AND TinhTrang=1";
+            String sql = "SELECT * FROM sach WHERE MaSach="+ma+" AND TrangThai=1";
             Statement st = MyConnect.conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()){
@@ -85,12 +110,11 @@ public class SachDAO {
         return  false;
     }
 
-    public boolean suaSach(int maSach){
+    public boolean suaSach(int maSach, Sach s){
         boolean result = false;
         try{
             String sql = "UPDATE sach SET MaLoai=?, MaNXB=?, MaTacGia=?, TenSach=?, GiaSach=?, GhiChu=? WHERE MaSach=?";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
-            Sach s = new Sach();
             pre.setInt(1,s.getMaLoaiSach());
             pre.setInt(2,s.getMaNXB());
             pre.setInt(3,s.getMaTacGia());
@@ -103,5 +127,28 @@ public class SachDAO {
             return false;
         }
         return result;
+    }
+
+    public boolean chonSach(int maSach){
+        boolean result = false;
+        try{
+            String sql = "UPDATE sach SET TrangThai=0 WHERE MaSach=?";
+            PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
+            pre.setInt(1,maSach);
+            result = pre.executeUpdate() > 0;
+        }catch (SQLException e){
+            return false;
+        }
+        return result;
+    }
+
+    public void capNhatTrangThaiSach(String ma) {
+        try {
+            String sql = "UPDATE sach SET TrangThai=1 WHERE MaSach="+ma;
+            Statement st = MyConnect.conn.createStatement();
+            st.executeUpdate(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

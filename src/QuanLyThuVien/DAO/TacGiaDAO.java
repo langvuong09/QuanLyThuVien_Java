@@ -68,12 +68,11 @@ public class TacGiaDAO {
         return false;
     }
 
-    public boolean suaTacGia(int ma){
+    public boolean suaTacGia(int ma, String ten){
         try{
             String sql = "UPDATE tacgia SET TenTacGia=? WHERE MaTacGia=?";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
-            TacGia tg = new TacGia();
-            pre.setString(1,tg.getTenTacGia());
+            pre.setString(1,ten);
             pre.setInt(2,ma);
             return pre.executeUpdate() > 0;
         }catch (SQLException e){

@@ -4,12 +4,14 @@ import Main.Main;
 import MyCustom.ImagePanel;
 import MyCustom.MyDialog;
 import QuanLyThuVien.BUS.DangNhapBUS;
+import QuanLyThuVien.BUS.TaiKhoanBUS;
 import QuanLyThuVien.DTO.TaiKhoan;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class DangNhapGUI extends JFrame {
@@ -48,6 +50,7 @@ public class DangNhapGUI extends JFrame {
     private JPanel pnMain;
     private JCheckBox ckbRemember;
     private JLabel lbUser, lbPassword, lbTitle;
+    private TaiKhoanBUS taiKhoanBUS = new TaiKhoanBUS();
 
     private void addControls() {
         Container con = getContentPane();
@@ -209,12 +212,23 @@ public class DangNhapGUI extends JFrame {
     private void xuLyDangNhap(){
         DangNhapBUS dangNhapBUS = new DangNhapBUS();
         TaiKhoan tk = dangNhapBUS.getTaiKhoanDangNhap(txtUser.getText(),txtPassword.getText(),ckbRemember.isSelected());
+        maTaiKhoan();
         if (tk != null) {
             this.dispose();
             MainQuanLyGUI gui = new MainQuanLyGUI();
             this.dispose();
             gui.showWindow();
         }
+    }
+
+    public int maTaiKhoan(){
+        ArrayList<TaiKhoan> dstk = taiKhoanBUS.getListTaiKhoan();
+        for (TaiKhoan tk1 : dstk){
+            if(txtUser.getText().equals(tk1.getTenDangNhap())){
+                return tk1.getMaNhanVien();
+            }
+        }
+        return 0;
     }
 
     public void showWindow() {

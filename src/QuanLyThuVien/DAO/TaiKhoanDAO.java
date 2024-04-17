@@ -6,8 +6,48 @@ import QuanLyThuVien.DTO.TaiKhoan;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.sql.SQLException;
 
 public class TaiKhoanDAO {
+    public ArrayList<TaiKhoan> getListTaiKhoan(){
+        ArrayList<TaiKhoan> dstk = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM taikhoan";
+            Statement st = MyConnect.conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()) {
+                TaiKhoan tk = new TaiKhoan();
+                tk.setMaNhanVien(rs.getInt(1));
+                tk.setTenDangNhap(rs.getString(2));
+                tk.setMatKhau(rs.getString(3));
+                tk.setQuyen(rs.getString(4));
+                dstk.add(tk);
+            }
+        }catch (SQLException e){
+        }
+        return dstk;
+    }
+
+    public TaiKhoan getTaiKhoan(String username, String password){
+        TaiKhoan tk = null;
+        try{
+            String sql = "SELECT * FROM taikhoan WHERE TenDangNhap="+username+" AND MatKhau="+password;
+            Statement st = MyConnect.conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()){
+                tk = new TaiKhoan();
+                tk.setMaNhanVien(rs.getInt(1));
+                tk.setTenDangNhap(rs.getString(2));
+                tk.setMatKhau(rs.getString(3));
+                tk.setQuyen(rs.getString(4));
+            }
+        }catch (Exception e){
+            return null;
+        }
+        return tk;
+    }
+
     public boolean themTaiKhoan(int maNhanVien,String tenDangNhap, String quyen){
         try{
             String sql = "INSERT INTO taikhoan(MaNhanVien, TenDangNhap, MatKhau, Quyen)" + "VALUES (?,?,?,?)";

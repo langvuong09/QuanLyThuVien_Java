@@ -7,17 +7,19 @@ public class DocGia {
     private String gioiTinh;
     private String SDT;
     private String gmail;
+    private int quyen;
 
     public DocGia(){
     }
 
-    public DocGia(int maDocGia, String ho, String ten, String gioiTinh, String SDT, String gmail){
+    public DocGia(int maDocGia, String ho, String ten, String gioiTinh, String SDT, String gmail, int quyen){
         this.maDocGia = maDocGia;
         this.ho = ho;
         this.ten = ten;
         this.gioiTinh = gioiTinh;
         this.SDT = SDT;
         this.gmail = gmail;
+        this.quyen = quyen;
     }
 
     public int getMaDocGia() {
@@ -66,5 +68,13 @@ public class DocGia {
 
     public void setGmail(String gmail) {
         this.gmail = gmail;
+    }
+
+    public int getQuyen() {
+        return quyen;
+    }
+
+    public void setQuyen(int quyen) {
+        this.quyen = quyen;
     }
 }

@@ -108,7 +108,7 @@ public class DlgTimDocGia extends  JDialog{
             String SDT = tblDocGia.getValueAt(row, 4) + "";
             String gmail = tblDocGia.getValueAt(row, 5) + "";
 
-            docGiaTimDuoc = new DocGia(ma, ho, ten, gioiTinh, SDT, gmail);
+            docGiaTimDuoc = new DocGia(ma, ho, ten, gioiTinh, SDT, gmail,1);
         }
         this.dispose();
     }

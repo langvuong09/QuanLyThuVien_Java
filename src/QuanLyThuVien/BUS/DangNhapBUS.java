@@ -1,9 +1,11 @@
 package QuanLyThuVien.BUS;
 
 import QuanLyThuVien.DAO.DangNhapDAO;
+import QuanLyThuVien.DAO.TaiKhoanDAO;
 import QuanLyThuVien.DTO.PhanQuyen;
 import QuanLyThuVien.DTO.TaiKhoan;
 import MyCustom.MyDialog;
+import QuanLyThuVien.GUI.DangNhapGUI;
 
 import java.io.*;
 
@@ -11,6 +13,7 @@ public class DangNhapBUS {
 
     private final static int EMPTY_ERROR = 1;
     private final static int WRONG_ERROR = 2;
+    private TaiKhoanDAO taiKhoanDAO = new TaiKhoanDAO();
     public static TaiKhoan taiKhoanLogin = null;
 
     public TaiKhoan getTaiKhoanDangNhap(String user, String password, boolean selected) {
@@ -21,10 +24,10 @@ public class DangNhapBUS {
         TaiKhoan tk = new TaiKhoan();
         tk.setTenDangNhap(user);
         tk.setMatKhau(password);
-
         DangNhapDAO dangNhapDAO = new DangNhapDAO();
         TaiKhoan account = dangNhapDAO.dangNhap(tk);
         taiKhoanLogin = account;
+
 
         if (account == null) {
             new MyDialog("Sai thông tin đăng nhập hoặc tài khoản đã bị khoá!", MyDialog.ERROR_DIALOG);
@@ -80,6 +83,7 @@ public class DangNhapBUS {
         } else if (account == null) {
             result = WRONG_ERROR;
         }
+
         return result;
     }
 
