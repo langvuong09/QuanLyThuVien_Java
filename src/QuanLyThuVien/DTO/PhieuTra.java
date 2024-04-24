@@ -5,15 +5,15 @@ import java.util.Date;
 public class PhieuTra {
 
     private int maPhieuTra;
+    private int maPhieuMuon;
     private int maDocGia;
     private int maNhanVien;
-    private int maPhieuMuon;
     private Date ngayTraThuc;
 
     public PhieuTra(){
     }
 
-    public PhieuTra(int maPhieuTra,int maDocGia,int maNhanVien,int maPhieuMuon,Date ngayTraThuc){
+    public PhieuTra(int maPhieuTra,int maPhieuMuon,int maDocGia,int maNhanVien,Date ngayTraThuc){
         this.maPhieuTra = maPhieuTra;
         this.maDocGia = maDocGia;
         this.maNhanVien = maNhanVien;

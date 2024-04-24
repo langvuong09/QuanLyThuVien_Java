@@ -12,8 +12,6 @@ public class CTPhieuMuonBUS {
 
     private ArrayList<CTPhieuMuon> listCTPhieuMuon;
     private CTPhieuMuonDAO ctPhieuMuonDAO = new CTPhieuMuonDAO();
-    private PhieuMuonBUS phieuMuonBUS = new PhieuMuonBUS();
-    private SachBUS sachBUS = new SachBUS();
     private SachDAO sachDAO = new SachDAO();
     public CTPhieuMuonBUS() {docListCTPhieuMuon();}
     public void docListCTPhieuMuon(){this.listCTPhieuMuon = ctPhieuMuonDAO.getListCTPhieuMuon();}
@@ -31,39 +29,34 @@ public class CTPhieuMuonBUS {
     }
 
     public boolean themCTPhieuMuon(String maPhieuMuon, String maSach, String thanhTien){
-        int maPM = Integer.parseInt(maPhieuMuon);
-        int maS = Integer.parseInt(maSach);
-        thanhTien = thanhTien.replace(",","");
+        try {
+            int maPM = Integer.parseInt(maPhieuMuon);
+            int maS = Integer.parseInt(maSach);
+            thanhTien = thanhTien.replace(",", "");
 
-        CTPhieuMuon ctpm = new CTPhieuMuon();
-        ctpm.setMaPhieuMMuon(maPM);
-        ctpm.setMaSach(maS);
-        long tienMuon = Long.parseLong(thanhTien);
-        ctpm.setGiaTien(tienMuon);
+            CTPhieuMuon ctpm = new CTPhieuMuon();
+            ctpm.setMaPhieuMMuon(maPM);
+            ctpm.setMaSach(maS);
+            long tienMuon = Long.parseLong(thanhTien);
+            ctpm.setGiaTien(tienMuon);
 
-        ctPhieuMuonDAO.themCTPhieuMuon(ctpm);
-        return true;
+            return ctPhieuMuonDAO.themCTPhieuMuon(ctpm);
+        }catch (Exception e){
+        }
+        return false;
     }
 
     public boolean xoaCTPhieuMuon(String maPhieuMuon){
-        int maPM = Integer.parseInt(maPhieuMuon);
-        CTPhieuMuon ctpm = new CTPhieuMuon();
-        ctpm.setMaPhieuMMuon(maPM);
+        try {
+            int maPM = Integer.parseInt(maPhieuMuon);
 
-        ctPhieuMuonDAO.xoaCTPhieuMuon(maPM);
-
-        return true;
-    }
-
-    public boolean xoaCTPhieuMuonTheoMa(String maPhieuMuon){
-        int maPM = Integer.parseInt(maPhieuMuon);
-        ctPhieuMuonDAO.xoaCTPhieuMuon(maPM);
-
-        return true;
+            return ctPhieuMuonDAO.xoaCTPhieuMuon(maPM);
+        }catch (Exception e){
+        }
+        return false;
     }
 
     public void chonSachMuon(String ma){
-        int maSach = Integer.parseInt(ma);
-        boolean flag = sachDAO.chonSach(maSach);
+        boolean flag = sachDAO.chonSach(ma);
     }
 }

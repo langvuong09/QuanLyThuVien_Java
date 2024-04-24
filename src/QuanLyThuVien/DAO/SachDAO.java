@@ -129,12 +129,13 @@ public class SachDAO {
         return result;
     }
 
-    public boolean chonSach(int maSach){
+    public boolean chonSach(String maSach){
         boolean result = false;
         try{
             String sql = "UPDATE sach SET TrangThai=0 WHERE MaSach=?";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
-            pre.setInt(1,maSach);
+            int maS = Integer.parseInt(maSach);
+            pre.setInt(1,maS);
             result = pre.executeUpdate() > 0;
         }catch (SQLException e){
             return false;

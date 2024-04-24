@@ -174,7 +174,7 @@ public class MainQuanLyGUI extends JFrame{
         //==========ADD PANEL KHÔNG PHÂN QUYỀN==========//
         sachPanel = new PnQuanLySachGUI();
         pnSach.setLayout(new BorderLayout());
-//        pnSach.add(sachPanel,BorderLayout.CENTER);
+        pnSach.add(sachPanel,BorderLayout.CENTER);
 
         docGiaPanel = new PnQuanLyDocGiaGUI();
         pnDocGia.setLayout(new BorderLayout());
@@ -186,7 +186,7 @@ public class MainQuanLyGUI extends JFrame{
 
         phieuTraPanel = new PnQuanLyPhieuTraGUI();
         pnTraSach.setLayout(new BorderLayout());
-//        pnTraSach.add(phieuTraPanel,BorderLayout.CENTER);
+        pnTraSach.add(phieuTraPanel,BorderLayout.CENTER);
 
         phieuPhatPanel = new PnQuanLyPhieuPhatGUI();
         pnQuaHan.setLayout(new BorderLayout());
@@ -202,7 +202,7 @@ public class MainQuanLyGUI extends JFrame{
         if(quyen.getQlNhanVien()==1){
             nhanVienPanel = new PnQuanLyNhanVienGUI();
             pnNhanVien.setLayout(new BorderLayout());
-//            pnNhanVien.add(nhanVienPanel,BorderLayout.CENTER);
+            pnNhanVien.add(nhanVienPanel,BorderLayout.CENTER);
             lblNhanVien.setVisible(true);
         }
 
@@ -349,7 +349,7 @@ public class MainQuanLyGUI extends JFrame{
     }
 
     private void thoatChuongTrinh() {
-//        sachPanel.xuLyThoat();
+        phieuMuonPanel.xuLyThoat();
         Main.Main.changLNF("Nimbus");
         System.exit(0);
     }

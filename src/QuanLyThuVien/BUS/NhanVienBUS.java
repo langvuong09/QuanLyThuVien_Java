@@ -119,4 +119,22 @@ public class NhanVienBUS {
             return false;
         }
     }
+
+    public boolean nhapNhanVienTuExcel(String manv, String tenNV, String hoNV, String gioitinh, String gmail, String sdt) {
+
+        try {
+            NhanVien nv = new NhanVien();
+            int maNV = this.getMaNhanVien(manv);
+            nv.setMaNhanVien(maNV);
+            nv.setHo(hoNV);
+            nv.setTen(tenNV);
+            nv.setGioiTinh(gioitinh);
+            nv.setGmail(gmail);
+            nv.setSDT(sdt);
+
+            nhanVienDAO.nhapNhanVienTuExcel(nv);
+        } catch (Exception e) {
+        }
+        return false;
+    }
 }

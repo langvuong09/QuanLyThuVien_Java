@@ -49,15 +49,14 @@ public class PhieuMuonBUS {
     public ArrayList<PhieuMuon> getPhieuMuonTheoMaDocGia(int ma){
         ArrayList<PhieuMuon> dspm = new ArrayList<>();
         for(PhieuMuon pm : listPhieuMuon){
-            int maDocGia = pm.getMaDocGia();
-            if(maDocGia == ma){
+            if(pm.getMaDocGia() == ma){
                 dspm.add(pm);
             }
         }
         return dspm;
     }
 
-    public int getMaPhieumuonnMoiNhat() {
+    public int getMaPhieumuonMoiNhat() {
         return pmDAO.getMaPhieuMuonMoiNhat();
     }
 
@@ -80,6 +79,7 @@ public class PhieuMuonBUS {
             pm.setTongTien(sumMoney);
 
             pmDAO.nhapPhieuMuonTuExcel(pm);
+            return true;
         } catch (Exception e) {
         }
         return false;
@@ -89,25 +89,6 @@ public class PhieuMuonBUS {
         // Kiểm tra nhập liệu
         if (DocGia.trim().equals("")) {
             new MyDialog("Đọc giả không được để rỗng!", MyDialog.ERROR_DIALOG);
-            return false;
-        }
-
-        if (ngayMuon.trim().equals("")) {
-            new MyDialog("Ngày mượn không được để rỗng!", MyDialog.ERROR_DIALOG);
-            return false;
-        }
-        if (ngayTra.trim().equals("")) {
-            new MyDialog("Ngày trả không được để rỗng!", MyDialog.ERROR_DIALOG);
-            return false;
-        }
-
-        // Kiểm tra định dạng ngày tháng năm
-        if (!kiemTraNhapNgayThangNam(ngayMuon)) {
-            new MyDialog("Sai định dạng ngày mượn! (VD: 20/01/2004)", MyDialog.ERROR_DIALOG);
-            return false;
-        }
-        if (!kiemTraNhapNgayThangNam(ngayTra)) {
-            new MyDialog("Sai định dạng ngày trả! (VD: 20/01/2004)", MyDialog.ERROR_DIALOG);
             return false;
         }
 
@@ -151,25 +132,6 @@ public class PhieuMuonBUS {
         } catch (Exception e) {
             return false;
         }
-    }
-
-    public boolean kiemTraNhapNgayThangNam(String input) {
-        // Biểu thức chính quy mới cho định dạng "dd/MM/yyyy"
-        String regex = "^(0?[1-9]|[12][0-9]|3[01])/(0?[1-9]|1[0-2])/\\d{4}$";
-
-        if (input.matches(regex)) {
-            String[] parts = input.split("/");
-            int ngay = Integer.parseInt(parts[0]);
-            int thang = Integer.parseInt(parts[1]);
-            int nam = Integer.parseInt(parts[2]);
-
-            int namHienTai = Calendar.getInstance().get(Calendar.YEAR);
-            int thangHienTai = Calendar.getInstance().get(Calendar.MONTH) + 1;
-            int ngayHienTai = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-
-            return true;
-        }
-        return false;
     }
 
     public Date timeHienTai() {

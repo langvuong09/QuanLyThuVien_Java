@@ -95,4 +95,28 @@ public class NhanVienDAO {
         }
         return false;
     }
+
+    public boolean nhapNhanVienTuExcel(NhanVien nv) {
+        try {
+            String sql = "DELETE * FROM nhanvien; " +
+                    "INSERT INTO nhanvien(MaNhanVien, Ho, Ten, GioiTinh, SDT, Gmail) "
+                    + "VALUES (?, ?, ?, ?, ?, ?)";
+//            // Chuyển java.util.Date thành java.sql.Date
+//            java.sql.Date ngayMuon = new java.sql.Date(pm.getNgayMuon().getTime());
+//            java.sql.Date ngayTra = new java.sql.Date(pm.getNgayTra().getTime());
+
+            PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
+            pre.setInt(1, nv.getMaNhanVien());
+            pre.setString(2, nv.getHo());
+            pre.setString(3, nv.getTen());
+            pre.setString(4, nv.getGioiTinh());
+            pre.setString(5, nv.getGmail());
+            pre.setString(6, nv.getSDT());
+
+            pre.execute();
+            return true;
+        } catch (SQLException e) {
+        }
+        return false;
+    }
 }

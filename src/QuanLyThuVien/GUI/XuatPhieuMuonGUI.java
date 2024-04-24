@@ -98,7 +98,7 @@ public class XuatPhieuMuonGUI extends JDialog{
         hd += "</table>";
         hd += "<div style='text-align:center'>";
         hd += "<table style='max-width:100%; margin: auto;'>";
-        hd += "<tr style='font-size=20px'>"
+        hd += "<tr style='font-family: Tahoma; font-size: 14px;'>"
                 + "<th>Mã Sách</th>"
                 + "<th>Tên Sách</th>"
                 + "<th>Tiền mượn</th>"

@@ -1,14 +1,13 @@
 package QuanLyThuVien.DAO;
 
-import QuanLyThuVien.DTO.PhanQuyen;
 import QuanLyThuVien.DTO.PhieuMuon;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.sql.Date;
 
 public class PhieuMuonDAO {
     public ArrayList<PhieuMuon> getListPhieuMuon(){
@@ -120,18 +119,18 @@ public class PhieuMuonDAO {
     public boolean xoaPhieuMuon(int maPhieuMuon){
         try{
             // Tắt tính năng kiểm tra khóa ngoại tạm thời
-            String sqlDisableFKCheck = "SET FOREIGN_KEY_CHECKS=0";
-            Statement stDisableFKCheck = MyConnect.conn.createStatement();
-            stDisableFKCheck.execute(sqlDisableFKCheck);
+            String sqlCheck = "SET FOREIGN_KEY_CHECKS=0";
+            Statement stCheck = MyConnect.conn.createStatement();
+            stCheck.execute(sqlCheck);
 
             String sql = "DELETE FROM phieumuon WHERE MaPhieuMuon="+maPhieuMuon;
             Statement st = MyConnect.conn.createStatement();
             st.execute(sql);
 
             // Bật lại tính năng kiểm tra khóa ngoại
-            String sqlEnableFKCheck = "SET FOREIGN_KEY_CHECKS=1";
-            Statement stEnableFKCheck = MyConnect.conn.createStatement();
-            stEnableFKCheck.execute(sqlEnableFKCheck);
+            String sqlChecks = "SET FOREIGN_KEY_CHECKS=1";
+            Statement stChecks = MyConnect.conn.createStatement();
+            stChecks.execute(sqlChecks);
             return true;
         }catch (SQLException e){
         }

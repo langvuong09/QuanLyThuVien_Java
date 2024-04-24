@@ -48,7 +48,6 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
     private NhanVienBUS nhanVienBUS = new NhanVienBUS();
     private DangNhapGUI dangNhapGUI = new DangNhapGUI();
 
-    private ArrayList<CTPhieuMuon> dsCTPM = new ArrayList<>();
 
     public PnQuanLyPhieuMuonGUI(){
         changLNF("Windows");
@@ -60,14 +59,9 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
     CTPhieuMuonBUS ctPhieuMuonBUS = new CTPhieuMuonBUS();
     final Color colorPanel = new Color(247, 247, 247);
     MyTable tblPhieuMuon, tblSachMuon;
-    CardLayout cardPhieuMuonGroup =new CardLayout();
-    JPanel pnCardTabPhieuMuon;
     DefaultTableModel dtmPhieuMuon, dtmSachMuon;
     JTextField txtMaPhieuMuon,txtDocGia, txtNgayMuon, txtNgayTra, txtTongTien, txtTimKiem, txtMaSach, txtTenSach, txtThanhTien;
     JButton btnThem, btnXoa, btnInthe, btnReset, btnXuatExcel, btnNhapExcel, btnTim, btnThemSach, btnXoaSach, btnDocGia, btnSach;
-    JLabel lblTabbedPhieuMuon, lblTabbedLichSu;
-    final ImageIcon tabbedSelected = new ImageIcon("image/Manager-GUI/tabbed-btn--selected.png");
-    final ImageIcon tabbedDefault = new ImageIcon("image/Manager-GUI/tabbed-btn.png");
 
     private void addConTrolsPhieuMuon(){
         Font font = new Font("Tahoma", Font.PLAIN,16);
@@ -79,39 +73,6 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
 
         int w = 1050;
         int h = 700;
-        /*
-        =========================================================================
-                                    PANEL TABBED
-        =========================================================================
-         */
-        JPanel pnTop = new TransparentPanel();
-        Font fontSize = new Font("", Font.PLAIN, 20);
-        pnTop.setPreferredSize(new Dimension(w, 41));
-        pnTop.setLayout(null);
-        pnTop.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.GRAY));
-
-        lblTabbedPhieuMuon = new JLabel("Phiếu mượn");
-        lblTabbedPhieuMuon.setHorizontalTextPosition(JLabel.CENTER);
-        lblTabbedPhieuMuon.setVerticalTextPosition(JLabel.CENTER);
-        lblTabbedPhieuMuon.setIcon(tabbedSelected);
-        lblTabbedPhieuMuon.setBounds(2, 2, 140, 37);
-        lblTabbedPhieuMuon.setFont(font);
-        lblTabbedPhieuMuon.setForeground(Color.white);
-        lblTabbedPhieuMuon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-        lblTabbedLichSu = new JLabel("Lịch sử");
-        lblTabbedLichSu.setHorizontalTextPosition(JLabel.CENTER);
-        lblTabbedLichSu.setVerticalTextPosition(JLabel.CENTER);
-        lblTabbedLichSu.setIcon(tabbedDefault);
-        lblTabbedLichSu.setBounds(143, 2, 140, 37);
-        lblTabbedLichSu.setFont(font);
-        lblTabbedLichSu.setForeground(Color.white);
-        lblTabbedLichSu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-        pnTop.add(lblTabbedPhieuMuon);
-        pnTop.add(lblTabbedLichSu);
-        //</editor-fold>
-        this.add(pnTop, BorderLayout.NORTH);
 
         /*
         =========================================================================
@@ -170,7 +131,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         lblNgayMuon.setBounds(20,150,150,25);
         txtNgayMuon.setBounds(200,150,220,25);
 
-        JLabel lblNgayTra = new JLabel("Ngày trả:");
+        JLabel lblNgayTra = new JLabel("Hạn trả:");
         lblNgayTra.setFont(font);
         txtNgayTra.setFont(font);
         txtNgayTra.setEditable(false);
@@ -328,7 +289,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         dtmPhieuMuon.addColumn("Đọc giả");
         dtmPhieuMuon.addColumn("Nhân viên");
         dtmPhieuMuon.addColumn("Ngày mượn");
-        dtmPhieuMuon.addColumn("Ngày trả");
+        dtmPhieuMuon.addColumn("Hạn trả");
         dtmPhieuMuon.addColumn("Tổng tiền");
         tblPhieuMuon = new MyTable(dtmPhieuMuon);
 
@@ -350,7 +311,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         JScrollPane scrTblPhieuMuon = new JScrollPane(tblPhieuMuon);
         scrTblPhieuMuon.setPreferredSize(new Dimension(900,150));
 
-        scrTblPhieuMuon.setBounds(0,410,820,155);
+        scrTblPhieuMuon.setBounds(0,410,820,195);
         //</editor-fold>
         pnThongTinPhieuMuon.add(scrTblPhieuMuon, BorderLayout.CENTER);
 
@@ -467,8 +428,8 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         btnThemSach.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(kiemTraPhieuMuon(dtmPhieuMuon,txtMaPhieuMuon.getText())) {
-                    xuLyThemCTPhieuMuon(dtmSachMuon);
+                if(kiemTraPhieuMuon(txtMaPhieuMuon.getText())) {
+                    xuLyThemCTPhieuMuon();
                 }
 
             }
@@ -476,7 +437,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         btnXoaSach.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(kiemTraPhieuMuon(dtmPhieuMuon,txtMaPhieuMuon.getText())) {
+                if(kiemTraPhieuMuon(txtMaPhieuMuon.getText())) {
                     xuLyXoaCTPhieuMuon();
                 }
             }
@@ -513,14 +474,14 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         int row = tblPhieuMuon.getSelectedRow();
         if(row > -1){
             String maPhieuMuon =tblPhieuMuon.getValueAt(row,0)+"";
-            String maDocGia =tblPhieuMuon.getValueAt(row,1)+"";
-            String maNhanVien =tblPhieuMuon.getValueAt(row,2)+"";
+            String docGia =tblPhieuMuon.getValueAt(row,1)+"";
+            String nhanVien =tblPhieuMuon.getValueAt(row,2)+"";
             String ngayMuon =tblPhieuMuon.getValueAt(row,3)+"";
             String ngayTra =tblPhieuMuon.getValueAt(row,4)+"";
             String tongTien =tblPhieuMuon.getValueAt(row,5)+"";
 
             txtMaPhieuMuon.setText(maPhieuMuon);
-            txtDocGia.setText(maDocGia);
+            txtDocGia.setText(docGia);
             txtNgayMuon.setText(ngayMuon);
             txtNgayTra.setText(ngayTra);
             txtTongTien.setText(tongTien.replace(",",""));
@@ -564,14 +525,14 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         }
     }
 
-
-    private void  addDataLenBangCTPhieuMuon(ArrayList<CTPhieuMuon> dsctpm){
+    private void loadDataLenBangCTPhieuMuon(String ma){
+        ArrayList<CTPhieuMuon> listCTPhieuMuon = ctPhieuMuonBUS.getListCTPhieuMuonTheoMaPM(ma);
         ctPhieuMuonBUS.docListCTPhieuMuon();
         dtmSachMuon.setRowCount(0);
 
         DecimalFormat dcf = new DecimalFormat("###,###");
 
-        for (CTPhieuMuon ctpm : dsctpm) {
+        for (CTPhieuMuon ctpm : listCTPhieuMuon) {
             Vector vec = new Vector();
             vec.add(ctpm.getMaSach());
             String tenSach = sachBUS.getTenSachMuon(ctpm.getMaSach());
@@ -579,11 +540,6 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
             vec.add(dcf.format(ctpm.getGiaTien()));
             dtmSachMuon.addRow(vec);
         }
-    }
-
-    private void loadDataLenBangCTPhieuMuon(String ma){
-        ArrayList<CTPhieuMuon> listCTPhieuMuon = ctPhieuMuonBUS.getListCTPhieuMuonTheoMaPM(ma);
-        addDataLenBangCTPhieuMuon(listCTPhieuMuon);
     }
 
     private void xuLyThemPhieuMuon(){
@@ -594,7 +550,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
                 txtTongTien.getText());
         pmBUS.docListPhieuMuon();
         if(flag) {
-            xuLyThemCTPhieuMuon(txtMaPhieuMuon.getText(), dtmSachMuon);
+            xuLyThemCTPhieuMuon(txtMaPhieuMuon.getText());
             loadDataLenBangPhieuMuon();
             loadDataLenBangCTPhieuMuon("0");
         }
@@ -652,7 +608,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
 
     private void xuLyThemNgayThang(){
         if (txtDocGia.getText() != "") {
-            int ma = pmBUS.getMaPhieumuonnMoiNhat() + 1;
+            int ma = pmBUS.getMaPhieumuonMoiNhat() + 1;
             txtMaPhieuMuon.setText(String.valueOf(ma));
             // Lấy ngày hiện tại
             Date ngayHienTai = pmBUS.timeHienTai();
@@ -670,7 +626,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         }
     }
 
-    private void btnThemSachActionPerformed(String maSach, String tenSach, String thanhTien) {
+    private void btnThemSachAction(String maSach, String tenSach, String thanhTien) {
         Vector<Object> rowData = new Vector<>();
         rowData.add(maSach);
         rowData.add(tenSach);
@@ -678,7 +634,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         dtmSachMuon.addRow(rowData);
     }
 
-    private void xuLyThemCTPhieuMuon(DefaultTableModel dtmSachMuon) {
+    private void xuLyThemCTPhieuMuon() {
         if (txtDocGia.getText().equals("")){
             new MyDialog("Chưa chọn đọc giả mượn sách!!!",MyDialog.ERROR_DIALOG);
             return;
@@ -689,12 +645,11 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         }else {
             int rowCount = dtmSachMuon.getRowCount();
             for (int i = 0; i < rowCount; i++) {
-                Object maSach = (Object) dtmSachMuon.getValueAt(i, 0);
-                String maS = String.valueOf(maSach);
-                String tenSach = (String) dtmSachMuon.getValueAt(i, 1);
-                String thanhTien = (String) dtmSachMuon.getValueAt(i, 2);
+                String maSach = String.valueOf(dtmSachMuon.getValueAt(i, 0));
+                String tenSach = String.valueOf(dtmSachMuon.getValueAt(i, 1));
+                String thanhTien = String.valueOf(dtmSachMuon.getValueAt(i, 2));
                 timSachGUI.dtmSach.removeRow(timSachGUI.hang);
-                if(maS.trim().equals(txtMaSach.getText())){
+                if(maSach.trim().equals(txtMaSach.getText())){
                     new MyDialog("Sách đã được thêm vào phiếu mượn!!!",MyDialog.ERROR_DIALOG);
                     return;
                 }
@@ -704,7 +659,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
             String tenSach = txtTenSach.getText();
             String thanhTien = txtThanhTien.getText();
 
-            btnThemSachActionPerformed(maSach, tenSach, thanhTien);
+            btnThemSachAction(maSach, tenSach, thanhTien);
 
             ctPhieuMuonBUS.chonSachMuon(maSach);
 
@@ -717,7 +672,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         }
     }
 
-    private void xuLyThemCTPhieuMuon(String ma, DefaultTableModel dtmPhieuMuon) {
+    private void xuLyThemCTPhieuMuon(String ma) {
         int rowCount = dtmSachMuon.getRowCount();
         for (int i = 0; i < rowCount; i++) {
             String maSach = (String) dtmSachMuon.getValueAt(i, 0);
@@ -749,7 +704,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         timSachGUI.loadDataLenTable();
     }
 
-    private boolean kiemTraPhieuMuon(DefaultTableModel dtmPhieuMuon, String ma){
+    private boolean kiemTraPhieuMuon(String ma){
         int rowCount = dtmPhieuMuon.getRowCount();
         for (int i = 0; i < rowCount; i++) {
             int maPhieuMuon = (int) dtmPhieuMuon.getValueAt(i, 0);
@@ -774,9 +729,6 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
             int maSach = (int) dtmSachMuon.getValueAt(i, 0);
             String maS = String.valueOf(maSach);
             sachDAO.capNhatTrangThaiSach(maS);
-        }
-        if(!flag){
-            return false;
         }
         return flag;
     }
@@ -825,5 +777,23 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         XuatPhieuMuonGUI phieuMuonGUI = new XuatPhieuMuonGUI(dsPhieuMuon,maPM,
                 txtDocGia.getText(),nhanVienBUS.getTenNhanVien(dangNhapGUI.maTaiKhoan()),txtNgayMuon.getText(),txtNgayTra.getText(),tien);
         phieuMuonGUI.setVisible(true);
+    }
+
+    public void xuLyThoat(){
+        int rowCount = tblSachMuon.getRowCount();
+        int row = tblPhieuMuon.getRowCount();
+        int count = 0;
+        for(int j =0; j<row;j++){
+            String maPM = String.valueOf(dtmPhieuMuon.getValueAt(j, 0));
+            if(txtMaPhieuMuon.getText().equals(maPM)){
+                count = 1;
+            }
+        }
+        if(count != 1) {
+            for (int i = 0; i < rowCount; i++) {
+                String maSach = (String) dtmSachMuon.getValueAt(i, 0);
+                sachDAO.capNhatTrangThaiSach(maSach);
+            }
+        }else return;
     }
 }
