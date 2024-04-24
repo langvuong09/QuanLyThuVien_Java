@@ -1,7 +1,6 @@
 package QuanLyThuVien.GUI;
 
 import QuanLyThuVien.BUS.DocGiaBUS;
-import QuanLyThuVien.DAO.MyConnect;
 import QuanLyThuVien.DTO.DocGia;
 import MyCustom.MyTable;
 

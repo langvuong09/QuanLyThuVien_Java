@@ -29,7 +29,7 @@ import javax.swing.table.TableColumnModel;
 
 public class PnQuanLyPhieuTraGUI extends JPanel{
 
-    private DlgTimDocGia timDocGiaGUI = new DlgTimDocGia();
+    private DlgTimPhieuMuon timPhieuMuonGUI = new DlgTimPhieuMuon();
     private SachBUS sachBUS = new SachBUS();
     private SachDAO sachDAO = new SachDAO();
     private DocGiaBUS docGiaBUS = new DocGiaBUS();
@@ -40,7 +40,7 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
     public PnQuanLyPhieuTraGUI(){
         changLNF("Windows");
         addConTrolsPhieuTra();
-//        addEventsPhieuTra();
+        addEventsPhieuTra();
     }
 
     PhieuTraBUS ptBUS = new PhieuTraBUS();
@@ -49,7 +49,7 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
     MyTable tblPhieuTra, tblSachTra;
     DefaultTableModel dtmPhieuTra, dtmSachTra;
     JTextField txtMaPhieuTra,txtMaPhieuMuon ,txtDocGia, txtNgayMuon, txtNgayTraThuc, txtTimKiem, txtMaSach, txtTenSach;
-    JButton btnThem, btnXoa, btnInthe, btnReset, btnXuatExcel, btnNhapExcel, btnTim, btnThemSach, btnXoaSach, btnDocGia, btnSach;
+    JButton btnThem, btnXoa, btnInthe, btnReset, btnXuatExcel, btnNhapExcel, btnTim, btnThemSach, btnXoaSach, btnPhieuMuon, btnSachMuonTrongPhieu;
 
     private void addConTrolsPhieuTra() {
         Font font = new Font("Tahoma", Font.PLAIN, 16);
@@ -216,8 +216,8 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         btnInthe = new JButton("In thẻ");
         btnXuatExcel = new JButton("Xuất");
         btnNhapExcel = new JButton("Nhập");
-        btnDocGia = new JButton("...");
-        btnSach = new JButton("...");
+        btnPhieuMuon = new JButton("...");
+        btnSachMuonTrongPhieu = new JButton("...");
 
         Font fontButton = new Font("Tahoma", Font.PLAIN, 16);
         btnThem.setFont(fontButton);
@@ -227,8 +227,8 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         btnInthe.setFont(fontButton);
         btnXuatExcel.setFont(fontButton);
         btnNhapExcel.setFont(fontButton);
-        btnDocGia.setFont(fontButton);
-        btnSach.setFont(fontButton);
+        btnPhieuMuon.setFont(fontButton);
+        btnSachMuonTrongPhieu.setFont(fontButton);
 
         btnThem.setIcon(new ImageIcon("image/add-icon.png"));
         btnXoa.setIcon(new ImageIcon("image/delete-icon.png"));
@@ -243,8 +243,8 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         btnTim.setBounds(400, 350, 110, 40);
         btnXuatExcel.setBounds(515, 350, 110, 40);
         btnNhapExcel.setBounds(630, 350, 110, 40);
-        btnDocGia.setBounds(430, 100, 30, 25);
-        btnSach.setBounds(760, 50, 30, 25);
+        btnPhieuMuon.setBounds(430, 100, 30, 25);
+        btnSachMuonTrongPhieu.setBounds(760, 50, 30, 25);
 
         pnThongTinPhieuTra.add(btnInthe);
         pnThongTinPhieuTra.add(btnThem);
@@ -252,8 +252,8 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         pnThongTinPhieuTra.add(btnTim);
         pnThongTinPhieuTra.add(btnXuatExcel);
         pnThongTinPhieuTra.add(btnNhapExcel);
-        pnThongTinPhieuTra.add(btnDocGia);
-        pnThongTinPhieuTra.add(btnSach);
+        pnThongTinPhieuTra.add(btnPhieuMuon);
+        pnThongTinPhieuTra.add(btnSachMuonTrongPhieu);
 
         pnTablePhieuTra.add(pnThongTinPhieuTra);
 
@@ -385,13 +385,14 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
                 xuLyNhapFileExcel();
             }
         });
-        btnDocGia.addActionListener(new ActionListener() {
+        btnPhieuMuon.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                xuLyTimPhieuMuon();
                 xuLyThemNgayThang();
             }
         });
-        btnSach.addActionListener(new ActionListener() {
+        btnSachMuonTrongPhieu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
             }
@@ -596,6 +597,15 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
 
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             txtNgayTraThuc.setText(sdf.format(ngayHienTai));
+        }
+    }
+
+    private void xuLyTimPhieuMuon(){
+        timPhieuMuonGUI.setVisible(true);
+        if(timPhieuMuonGUI.phieuMuonTimDuoc != null){
+            txtMaPhieuMuon.setText(String.valueOf(timPhieuMuonGUI.phieuMuonTimDuoc.getMaPhieuMuon()));
+            txtDocGia.setText(docGiaBUS.getTenDocGia(timPhieuMuonGUI.phieuMuonTimDuoc.getMaDocGia()));
+            txtNgayMuon.setText(String.valueOf(timPhieuMuonGUI.phieuMuonTimDuoc.getNgayMuon()));
         }
     }
 

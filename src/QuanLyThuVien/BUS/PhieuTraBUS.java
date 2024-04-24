@@ -85,7 +85,7 @@ public class PhieuTraBUS {
     }
 
     public boolean themPhieuTra(String maPT, String maPM, String docGia, String ngayTraThuc){
-        if(maPT.trim().equals("")){
+        if(maPM.trim().equals("")){
             new MyDialog("Không được để trống mã phiếu mượn!!!", MyDialog.ERROR_DIALOG);
             return false;
         }

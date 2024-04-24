@@ -163,4 +163,16 @@ public class PhieuMuonBUS {
         return false;
     }
 
+    public ArrayList<PhieuMuon> timKiemPhieuMuon(String tuKhoa){
+        tuKhoa = tuKhoa.toLowerCase();
+        ArrayList<PhieuMuon> dspm = new ArrayList<>();
+        for(PhieuMuon pm : listPhieuMuon){
+            String docGia = docGiaBUS.getTenDocGia(pm.getMaDocGia());
+            String nhanVien = nhanVienBUS.getTenNhanVien(pm.getMaNhanVien());
+            if(docGia.contains(tuKhoa) || nhanVien.contains(tuKhoa)){
+                dspm.add(pm);
+            }
+        }
+        return dspm;
+    }
 }
