@@ -55,4 +55,23 @@ public class CTPhieuTraBUS {
         }
         return false;
     }
+
+    public void chonSachTra(String ma){
+        sachDAO.capNhatTrangThaiSach(ma);
+    }
+
+    public ArrayList<CTPhieuTra> timKiemCTPhieuTra(String tuKhoa, String maPT){
+        if(tuKhoa.equals("")){
+            return getListCTPhieuTraTheoMaPT(maPT);
+        }
+        tuKhoa = tuKhoa.toLowerCase();
+        ArrayList<CTPhieuTra> dsctpt = new ArrayList<>();
+        for(CTPhieuTra ctpt : getListCTPhieuTraTheoMaPT(maPT)){
+            String maSach = String.valueOf(ctpt.getMaSach());
+            if(maSach.contains(tuKhoa)){
+                dsctpt.add(ctpt);
+            }
+        }
+        return dsctpt;
+    }
 }

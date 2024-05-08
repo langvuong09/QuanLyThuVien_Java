@@ -18,6 +18,7 @@ import java.text.SimpleDateFormat;
 public class PhieuTraBUS {
     public ArrayList<PhieuTra> listPhieuTra = null;
     private PhieuTraDAO ptDAO = new PhieuTraDAO();
+    private PhieuMuonBUS pmBUS = new PhieuMuonBUS();
     private DocGiaBUS docGiaBUS = new DocGiaBUS();
     private NhanVienBUS nhanVienBUS = new NhanVienBUS();
     private DangNhapGUI dangNhapGUI = new DangNhapGUI();
@@ -134,10 +135,40 @@ public class PhieuTraBUS {
         Calendar cal = Calendar.getInstance();
         int year = cal.get(Calendar.YEAR);
         int month = cal.get(Calendar.MONTH)+1;
-        int day = cal.get(Calendar.YEAR);
+        int day = cal.get(Calendar.DAY_OF_MONTH);
 
         cal.set(year, month - 1, day);
         Date cDate = cal.getTime();
         return cDate;
+    }
+
+    public ArrayList<PhieuTra> timKiemPhieuTra(String tuKhoa){
+        if(tuKhoa.equals("")){
+            return listPhieuTra;
+        }
+        tuKhoa = tuKhoa.toLowerCase();
+        int khoa = Integer.parseInt(tuKhoa);
+        ArrayList<PhieuTra> dspt = new ArrayList<>();
+        for(PhieuTra pt : listPhieuTra){
+            if(pt.getMaPhieuTra() == khoa){
+                dspt.add(pt);
+            }
+        }
+        return dspt;
+    }
+
+    public ArrayList<PhieuTra> timKiemTrongKhoang(Date min, Date max){
+        ArrayList<PhieuTra> dspt = new ArrayList<>();
+        try {
+            for (PhieuTra pt : listPhieuTra) {
+                Date ngayMuon = pmBUS.getPhieuMuon(String.valueOf(pt.getMaPhieuMuon())).getNgayMuon();
+                if (ngayMuon != null && ngayMuon.after(min) && ngayMuon.before(max)) {
+                    dspt.add(pt);
+                }
+            }
+            return dspt;
+        } catch (Exception e){
+        }
+        return null;
     }
 }

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class PhieuTraDAO {
     public ArrayList<PhieuTra> getListPhieuTra(){
@@ -74,15 +75,15 @@ public class PhieuTraDAO {
 
     public boolean xoaPhieuTra(int ma){
         try{
-            String sqlCheck = "FOREIGN_KEY_CHECKS=0";
+            String sqlCheck = "SET FOREIGN_KEY_CHECKS=0";
             Statement stCheck = MyConnect.conn.createStatement();
             stCheck.execute(sqlCheck);
 
             String sql = "DELETE FROM phieutra WHERE MaPhieuTra="+ma;
             Statement st = MyConnect.conn.createStatement();
-            ResultSet rs = st.executeQuery(sql);
+            st.execute(sql);
 
-            String sqlChecks = "FOREIGN_KEY_CHECKS=1";
+            String sqlChecks = "SET FOREIGN_KEY_CHECKS=1";
             Statement stChecks = MyConnect.conn.createStatement();
             stChecks.execute(sqlChecks);
             return true;
@@ -123,5 +124,31 @@ public class PhieuTraDAO {
         }catch (SQLException e){
         }
         return false;
+    }
+
+    public ArrayList<PhieuTra> timKiemTheoKhoang(Date min, Date max){
+        try{
+            String sql = "SELECT * FROM phieutra, phieumuon WHERE phieutra.MaPhieuMuon = phieumuon.MaPhieuMuon" +
+                    "AND phieumuon.NgayMuon BETWEEN ? AND ?";
+            PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
+            ArrayList<PhieuTra> dspt = new ArrayList<>();
+            java.sql.Date Min = new java.sql.Date(min.getTime());
+            java.sql.Date Max = new java.sql.Date(max.getTime());
+            pre.setDate(1, Max);
+            pre.setDate(2, Min);
+            ResultSet rs =  pre.executeQuery();
+            while (rs.next()) {
+                PhieuTra pt = new PhieuTra();
+                pt.setMaPhieuTra(rs.getInt(1));
+                pt.setMaPhieuMuon(rs.getInt(2));
+                pt.setMaDocGia(rs.getInt(3));
+                pt.setMaNhanVien(rs.getInt(4));
+                pt.setNgayTraThuc(rs.getDate(5));
+                dspt.add(pt);
+            }
+            return dspt;
+        }catch (SQLException e){
+        }
+        return null;
     }
 }

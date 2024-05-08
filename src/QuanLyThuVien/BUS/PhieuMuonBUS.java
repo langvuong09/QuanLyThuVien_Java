@@ -164,12 +164,14 @@ public class PhieuMuonBUS {
     }
 
     public ArrayList<PhieuMuon> timKiemPhieuMuon(String tuKhoa){
+        if(tuKhoa.equals("")){
+            return listPhieuMuon;
+        }
         tuKhoa = tuKhoa.toLowerCase();
+        int khoa = Integer.parseInt(tuKhoa);
         ArrayList<PhieuMuon> dspm = new ArrayList<>();
         for(PhieuMuon pm : listPhieuMuon){
-            String docGia = docGiaBUS.getTenDocGia(pm.getMaDocGia());
-            String nhanVien = nhanVienBUS.getTenNhanVien(pm.getMaNhanVien());
-            if(docGia.contains(tuKhoa) || nhanVien.contains(tuKhoa)){
+            if(pm.getMaPhieuMuon() == khoa){
                 dspm.add(pm);
             }
         }

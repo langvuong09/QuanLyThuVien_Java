@@ -57,29 +57,7 @@ public class PnQuanLyNhanVienGUI extends JPanel{
 
         int w = 1050;
         int h = 700;
-        /*
-        =========================================================================
-                                    PANEL TABBED
-        =========================================================================
-         */
-//        JPanel pnTop = new TransparentPanel();
-//        Font fontSize = new Font("", Font.PLAIN, 20);
-//        pnTop.setPreferredSize(new Dimension(w, 41));
-//        pnTop.setLayout(null);
-//        pnTop.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.GRAY));
-//
-//        lblTabbedNhanVien = new JLabel("Nhân viên");
-//        lblTabbedNhanVien.setHorizontalTextPosition(JLabel.CENTER);
-//        lblTabbedNhanVien.setVerticalTextPosition(JLabel.CENTER);
-//        lblTabbedNhanVien.setIcon(tabbedSelected);
-//        lblTabbedNhanVien.setBounds(2, 2, 140, 37);
-//        lblTabbedNhanVien.setFont(font);
-//        lblTabbedNhanVien.setForeground(Color.white);
-//        lblTabbedNhanVien.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//
-//        pnTop.add(lblTabbedNhanVien);
-//        //</editor-fold>
-//        this.add(pnTop, BorderLayout.NORTH);
+
         /*
         =========================================================================
                                     PANEL Nhân Viên

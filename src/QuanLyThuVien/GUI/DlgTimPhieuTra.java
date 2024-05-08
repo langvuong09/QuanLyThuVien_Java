@@ -2,8 +2,9 @@ package QuanLyThuVien.GUI;
 
 import QuanLyThuVien.BUS.DocGiaBUS;
 import QuanLyThuVien.BUS.NhanVienBUS;
-import QuanLyThuVien.DTO.PhieuMuon;
 import QuanLyThuVien.BUS.PhieuMuonBUS;
+import QuanLyThuVien.DTO.PhieuTra;
+import QuanLyThuVien.BUS.PhieuTraBUS;
 import MyCustom.MyTable;
 
 import java.awt.*;
@@ -19,14 +20,15 @@ import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
 
-public class DlgTimPhieuMuon extends JDialog{
+public class DlgTimPhieuTra extends JDialog{
+    private PhieuTraBUS phieuTraBUS = new PhieuTraBUS();
     private PhieuMuonBUS phieuMuonBUS = new PhieuMuonBUS();
     private DocGiaBUS docGiaBUS = new DocGiaBUS();
     private NhanVienBUS nhanVienBUS = new NhanVienBUS();
     private DlgTimSachMuon sachMuonGUI = new DlgTimSachMuon();
-    public static PhieuMuon phieuMuonTimDuoc = null;
+    public static PhieuTra phieuTraTimDuoc = null;
 
-    public DlgTimPhieuMuon() {
+    public DlgTimPhieuTra() {
         addControls();
         addEvents();
 
@@ -37,8 +39,8 @@ public class DlgTimPhieuMuon extends JDialog{
     }
 
     private JTextField txtTuKhoa;
-    private JTable tblTimPhieuMuon;
-    private DefaultTableModel dtmTimPhieuMuon;
+    private JTable tblTimPhieuTra;
+    private DefaultTableModel dtmTimPhieuTra;
     private JButton btnChon;
 
     private void addControls() {
@@ -47,7 +49,7 @@ public class DlgTimPhieuMuon extends JDialog{
 
         Font font = new Font("Tahoma", Font.PLAIN, 16);
         JPanel pnTop = new JPanel();
-        JLabel lblTuKhoa = new JLabel("Mã phiếu mượn cần tìm:");
+        JLabel lblTuKhoa = new JLabel("Mã phiếu trả cần tìm:");
         txtTuKhoa = new JTextField(20);
         lblTuKhoa.setFont(font);
         txtTuKhoa.setFont(font);
@@ -57,16 +59,16 @@ public class DlgTimPhieuMuon extends JDialog{
 
         JPanel pnTable = new JPanel();
         pnTable.setLayout(new BorderLayout());
-        dtmTimPhieuMuon = new DefaultTableModel();
-        dtmTimPhieuMuon.addColumn("Mã PM");
-        dtmTimPhieuMuon.addColumn("Đọc giả");
-        dtmTimPhieuMuon.addColumn("Nhân viên");
-        dtmTimPhieuMuon.addColumn("Ngày mượn");
-        dtmTimPhieuMuon.addColumn("Hạn trả");
-        dtmTimPhieuMuon.addColumn("Tổng tiền");
-        tblTimPhieuMuon = new MyTable(dtmTimPhieuMuon);
-        JScrollPane srcPhieuMuon = new JScrollPane(tblTimPhieuMuon);
-        pnTable.add(srcPhieuMuon, BorderLayout.CENTER);
+        dtmTimPhieuTra = new DefaultTableModel();
+        dtmTimPhieuTra.addColumn("Mã PT");
+        dtmTimPhieuTra.addColumn("Mã PM");
+        dtmTimPhieuTra.addColumn("Đọc giả");
+        dtmTimPhieuTra.addColumn("Nhân viên");
+        dtmTimPhieuTra.addColumn("Ngày mượn");
+        dtmTimPhieuTra.addColumn("Ngày trả");
+        tblTimPhieuTra = new MyTable(dtmTimPhieuTra);
+        JScrollPane srcPhieuTra = new JScrollPane(tblTimPhieuTra);
+        pnTable.add(srcPhieuTra, BorderLayout.CENTER);
         conn.add(pnTable, BorderLayout.CENTER);
 
         JPanel pnButton = new JPanel();
@@ -100,32 +102,32 @@ public class DlgTimPhieuMuon extends JDialog{
         btnChon.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                xuLyChonPhieuMuon();
+                xuLyChonPhieuTra();
             }
         });
     }
 
-    private void xuLyChonPhieuMuon() {
-        int row = tblTimPhieuMuon.getSelectedRow();
+    private void xuLyChonPhieuTra() {
+        int row = tblTimPhieuTra.getSelectedRow();
         if (row > -1) {
             try {
-                int ma = Integer.parseInt(tblTimPhieuMuon.getValueAt(row, 0) + "");
-                String docGia = tblTimPhieuMuon.getValueAt(row, 1) + "";
+                int ma = Integer.parseInt(tblTimPhieuTra.getValueAt(row, 0) + "");
+                int maPM = Integer.parseInt(tblTimPhieuTra.getValueAt(row, 1) + "");
+                String docGia = tblTimPhieuTra.getValueAt(row, 2) + "";
                 int maDocGia = docGiaBUS.getMaDocGia(docGia);
-                String nhanVien = tblTimPhieuMuon.getValueAt(row, 2) + "";
+                String nhanVien = tblTimPhieuTra.getValueAt(row, 3) + "";
                 int maNhanVien = nhanVienBUS.getMaNhanVien(nhanVien);
-                String ngayMuon = tblTimPhieuMuon.getValueAt(row, 3) + "";
-                String hanTra = tblTimPhieuMuon.getValueAt(row, 4) + ""; // Sửa index thành 4
+                String ngayMuon = tblTimPhieuTra.getValueAt(row, 4) + "";
+                String ngayTra = tblTimPhieuTra.getValueAt(row, 5) + ""; // Sửa index thành 4
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                 Date ngayM = null;
                 Date hanT = null;
-                if (!ngayMuon.isEmpty() && !hanTra.isEmpty()) { // Kiểm tra chuỗi không rỗng trước khi chuyển đổi
+                if (!ngayMuon.isEmpty() && !ngayTra.isEmpty()) { // Kiểm tra chuỗi không rỗng trước khi chuyển đổi
                     ngayM = sdf.parse(ngayMuon);
-                    hanT = sdf.parse(hanTra);
+                    hanT = sdf.parse(ngayTra);
                 }
-                long tongTien = Long.parseLong(tblTimPhieuMuon.getValueAt(row, 5) + ""); // Sửa index thành 5
 
-                phieuMuonTimDuoc = new PhieuMuon(ma, maDocGia, maNhanVien, ngayM, hanT, tongTien);
+                phieuTraTimDuoc = new PhieuTra(ma, maPM, maDocGia, maNhanVien, hanT);
                 this.dispose();
             } catch (NumberFormatException | ParseException ex) {
                 ex.printStackTrace();
@@ -134,37 +136,37 @@ public class DlgTimPhieuMuon extends JDialog{
     }
 
     private void loadDataLenTable() {
-        dtmTimPhieuMuon.setRowCount(0);
-        ArrayList<PhieuMuon> dspm = phieuMuonBUS.getListPhieuMuon();
-        if (dspm != null) {
+        dtmTimPhieuTra.setRowCount(0);
+        ArrayList<PhieuTra> dspt = phieuTraBUS.getListPhieuTra();
+        if (dspt != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            for (PhieuMuon pm : dspm) {
+            for (PhieuTra pt : dspt) {
                 Vector vec = new Vector();
-                vec.add(pm.getMaPhieuMuon());
-                vec.add(docGiaBUS.getTenDocGia(pm.getMaDocGia()));
-                vec.add(nhanVienBUS.getTenNhanVien(pm.getMaNhanVien()));
-                vec.add(sdf.format(pm.getNgayMuon())); // Định dạng ngày mượn
-                vec.add(sdf.format(pm.getNgayTra())); // Định dạng hạn trả
-                vec.add(pm.getTongTien());
-                dtmTimPhieuMuon.addRow(vec);
+                vec.add(pt.getMaPhieuTra());
+                vec.add(pt.getMaPhieuMuon());
+                vec.add(docGiaBUS.getTenDocGia(pt.getMaDocGia()));
+                vec.add(nhanVienBUS.getTenNhanVien(pt.getMaNhanVien()));
+                vec.add(sdf.format(phieuMuonBUS.getPhieuMuon(String.valueOf(pt.getMaPhieuMuon())).getNgayMuon())); // Định dạng ngày mượn
+                vec.add(sdf.format(pt.getNgayTraThuc())); // Định dạng hạn trả
+                dtmTimPhieuTra.addRow(vec);
             }
         }
     }
 
     private void loadDataLenTable(String tuKhoa) {
-        dtmTimPhieuMuon.setRowCount(0);
-        ArrayList<PhieuMuon> dspm = phieuMuonBUS.timKiemPhieuMuon(tuKhoa);
-        if (dspm != null) {
+        dtmTimPhieuTra.setRowCount(0);
+        ArrayList<PhieuTra> dspt = phieuTraBUS.timKiemPhieuTra(tuKhoa);
+        if (dspt != null) {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-            for (PhieuMuon pm : dspm) {
-                Vector vec = new Vector<>();
-                vec.add(pm.getMaPhieuMuon());
-                vec.add(docGiaBUS.getTenDocGia(pm.getMaDocGia()));
-                vec.add(nhanVienBUS.getTenNhanVien(pm.getMaNhanVien()));
-                vec.add(sdf.format(pm.getNgayMuon())); // Định dạng ngày mượn
-                vec.add(sdf.format(pm.getNgayTra())); // Định dạng hạn trả
-                vec.add(pm.getTongTien());
-                dtmTimPhieuMuon.addRow(vec);
+            for (PhieuTra pt : dspt) {
+                Vector vec = new Vector();
+                vec.add(pt.getMaPhieuTra());
+                vec.add(pt.getMaPhieuMuon());
+                vec.add(docGiaBUS.getTenDocGia(pt.getMaDocGia()));
+                vec.add(nhanVienBUS.getTenNhanVien(pt.getMaNhanVien()));
+                vec.add(sdf.format(phieuMuonBUS.getPhieuMuon(String.valueOf(pt.getMaPhieuMuon())).getNgayMuon())); // Định dạng ngày mượn
+                vec.add(sdf.format(pt.getNgayTraThuc())); // Định dạng hạn trả
+                dtmTimPhieuTra.addRow(vec);
             }
         }
     }

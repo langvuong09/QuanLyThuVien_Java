@@ -40,6 +40,9 @@ public class DocGiaBUS {
     }
 
     public ArrayList<DocGia> timKiemDocGia(String tuKhoa){
+        if(tuKhoa.equals("")){
+            return listDocGia;
+        }
         tuKhoa = tuKhoa.toLowerCase();
         ArrayList<DocGia> dsdg = new ArrayList<>();
         for(DocGia dg : listDocGia){

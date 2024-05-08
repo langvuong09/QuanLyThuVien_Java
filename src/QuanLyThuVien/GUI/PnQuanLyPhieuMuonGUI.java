@@ -3,7 +3,6 @@ package QuanLyThuVien.GUI;
 import QuanLyThuVien.BUS.CTPhieuMuonBUS;
 import QuanLyThuVien.BUS.PhieuMuonBUS;
 import QuanLyThuVien.BUS.SachBUS;
-import QuanLyThuVien.DAO.SachDAO;
 import QuanLyThuVien.DTO.CTPhieuMuon;
 import QuanLyThuVien.DTO.PhieuMuon;
 import QuanLyThuVien.DTO.Sach;
@@ -18,20 +17,14 @@ import MyCustom.XuLyFileExcel;
 import MyCustom.MyDialog;
 import MyCustom.MyTable;
 import MyCustom.TransparentPanel;
-import java.awt.print.PrinterException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import java.awt.*;
-import java.awt.event.*;import java.io.File;
-import java.io.IOException;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
+import java.awt.event.*;
 import java.util.Vector;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -43,7 +36,6 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
     private DlgTimDocGia timDocGiaGUI = new DlgTimDocGia();
     private DlgTimSach timSachGUI = new DlgTimSach();
     private SachBUS sachBUS = new SachBUS();
-    private SachDAO sachDAO = new SachDAO();
     private DocGiaBUS docGiaBUS = new DocGiaBUS();
     private NhanVienBUS nhanVienBUS = new NhanVienBUS();
     private DangNhapGUI dangNhapGUI = new DangNhapGUI();
@@ -145,7 +137,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         lblTongTien.setBounds(20,250,150,25);
         txtTongTien.setBounds(200,250,220,25);
 
-        JLabel lblTimKiem = new JLabel("Tên đọc giả cần tìm:");
+        JLabel lblTimKiem = new JLabel("Họ tên đọc giả cần tìm:");
         lblTimKiem.setFont(font);
         txtTimKiem.setFont(font);
         lblTimKiem.setBounds(20,300,300,25);
@@ -249,7 +241,6 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         btnXoa.setFont(fontButton);
         btnTim.setFont(fontButton);
         btnInthe.setFont(fontButton);
-        btnInthe.setFont(fontButton);
         btnXuatExcel.setFont(fontButton);
         btnNhapExcel.setFont(fontButton);
         btnDocGia.setFont(fontButton);
@@ -336,6 +327,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
                 txtMaSach.setText("");
                 txtTenSach.setText("");
                 txtThanhTien.setText("");
+                txtTimKiem.setText("");
                 loadDataLenBangCTPhieuMuon("0");
             }
         });
@@ -343,7 +335,6 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
             @Override
             public void mouseClicked(MouseEvent e) {
                 xuLyClickTblPhieuMuon();
-                loadDataLenBangCTPhieuMuon(txtMaPhieuMuon.getText());
             }
         });
         tblSachMuon.addMouseListener(new MouseAdapter() {
@@ -644,6 +635,10 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
             return;
         }else {
             int rowCount = dtmSachMuon.getRowCount();
+            if (rowCount == 3 ) {
+                new MyDialog("Số lượng sách mượn đã đạt tối đa!!!", MyDialog.ERROR_DIALOG);
+                return;
+            }
             for (int i = 0; i < rowCount; i++) {
                 String maSach = String.valueOf(dtmSachMuon.getValueAt(i, 0));
                 String tenSach = String.valueOf(dtmSachMuon.getValueAt(i, 1));
@@ -695,7 +690,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
                 String maSach = (String) dtmSachMuon.getValueAt(selectedRow, 0);
 
                 dtmSachMuon.removeRow(selectedRow);
-                sachDAO.capNhatTrangThaiSach(txtMaSach.getText());
+                sachBUS.capNhatTrangThaiSach(txtMaSach.getText());
                 txtMaSach.setText("");
                 txtTenSach.setText("");
                 txtThanhTien.setText("");
@@ -728,7 +723,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         for (int i = 0; i < rowCount; i++) {
             int maSach = (int) dtmSachMuon.getValueAt(i, 0);
             String maS = String.valueOf(maSach);
-            sachDAO.capNhatTrangThaiSach(maS);
+            sachBUS.capNhatTrangThaiSach(maS);
         }
         return flag;
     }
@@ -779,7 +774,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         phieuMuonGUI.setVisible(true);
     }
 
-    public void xuLyThoat(){
+    public void xuLyThoatPhieuMuon(){
         int rowCount = tblSachMuon.getRowCount();
         int row = tblPhieuMuon.getRowCount();
         int count = 0;
@@ -791,8 +786,8 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         }
         if(count != 1) {
             for (int i = 0; i < rowCount; i++) {
-                String maSach = (String) dtmSachMuon.getValueAt(i, 0);
-                sachDAO.capNhatTrangThaiSach(maSach);
+                String maSach = String.valueOf(dtmSachMuon.getValueAt(i, 0));
+                sachBUS.capNhatTrangThaiSach(maSach);
             }
         }else return;
     }

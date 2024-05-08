@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th4 24, 2024 lúc 08:22 AM
+-- Thời gian đã tạo: Th5 08, 2024 lúc 10:46 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -43,7 +43,9 @@ INSERT INTO `ctphieumuon` (`MaPhieuMuon`, `MaSach`, `ThanhTien`) VALUES
 (2, 1, 1500),
 (2, 2, 1500),
 (3, 4, 8500),
-(3, 5, 1500);
+(3, 5, 1500),
+(4, 9, 8000),
+(4, 11, 8100);
 
 -- --------------------------------------------------------
 
@@ -62,7 +64,9 @@ CREATE TABLE `ctphieutra` (
 
 INSERT INTO `ctphieutra` (`MaPhieuTra`, `MaSach`) VALUES
 (1, 9),
-(1, 14);
+(1, 11),
+(2, 1),
+(2, 2);
 
 -- --------------------------------------------------------
 
@@ -208,7 +212,33 @@ CREATE TABLE `phieumuon` (
 INSERT INTO `phieumuon` (`MaPhieuMuon`, `MaDocGia`, `MaNhanVien`, `NgayMuon`, `NgayTra`, `TongTienMuon`) VALUES
 (1, 1, 1, '2024-03-20', '2024-04-04', 10000),
 (2, 1, 2, '2024-03-30', '2024-04-19', 24000),
-(3, 2, 2, '2024-03-15', '2024-03-30', 10000);
+(3, 2, 2, '2024-03-15', '2024-03-30', 10000),
+(4, 5, 2, '2024-04-02', '2024-04-22', 16100);
+
+-- --------------------------------------------------------
+
+--
+-- Cấu trúc bảng cho bảng `phieuphat`
+--
+
+CREATE TABLE `phieuphat` (
+  `MaPhieuPhat` int(11) NOT NULL,
+  `MaPhieuTra` int(11) NOT NULL,
+  `MaSach` int(11) NOT NULL,
+  `MaDocGia` int(11) NOT NULL,
+  `MaNhanVien` int(11) NOT NULL,
+  `LyDo` varchar(100) NOT NULL,
+  `ThanhTien` int(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `phieuphat`
+--
+
+INSERT INTO `phieuphat` (`MaPhieuPhat`, `MaPhieuTra`, `MaSach`, `MaDocGia`, `MaNhanVien`, `LyDo`, `ThanhTien`) VALUES
+(1, 1, 9, 5, 1, 'Ướt sách + Trả muộn 9 ngày', 88000),
+(2, 2, 2, 1, 1, 'Mất trang + Trả muộn 7 ngày', 9000),
+(3, 2, 2, 1, 1, 'Rách sách + Trả muộn 11 ngày', 3750);
 
 -- --------------------------------------------------------
 
@@ -229,7 +259,8 @@ CREATE TABLE `phieutra` (
 --
 
 INSERT INTO `phieutra` (`MaPhieuTra`, `MaPhieuMuon`, `MaDocGia`, `MaNhanVien`, `NgayTraThuc`) VALUES
-(1, 2, 5, 2, '2024-04-17');
+(1, 4, 5, 2, '2024-04-17'),
+(2, 2, 1, 3, '2024-05-02');
 
 -- --------------------------------------------------------
 
@@ -253,8 +284,8 @@ CREATE TABLE `sach` (
 --
 
 INSERT INTO `sach` (`MaSach`, `MaLoai`, `MaNXB`, `MaTacGia`, `TenSach`, `GiaSach`, `GhiChu`, `TrangThai`) VALUES
-(1, 1, 1, 1, 'Trạng Quỳnh tập 1', 15000, 'Tái bản lần thứ 11', 0),
-(2, 1, 1, 1, 'Trạng Quỳnh tập 2', 15000, 'Tái bản lần thứ 11', 0),
+(1, 1, 1, 1, 'Trạng Quỳnh tập 1', 15000, 'Tái bản lần thứ 11', 1),
+(2, 1, 1, 1, 'Trạng Quỳnh tập 2', 15000, 'Tái bản lần thứ 11', 1),
 (3, 3, 3, 2, 'Nhật ký trong tù', 52000, 'Tái bản', 1),
 (4, 1, 4, 3, 'Tôi là Bêtô', 85000, 'Tái bản 2023', 0),
 (5, 1, 1, 1, 'Trạng Quỳnh tập 3', 15000, 'Tái bản lần thứ 11', 0),
@@ -378,6 +409,16 @@ ALTER TABLE `phieumuon`
   ADD KEY `MaNhanVien` (`MaNhanVien`);
 
 --
+-- Chỉ mục cho bảng `phieuphat`
+--
+ALTER TABLE `phieuphat`
+  ADD PRIMARY KEY (`MaPhieuPhat`),
+  ADD KEY `fk_phieuphat_phieutra` (`MaPhieuTra`),
+  ADD KEY `fk_phieuphat_sach` (`MaSach`),
+  ADD KEY `fk_phieuphat_nhanvien` (`MaNhanVien`),
+  ADD KEY `fk_phieuphat_docgia` (`MaDocGia`);
+
+--
 -- Chỉ mục cho bảng `phieutra`
 --
 ALTER TABLE `phieutra`
@@ -444,10 +485,16 @@ ALTER TABLE `phieumuon`
   MODIFY `MaPhieuMuon` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
+-- AUTO_INCREMENT cho bảng `phieuphat`
+--
+ALTER TABLE `phieuphat`
+  MODIFY `MaPhieuPhat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
 -- AUTO_INCREMENT cho bảng `phieutra`
 --
 ALTER TABLE `phieutra`
-  MODIFY `MaPhieuTra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `MaPhieuTra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `sach`
@@ -496,6 +543,15 @@ ALTER TABLE `nhanvien`
 --
 ALTER TABLE `phieumuon`
   ADD CONSTRAINT `phieumuon_ibfk_1` FOREIGN KEY (`MaNhanVien`) REFERENCES `nhanvien` (`MaNhanVien`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Các ràng buộc cho bảng `phieuphat`
+--
+ALTER TABLE `phieuphat`
+  ADD CONSTRAINT `fk_phieuphat_docgia` FOREIGN KEY (`MaDocGia`) REFERENCES `docgia` (`MaDocGia`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_phieuphat_nhanvien` FOREIGN KEY (`MaNhanVien`) REFERENCES `nhanvien` (`MaNhanVien`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_phieuphat_phieutra` FOREIGN KEY (`MaPhieuTra`) REFERENCES `phieutra` (`MaPhieuTra`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_phieuphat_sach` FOREIGN KEY (`MaSach`) REFERENCES `sach` (`MaSach`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `phieutra`

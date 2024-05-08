@@ -21,7 +21,18 @@ public class CTPhieuMuonBUS {
         int ma = Integer.parseInt(maPhieuMuon);
         ArrayList<CTPhieuMuon> dsctpm = new ArrayList<>();
         for(CTPhieuMuon ctpm : listCTPhieuMuon){
-            if(ctpm.getMaPhieuMMuon() == ma){
+            if(ctpm.getMaPhieuMuon() == ma){
+                dsctpm.add(ctpm);
+            }
+        }
+        return dsctpm;
+    }
+
+    public ArrayList<CTPhieuMuon> getListCTPhieuMuonTheoMaPMTheoTrangThai(String maPhieuMuon){
+        int ma = Integer.parseInt(maPhieuMuon);
+        ArrayList<CTPhieuMuon> dsctpm = new ArrayList<>();
+        for(CTPhieuMuon ctpm : ctPhieuMuonDAO.getListCTPhieuMuonTheoTrangThai()){
+            if(ctpm.getMaPhieuMuon() == ma){
                 dsctpm.add(ctpm);
             }
         }
@@ -35,7 +46,7 @@ public class CTPhieuMuonBUS {
             thanhTien = thanhTien.replace(",", "");
 
             CTPhieuMuon ctpm = new CTPhieuMuon();
-            ctpm.setMaPhieuMMuon(maPM);
+            ctpm.setMaPhieuMuon(maPM);
             ctpm.setMaSach(maS);
             long tienMuon = Long.parseLong(thanhTien);
             ctpm.setGiaTien(tienMuon);
@@ -58,5 +69,20 @@ public class CTPhieuMuonBUS {
 
     public void chonSachMuon(String ma){
         boolean flag = sachDAO.chonSach(ma);
+    }
+
+    public ArrayList<CTPhieuMuon> timKiemCTPhieuMuon(String tuKhoa, String maPM){
+        if(tuKhoa.equals("")){
+            return getListCTPhieuMuonTheoMaPM(maPM);
+        }
+        tuKhoa = tuKhoa.toLowerCase();
+        ArrayList<CTPhieuMuon> dsctpm = new ArrayList<>();
+        for(CTPhieuMuon ctpm : getListCTPhieuMuonTheoMaPM(maPM)){
+            String maSach = String.valueOf(ctpm.getMaSach());
+            if(maSach.contains(tuKhoa)){
+                dsctpm.add(ctpm);
+            }
+        }
+        return dsctpm;
     }
 }

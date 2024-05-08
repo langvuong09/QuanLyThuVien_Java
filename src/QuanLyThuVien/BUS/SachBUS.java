@@ -45,6 +45,9 @@ public class SachBUS {
     }
 
     public ArrayList<Sach> timKiemSach(String tuKhoa){
+        if(tuKhoa.equals("")){
+            return listSach;
+        }
         tuKhoa = tuKhoa.toLowerCase();
         ArrayList<Sach> dss = new ArrayList<>();
         for (Sach s : listSach){
@@ -89,4 +92,39 @@ public class SachBUS {
         return "";
     }
 
+    public int getMaSachMuon(String ten){
+        ArrayList<Sach> listTongHop = new ArrayList<>(listSachMuon); // Khởi tạo danh sách kết hợp từ listSachMuon
+
+        // Thêm tất cả các phần tử từ listSach vào combinedList
+        listTongHop.addAll(listSach);
+
+        for(Sach s : listTongHop){
+            if(s.getTenSach().trim().equals(ten)){
+                return s.getMaSach();
+            }
+        }
+        return 0;
+    }
+
+    public Sach getSach(String ma){
+        try {
+            int maSach = Integer.parseInt(ma);
+            ArrayList<Sach> listTongHop = new ArrayList<>(listSachMuon);
+            listTongHop.addAll(listSach);
+            for (Sach s : listTongHop) {
+                if (s.getMaSach() == maSach)
+                    return s;
+            }
+        }catch (Exception e){
+        }
+        return null;
+    }
+
+    public void capNhatTrangThaiSach(String ma){
+        sachDAO.capNhatTrangThaiSach(ma);
+    }
+
+    public void chonSach(String ma){
+        sachDAO.chonSach(ma);
+    }
 }

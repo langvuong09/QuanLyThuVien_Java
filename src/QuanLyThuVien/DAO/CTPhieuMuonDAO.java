@@ -19,21 +19,41 @@ public class CTPhieuMuonDAO {
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()){
                 CTPhieuMuon ctpm = new CTPhieuMuon();
-                ctpm.setMaPhieuMMuon(rs.getInt(1));
+                ctpm.setMaPhieuMuon(rs.getInt(1));
                 ctpm.setMaSach(rs.getInt(2));
                 ctpm.setGiaTien(rs.getLong(3));
                 dsctpm.add(ctpm);
             }
+            return dsctpm;
         }catch (Exception e){
         }
-        return  dsctpm;
+        return  null;
+    }
+
+    public ArrayList<CTPhieuMuon> getListCTPhieuMuonTheoTrangThai(){
+        ArrayList<CTPhieuMuon> dsctpm = new ArrayList<>();
+        try{
+            String sql = "SELECT * FROM ctphieumuon WHERE MaSach IN (SELECT MaSach FROM sach WHERE TrangThai=0)";
+            Statement st = MyConnect.conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()){
+                CTPhieuMuon ctpm = new CTPhieuMuon();
+                ctpm.setMaPhieuMuon(rs.getInt(1));
+                ctpm.setMaSach(rs.getInt(2));
+                ctpm.setGiaTien(rs.getInt(3));
+                dsctpm.add(ctpm);
+            }
+            return dsctpm;
+        }catch (SQLException e){
+        }
+        return null;
     }
 
     public boolean themCTPhieuMuon(CTPhieuMuon ctpm){
         try{
             String sql = "INSERT INTO ctphieumuon VALUES(?,?,?)";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
-            pre.setInt(1,ctpm.getMaPhieuMMuon());
+            pre.setInt(1,ctpm.getMaPhieuMuon());
             pre.setInt(2,ctpm.getMaSach());
             pre.setLong(3,ctpm.getGiaTien());
             return pre.executeUpdate() > 0;

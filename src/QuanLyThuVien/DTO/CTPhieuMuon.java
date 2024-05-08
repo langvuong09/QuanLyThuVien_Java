@@ -2,25 +2,25 @@ package QuanLyThuVien.DTO;
 
 public class CTPhieuMuon {
 
-    private int maPhieuMMuon;
+    private int maPhieuMuon;
     private int maSach;
     private long giaTien;
 
     public CTPhieuMuon(){
     }
 
-    public CTPhieuMuon(int maPhieuMMuon,int maSach,long giaTien){
-        this.maPhieuMMuon = maPhieuMMuon;
+    public CTPhieuMuon(int maPhieuMuon,int maSach,long giaTien){
+        this.maPhieuMuon = maPhieuMuon;
         this.maSach = maSach;
         this.giaTien = giaTien;
     }
 
-    public int getMaPhieuMMuon() {
-        return maPhieuMMuon;
+    public int getMaPhieuMuon() {
+        return maPhieuMuon;
     }
 
-    public void setMaPhieuMMuon(int maPhieuMMuon) {
-        this.maPhieuMMuon = maPhieuMMuon;
+    public void setMaPhieuMuon(int maPhieuMuon) {
+        this.maPhieuMuon = maPhieuMuon;
     }
 
     public int getMaSach() {

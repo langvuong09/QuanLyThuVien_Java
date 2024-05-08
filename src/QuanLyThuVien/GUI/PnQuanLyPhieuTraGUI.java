@@ -1,7 +1,6 @@
 package QuanLyThuVien.GUI;
 
 import QuanLyThuVien.BUS.*;
-import QuanLyThuVien.DAO.SachDAO;
 import QuanLyThuVien.DTO.*;
 
 import static Main.Main.changLNF;
@@ -10,6 +9,8 @@ import MyCustom.XuLyFileExcel;
 import MyCustom.MyDialog;
 import MyCustom.MyTable;
 import MyCustom.TransparentPanel;
+import com.toedter.calendar.JDateChooser;
+
 import java.awt.print.PrinterException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -30,12 +31,13 @@ import javax.swing.table.TableColumnModel;
 public class PnQuanLyPhieuTraGUI extends JPanel{
 
     private DlgTimPhieuMuon timPhieuMuonGUI = new DlgTimPhieuMuon();
+    private DlgTimSachMuon timSachMuonGUI = new DlgTimSachMuon();
     private SachBUS sachBUS = new SachBUS();
-    private SachDAO sachDAO = new SachDAO();
     private DocGiaBUS docGiaBUS = new DocGiaBUS();
     private NhanVienBUS nhanVienBUS = new NhanVienBUS();
     private DangNhapGUI dangNhapGUI = new DangNhapGUI();
     private PhieuMuonBUS pmBUS = new PhieuMuonBUS();
+    private CTPhieuMuonBUS ctPhieuMuonBUS = new CTPhieuMuonBUS();
 
     public PnQuanLyPhieuTraGUI(){
         changLNF("Windows");
@@ -49,7 +51,8 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
     MyTable tblPhieuTra, tblSachTra;
     DefaultTableModel dtmPhieuTra, dtmSachTra;
     JTextField txtMaPhieuTra,txtMaPhieuMuon ,txtDocGia, txtNgayMuon, txtNgayTraThuc, txtTimKiem, txtMaSach, txtTenSach;
-    JButton btnThem, btnXoa, btnInthe, btnReset, btnXuatExcel, btnNhapExcel, btnTim, btnThemSach, btnXoaSach, btnPhieuMuon, btnSachMuonTrongPhieu;
+    JDateChooser dateBD, dateKT;
+    JButton btnThem, btnXoa, btnInthe, btnReset, btnXuatExcel, btnNhapExcel, btnTim, btnThemSach, btnXoaSach, btnPhieuMuon, btnSachMuonTrongPhieu, btnTimTrongKhoang;
 
     private void addConTrolsPhieuTra() {
         Font font = new Font("Tahoma", Font.PLAIN, 16);
@@ -90,6 +93,10 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         txtMaSach = new JTextField(y);
         txtTenSach = new JTextField(y);
         txtTimKiem = new JTextField(y);
+        dateBD = new JDateChooser();
+        dateBD.setDateFormatString("dd/MM/yyyy");
+        dateKT = new JDateChooser();
+        dateKT.setDateFormatString("dd/MM/yyyy");
 
 
         //=================Thông tin phiếu trả==============
@@ -101,42 +108,57 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         lblMaPhieuTra.setFont(font);
         txtMaPhieuTra.setFont(font);
         txtMaPhieuTra.setEditable(false);
-        lblMaPhieuTra.setBounds(20, 50, 150, 25);
-        txtMaPhieuTra.setBounds(200, 50, 220, 25);
+        lblMaPhieuTra.setBounds(20, 20, 150, 25);
+        txtMaPhieuTra.setBounds(200, 20, 220, 25);
 
         JLabel lblMaPhieuMuon = new JLabel("Mã phiếu mượn:");
         lblMaPhieuMuon.setFont(font);
         txtMaPhieuMuon.setFont(font);
         txtMaPhieuMuon.setEditable(false);
-        lblMaPhieuMuon.setBounds(20, 100, 150, 25);
-        txtMaPhieuMuon.setBounds(200, 100, 220, 25);
+        lblMaPhieuMuon.setBounds(20, 70, 150, 25);
+        txtMaPhieuMuon.setBounds(200, 70, 220, 25);
 
         JLabel lblDocGia = new JLabel("Đọc giả:");
         lblDocGia.setFont(font);
         txtDocGia.setFont(font);
         txtDocGia.setEditable(false);
-        lblDocGia.setBounds(20, 150, 150, 25);
-        txtDocGia.setBounds(200, 150, 220, 25);
+        lblDocGia.setBounds(20, 120, 150, 25);
+        txtDocGia.setBounds(200, 120, 220, 25);
 
         JLabel lblNgayMuon = new JLabel("Ngày mượn:");
         lblNgayMuon.setFont(font);
         txtNgayMuon.setFont(font);
         txtNgayMuon.setEditable(false);
-        lblNgayMuon.setBounds(20, 200, 150, 25);
-        txtNgayMuon.setBounds(200, 200, 220, 25);
+        lblNgayMuon.setBounds(20, 170, 150, 25);
+        txtNgayMuon.setBounds(200, 170, 220, 25);
 
         JLabel lblNgayTraThuc = new JLabel("Ngày trả:");
         lblNgayTraThuc.setFont(font);
         txtNgayTraThuc.setFont(font);
         txtNgayTraThuc.setEditable(false);
-        lblNgayTraThuc.setBounds(20, 250, 150, 25);
-        txtNgayTraThuc.setBounds(200, 250, 220, 25);
+        lblNgayTraThuc.setBounds(20, 220, 150, 25);
+        txtNgayTraThuc.setBounds(200, 220, 220, 25);
 
-        JLabel lblTimKiem = new JLabel("Tên đọc giả cần tìm:");
+        JLabel lblTimKiem = new JLabel("Đọc giả cần tìm:");
         lblTimKiem.setFont(font);
         txtTimKiem.setFont(font);
-        lblTimKiem.setBounds(20, 300, 300, 25);
-        txtTimKiem.setBounds(210, 300, 250, 25);
+        lblTimKiem.setBounds(20, 270, 300, 25);
+        txtTimKiem.setBounds(180, 270, 240, 25);
+
+        JLabel lblTimKiemKhoang = new JLabel("Tìm kiếm ngày mượn: từ");
+        JLabel lblKhoang = new JLabel("đến");
+        lblTimKiemKhoang.setFont(font);
+        lblKhoang.setFont(font);
+        lblTimKiemKhoang.setBounds(20, 330, 300, 25);
+        lblKhoang.setBounds(400, 330, 300, 25);
+
+        dateBD.getCalendarButton().setIcon(new ImageIcon("image/icons8_calendar_25_20px.png"));
+        dateKT.getCalendarButton().setPreferredSize(dateBD.getCalendarButton().getPreferredSize());
+        dateKT.getCalendarButton().setIcon(dateBD.getCalendarButton().getIcon());
+        dateBD.setFont(font);
+        dateKT.setFont(font);
+        dateBD.setBounds(220,325,150,30);
+        dateKT.setBounds(450,325,150,30);
 
         pnThongTinPhieuTra.add(lblMaPhieuTra);
         pnThongTinPhieuTra.add(txtMaPhieuTra);
@@ -150,6 +172,10 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         pnThongTinPhieuTra.add(txtNgayTraThuc);
         pnThongTinPhieuTra.add(lblTimKiem);
         pnThongTinPhieuTra.add(txtTimKiem);
+        pnThongTinPhieuTra.add(lblTimKiemKhoang);
+        pnThongTinPhieuTra.add(lblKhoang);
+        pnThongTinPhieuTra.add(dateBD);
+        pnThongTinPhieuTra.add(dateKT);
 
         //=================Chi tiết phiếu mượn==========
 
@@ -192,8 +218,8 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         columnModelSachTra.getColumn(1).setPreferredWidth(190);
 
         JScrollPane srclblSachTra = new JScrollPane(tblSachTra);
-        srclblSachTra.setPreferredSize(new Dimension(200, 105));
-        srclblSachTra.setBounds(510, 200, 290, 135);
+        srclblSachTra.setPreferredSize(new Dimension(200, 75));
+        srclblSachTra.setBounds(510, 200, 290, 105);
         srclblSachTra.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
         pnThongTinPhieuTra.add(lblTitleCTPhieuTra);
@@ -212,7 +238,8 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
 
         btnThem = new JButton("Thêm");
         btnXoa = new JButton("Xoá");
-        btnTim = new JButton("Tìm kiếm");
+        btnTim = new JButton();
+        btnTimTrongKhoang = new JButton();
         btnInthe = new JButton("In thẻ");
         btnXuatExcel = new JButton("Xuất");
         btnNhapExcel = new JButton("Nhập");
@@ -223,6 +250,7 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         btnThem.setFont(fontButton);
         btnXoa.setFont(fontButton);
         btnTim.setFont(fontButton);
+        btnTimTrongKhoang.setFont(fontButton);
         btnInthe.setFont(fontButton);
         btnInthe.setFont(fontButton);
         btnXuatExcel.setFont(fontButton);
@@ -233,16 +261,18 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         btnThem.setIcon(new ImageIcon("image/add-icon.png"));
         btnXoa.setIcon(new ImageIcon("image/delete-icon.png"));
         btnTim.setIcon(new ImageIcon("image/Search-icon.png"));
+        btnTimTrongKhoang.setIcon(new ImageIcon("image/Search-icon.png"));
         btnInthe.setIcon(new ImageIcon("image/card-icon.png"));
         btnXuatExcel.setIcon(new ImageIcon("image/excel-icon.png"));
         btnNhapExcel.setIcon(new ImageIcon("image/excel-icon.png"));
 
-        btnInthe.setBounds(55, 350, 110, 40);
-        btnThem.setBounds(170, 350, 110, 40);
-        btnXoa.setBounds(285, 350, 110, 40);
-        btnTim.setBounds(400, 350, 110, 40);
-        btnXuatExcel.setBounds(515, 350, 110, 40);
-        btnNhapExcel.setBounds(630, 350, 110, 40);
+        btnInthe.setBounds(55, 380, 120, 40);
+        btnThem.setBounds(200, 380, 120, 40);
+        btnXoa.setBounds(345, 380, 120, 40);
+        btnTim.setBounds(430, 265, 50, 30);
+        btnTimTrongKhoang.setBounds(630,325,50,30);
+        btnXuatExcel.setBounds(485, 380, 120, 40);
+        btnNhapExcel.setBounds(630, 380, 120, 40);
         btnPhieuMuon.setBounds(430, 100, 30, 25);
         btnSachMuonTrongPhieu.setBounds(760, 50, 30, 25);
 
@@ -250,6 +280,7 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         pnThongTinPhieuTra.add(btnThem);
         pnThongTinPhieuTra.add(btnXoa);
         pnThongTinPhieuTra.add(btnTim);
+        pnThongTinPhieuTra.add(btnTimTrongKhoang);
         pnThongTinPhieuTra.add(btnXuatExcel);
         pnThongTinPhieuTra.add(btnNhapExcel);
         pnThongTinPhieuTra.add(btnPhieuMuon);
@@ -285,9 +316,9 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         columnModelPhieuTra.getColumn(5).setPreferredWidth(140);
 
         JScrollPane scrTblPhieuTra = new JScrollPane(tblPhieuTra);
-        scrTblPhieuTra.setPreferredSize(new Dimension(900, 150));
+        scrTblPhieuTra.setPreferredSize(new Dimension(900, 120));
 
-        scrTblPhieuTra.setBounds(0, 410, 820, 195);
+        scrTblPhieuTra.setBounds(0, 440, 820, 165);
         //</editor-fold>
         pnThongTinPhieuTra.add(scrTblPhieuTra, BorderLayout.CENTER);
 
@@ -311,6 +342,9 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
                 txtNgayTraThuc.setText("");
                 txtMaSach.setText("");
                 txtTenSach.setText("");
+                txtTimKiem.setText("");
+                dateBD.setDate(null);
+                dateKT.setDate(null);
                 loadDataLenBangCTPhieuTra("0");
             }
         });
@@ -318,7 +352,6 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
             @Override
             public void mouseClicked(MouseEvent e) {
                 xuLyClickTblPhieuTra();
-                loadDataLenBangCTPhieuTra(txtMaPhieuTra.getText());
             }
         });
         tblSachTra.addMouseListener(new MouseAdapter() {
@@ -395,12 +428,15 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         btnSachMuonTrongPhieu.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                if(!txtMaPhieuMuon.getText().equals(""))
+                    timSachMuonGUI.loadDataLenTable(txtMaPhieuMuon.getText());
+                xuLyTimCTPhieuMuon();
             }
         });
         btnThemSach.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(kiemTraPhieuTra(txtMaPhieuTra.getText())) {
+                if(kiemTraSachTra(txtMaPhieuTra.getText())) {
                     xuLyThemCTPhieuTra();
                 }
 
@@ -409,9 +445,15 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         btnXoaSach.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(kiemTraPhieuTra(txtMaPhieuTra.getText())) {
+                if(kiemTraSachTra(txtMaPhieuTra.getText())){
                     xuLyXoaCTPhieuTra();
                 }
+            }
+        });
+        btnTimTrongKhoang.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                xuLyTimKiemTrongKhoang();
             }
         });
     }
@@ -443,12 +485,11 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
     private void loadDataLenBangCTPhieuTra(String maPT){
         ArrayList<CTPhieuTra> listCTPhieuTra = ctPhieuTraBUS.getListCTPhieuTraTheoMaPT(maPT);
         ctPhieuTraBUS.docListCTPhieuTra();
-        dtmSachTra.setColumnCount(0);
-
+        dtmSachTra.setRowCount(0);
         for(CTPhieuTra ctpt : listCTPhieuTra){
             Vector vec = new Vector<>();
             vec.add(ctpt.getMaSach());
-            vec.add(sachBUS.getTenSach(ctpt.getMaSach()));
+            vec.add(sachBUS.getTenSachMuon(ctpt.getMaSach()));
             dtmSachTra.addRow(vec);
         }
     }
@@ -468,7 +509,7 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
             txtDocGia.setText(docGia);
             txtNgayMuon.setText(ngayMuon);
             txtNgayTraThuc.setText(ngayTraThuc);
-            loadDataLenBangCTPhieuTra(txtMaPhieuTra.getText());
+            loadDataLenBangCTPhieuTra(maPhieuTra);
         }
     }
 
@@ -486,7 +527,7 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
     private void xuLyThemPhieuTra(){
         boolean flag = ptBUS.themPhieuTra(txtMaPhieuTra.getText(),
                 txtMaPhieuMuon.getText(),
-                txtNgayMuon.getText(),
+                txtDocGia.getText(),
                 txtNgayTraThuc.getText());
         ptBUS.docListPhieuTra();
         if(flag) {
@@ -501,12 +542,10 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
             new MyDialog("Chưa chọn sách trả!!!", MyDialog.ERROR_DIALOG);
             return;
         }else {
-            int row = dtmPhieuTra.getRowCount();
+            int row = dtmSachTra.getRowCount();
             for(int i=0;i < row; i++){
                 String maSach = String.valueOf(dtmSachTra.getValueAt(i,0));
-                String tenSach = String.valueOf(dtmSachTra.getValueAt(i,1));
-
-                if(maSach.trim().equals("")){
+                if(maSach.trim().equals(txtMaSach.getText())){
                     new MyDialog("Sách đã được thêm vào phiếu trả!!!", MyDialog.ERROR_DIALOG);
                     return;
                 }
@@ -517,6 +556,7 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
 
             btnThemSachAction(maSach, tenSach);
 
+            ctPhieuTraBUS.chonSachTra(maSach);
 
             txtMaSach.setText("");
             txtTenSach.setText("");
@@ -560,10 +600,12 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
                 String maSach = String.valueOf(dtmSachTra.getValueAt(selectedRow,0));
 
                 dtmSachTra.removeRow(selectedRow);
+                sachBUS.chonSach(txtMaSach.getText());
                 txtMaSach.setText("");
                 txtTenSach.setText("");
             }
         }
+        timSachMuonGUI.loadDataLenTable(txtMaPhieuMuon.getText());
     }
 
     private boolean xuLyXoaCTPhieuTra(String ma){
@@ -571,16 +613,16 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         int row = dtmSachTra.getRowCount();
         for(int i=0;i<row;i++){
             String maSach = String.valueOf(dtmSachTra.getValueAt(i,0));
-            sachDAO.chonSach(maSach);
+            sachBUS.chonSach(maSach);
         }
         return flag;
     }
 
-    private boolean kiemTraPhieuTra(String ma){
+    private boolean kiemTraSachTra(String ma){
         int row = dtmPhieuTra.getRowCount();
         for(int i=0;i<row;i++){
-            String maPhieuTra = String.valueOf(dtmPhieuTra.getValueAt(i,0));
-            if(ma.trim().equals(maPhieuTra)){
+            String maPT = String.valueOf(dtmPhieuTra.getValueAt(i,0));
+            if(ma.trim().equals(maPT)){
                 new MyDialog("Phiếu trả đã tồn tại!!!", MyDialog.ERROR_DIALOG);
                 return false;
             }
@@ -605,13 +647,29 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         if(timPhieuMuonGUI.phieuMuonTimDuoc != null){
             txtMaPhieuMuon.setText(String.valueOf(timPhieuMuonGUI.phieuMuonTimDuoc.getMaPhieuMuon()));
             txtDocGia.setText(docGiaBUS.getTenDocGia(timPhieuMuonGUI.phieuMuonTimDuoc.getMaDocGia()));
-            txtNgayMuon.setText(String.valueOf(timPhieuMuonGUI.phieuMuonTimDuoc.getNgayMuon()));
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            txtNgayMuon.setText(String.valueOf(sdf.format(timPhieuMuonGUI.phieuMuonTimDuoc.getNgayMuon())));
+        }
+    }
+
+    private void xuLyTimCTPhieuMuon(){
+        if(txtMaPhieuMuon.getText().equals("")){
+            new MyDialog("Chưa chọn mã phiếu mượn!!!", MyDialog.ERROR_DIALOG);
+            return;
+        }
+        timSachMuonGUI.xuLyChonCTPhieuMuon();
+        timSachMuonGUI.setMaPm(txtMaPhieuMuon.getText());
+        timSachMuonGUI.setVisible(true);
+        if(timSachMuonGUI.ctPhieuMuonTimDuoc != null){
+            txtMaSach.setText(String.valueOf(timSachMuonGUI.ctPhieuMuonTimDuoc.getMaSach()));
+            txtTenSach.setText(String.valueOf(sachBUS.getTenSachMuon(timSachMuonGUI.ctPhieuMuonTimDuoc.getMaSach())));
         }
     }
 
     private void xuLyTimKiem(){
-        String docGia = txtDocGia.getText();
+        String docGia = txtTimKiem.getText();
         String maDocGia = String.valueOf(docGiaBUS.getMaDocGia(docGia));
+        dtmPhieuTra.setRowCount(0);
         ArrayList<PhieuTra> dspt  = null;
         dspt = ptBUS.getListPhieuTraTheoMaDocGia(maDocGia);
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -621,8 +679,8 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
             vec.add(pt.getMaPhieuMuon());
             vec.add(docGiaBUS.getTenDocGia(pt.getMaDocGia()));
             vec.add(nhanVienBUS.getTenNhanVien(pt.getMaNhanVien()));
-            vec.add(pmBUS.getPhieuMuon(String.valueOf(pt.getMaPhieuMuon())).getNgayMuon());
-            vec.add(pt.getNgayTraThuc());
+            vec.add(sdf.format(pmBUS.getPhieuMuon(String.valueOf(pt.getMaPhieuMuon())).getNgayMuon()));
+            vec.add(sdf.format(pt.getNgayTraThuc()));
             dtmPhieuTra.addRow(vec);
         }
         MyDialog dlg = new MyDialog("Số kết quả tìm được: " + dspt.size(), MyDialog.INFO_DIALOG);
@@ -656,6 +714,7 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
 
     private void xuLyXuatPhieuTra(){
         ArrayList<Vector> dspt = new ArrayList<>();
+        ArrayList<Vector> dsctpm = new ArrayList<>();
         int row = tblSachTra.getRowCount();
         int row_pt = tblPhieuTra.getRowCount();
         int count = 0;
@@ -666,7 +725,8 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         }
         for(int i=0;i<row_pt;i++){
             if(txtMaPhieuTra.getText().equals(tblPhieuTra.getValueAt(i,0))){
-                count += 1;
+                count = 1;
+                break;
             }
         }
         if(count != 0){
@@ -679,6 +739,62 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
             vec.add(tblSachTra.getValueAt(i,1));
             dspt.add(vec);
         }
+        for(CTPhieuMuon ctPhieuMuon : ctPhieuMuonBUS.getListCTPhieuMuonTheoMaPM(txtMaPhieuMuon.getText())){
+            Vector vect = new Vector<>();
+            vect.add(ctPhieuMuon.getMaPhieuMuon());
+            vect.add(ctPhieuMuon.getMaSach());
+            dsctpm.add(vect);
+        }
+
         int maPT = Integer.parseInt(txtMaPhieuTra.getText());
+        XuatPhieuTraGUI phieuTraGUI = new XuatPhieuTraGUI(dspt,dsctpm,maPT,txtDocGia.getText(),
+                nhanVienBUS.getTenNhanVien(dangNhapGUI.maTaiKhoan()),txtNgayMuon.getText(),txtNgayTraThuc.getText());
+        phieuTraGUI.setVisible(true);
+    }
+
+    private void xuLyTimKiemTrongKhoang(){
+        if(dateBD.equals("") || dateKT.equals("")){
+            new MyDialog("Hãy nhập đủ thông tin!!!",MyDialog.ERROR_DIALOG);
+            return;
+        }
+        Date ngay1 = dateBD.getDate();
+        Date ngay2 = dateKT.getDate();
+        if(ngay1.compareTo(ngay2) > 0){
+            new MyDialog("Ngày bắt đầu không được sau ngày kết thúc!!!",MyDialog.ERROR_DIALOG);
+            return;
+        }
+        dtmPhieuTra.setRowCount(0);
+        ArrayList<PhieuTra> dspt  = null;
+        dspt = ptBUS.timKiemTrongKhoang(ngay1,ngay2);;
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        for(PhieuTra pt : dspt){
+            Vector vec = new Vector();
+            vec.add(pt.getMaPhieuTra());
+            vec.add(pt.getMaPhieuMuon());
+            vec.add(docGiaBUS.getTenDocGia(pt.getMaDocGia()));
+            vec.add(nhanVienBUS.getTenNhanVien(pt.getMaNhanVien()));
+            vec.add(sdf.format(pmBUS.getPhieuMuon(String.valueOf(pt.getMaPhieuMuon())).getNgayMuon()));
+            vec.add(sdf.format(pt.getNgayTraThuc()));
+            dtmPhieuTra.addRow(vec);
+        }
+        MyDialog dlg = new MyDialog("Số kết quả tìm được: " + dspt.size(), MyDialog.INFO_DIALOG);
+    }
+
+    public void xuLyThoatPhieuTra(){
+        int rowCount = tblSachTra.getRowCount();
+        int row = tblPhieuTra.getRowCount();
+        int count = 0;
+        for(int j=0; j<row;j++){
+            String maPT = String.valueOf(dtmPhieuTra.getValueAt(j,0));
+            if(txtMaPhieuTra.getText().equals(maPT)){
+                count = 1;
+            }
+        }
+        if(count != 1) {
+            for(int i=0;i<rowCount; i++){
+                String maSach = String.valueOf(dtmSachTra.getValueAt(i,0));
+                sachBUS.chonSach(maSach);
+            }
+        }else return;
     }
 }

@@ -2,7 +2,10 @@ package QuanLyThuVien.GUI;
 
 import QuanLyThuVien.BUS.PhieuMuonBUS;
 import QuanLyThuVien.BUS.CTPhieuMuonBUS;
+import QuanLyThuVien.BUS.PhieuTraBUS;
+import QuanLyThuVien.BUS.CTPhieuTraBUS;
 import MyCustom.MyDialog;
+import QuanLyThuVien.DTO.PhieuMuon;
 import QuanLyThuVien.DTO.PhieuMuon;
 
 import java.awt.Image;
@@ -17,20 +20,22 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-public class XuatPhieuMuonGUI extends JDialog{
+public class XuatPhieuTraGUI extends JDialog{
     private PhieuMuonBUS phieuMuonBUS = new PhieuMuonBUS();
     private CTPhieuMuonBUS ctPhieuMuonBUS = new CTPhieuMuonBUS();
+    private PhieuTraBUS phieuTraBUS = new PhieuTraBUS();
+    private CTPhieuTraBUS ctPhieuTraBUS = new CTPhieuTraBUS();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnInPhieuMuon;
+    private javax.swing.JButton btnInPhieuTra;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JEditorPane txtPhieuMuon;
+    private javax.swing.JEditorPane txtPhieuTra;
 
-    public XuatPhieuMuonGUI() {
+    public XuatPhieuTraGUI() {
         initComponents();
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null);
@@ -41,29 +46,28 @@ public class XuatPhieuMuonGUI extends JDialog{
 //        customEvents();
     }
 
+    private ArrayList<Vector> dsCTPhieuTra;
     private ArrayList<Vector> dsCTPhieuMuon;
-    private int maPM;
+    private int maPT;
     private String nhanVien, docGia;
-    private String ngayMuon, ngayTra;
-    private long tongTien;
+    private String ngayMuon, ngayTraThuc;
 
-    public XuatPhieuMuonGUI(ArrayList<Vector> dsCTPhieuMuon,int maPM, Object docGia, Object nhanVien, String ngayMuon, String ngayTra, long tongTien) {
+    public XuatPhieuTraGUI(ArrayList<Vector> dsCTPhieuTra, ArrayList<Vector> dsCTPhieuMuon,int maPT, Object docGia, Object nhanVien, String ngayMuon, String ngayTraThuc) {
         this();
-        this.maPM = maPM;
+        this.maPT = maPT;
         this.docGia = (String) docGia;
         this.nhanVien = (String) nhanVien;
         this.ngayMuon = ngayMuon;
-        this.ngayTra = ngayTra;
-        this.tongTien = tongTien;
+        this.ngayTraThuc = ngayTraThuc;
+        this.dsCTPhieuTra = dsCTPhieuTra;
         this.dsCTPhieuMuon = dsCTPhieuMuon;
-        xuLyHienThiPhieuMuon();
+        xuLyHienThiPhieuTra();
     }
 
-    private void xuLyHienThiPhieuMuon() {
-        txtPhieuMuon.setContentType("text/html");
+    private void xuLyHienThiPhieuTra() {
+        txtPhieuTra.setContentType("text/html");
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
-        DecimalFormat dcf = new DecimalFormat("###,### VND");
 
         String hd = "<style> "
                 + "table {"
@@ -81,18 +85,18 @@ public class XuatPhieuMuonGUI extends JDialog{
                 + "font-size:20px"
                 + "}"
                 + "</style>";
-        hd += "<h1 style='text-align:center;'>PHIẾU MƯỢN SÁCH</h1>";
+        hd += "<h1 style='text-align:center;'>PHIẾU TRẢ SÁCH</h1>";
         hd += "<table style='width: 80%; margin: auto; border: none'>"; // Thiết lập chiều rộng là 80% của phần tử cha và canh giữa bảng
         hd += "<tr style='border: none'>";
         hd += "<td style='vertical-align: top;'>";
-        hd += "<pre>Mã phiếu: "+maPM+"<br/></pre>";
+        hd += "<pre>Mã phiếu: "+maPT+"<br/></pre>";
         hd += "<pre>Nhân viên: " + nhanVien + "<br/>";
         hd += "Đọc giả: " + docGia + "</pre>";
         hd += "</td>";
         hd += "<td style='vertical-align: top;'>";
         hd += "<pre>                <br/></pre>";
         hd += "<pre>    Ngày mượn: " + ngayMuon + "<br/>";
-        hd += "    Ngày trả: " + ngayTra + "</pre>";
+        hd += "    Ngày trả: " + ngayTraThuc + "</pre>";
         hd += "</td>";
         hd += "</tr>";
         hd += "</table>";
@@ -101,26 +105,29 @@ public class XuatPhieuMuonGUI extends JDialog{
         hd += "<tr style='font-family: Tahoma; font-size: 14px;'>"
                 + "<th>Mã Sách</th>"
                 + "<th>Tên Sách</th>"
-                + "<th>Tiền mượn</th>"
                 + "</tr>";
-        for (Vector vec : dsCTPhieuMuon) {
+        for (Vector vec : dsCTPhieuTra) {
             hd += "<tr>";
             hd += "<td style='text-align:center;'>" + vec.get(0) + "</td>";
             hd += "<td style='text-align:center;'>" + vec.get(1) + "</td>";
-            hd += "<td style='text-align:center;'>" + vec.get(2) + "</td>";
             hd += "</tr>";
         }
         hd += "<tr>";
         hd += "<td style='text-align:center;'>" + "</td>";
-        hd += "<td style='text-align:center;font-weight:bold'>Tổng tiền mượn: </td>";
-        hd += "<td style='text-align:center;'>" + dcf.format(tongTien) + "</td>";
+        hd += "<td style='text-align:center;font-weight:bold'>Tổng sách trả: </td>";
+        hd += "<td style='text-align:center;'>" + dsCTPhieuTra.size() + "</td>";
+        hd += "</tr>";
+        hd += "<tr>";
+        hd += "<td style='text-align:center;'>" + "</td>";
+        hd += "<td style='text-align:center;font-weight:bold'>Tổng sách còn lại: </td>";
+        hd += "<td style='text-align:center;'>" + (dsCTPhieuMuon.size() - dsCTPhieuTra.size()) + "</td>";
         hd += "</tr>";
         hd += "</table>";
         hd += "</div>";
         hd += "<div><pre>  </pre></div>";
-        hd += "<div><pre>================================================================= </pre></div>";
+        hd += "<div><pre>=============================================================== </pre></div>";
         hd += "<div><pre>  </pre></div>";
-        txtPhieuMuon.setText(hd);
+        txtPhieuTra.setText(hd);
     }
 
     @SuppressWarnings("unchecked")
@@ -131,25 +138,25 @@ public class XuatPhieuMuonGUI extends JDialog{
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        txtPhieuMuon = new javax.swing.JEditorPane();
-        btnInPhieuMuon = new javax.swing.JButton();
+        txtPhieuTra = new javax.swing.JEditorPane();
+        btnInPhieuTra = new javax.swing.JButton();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("Phiếu mượn sách");
+        jLabel1.setText("Phiếu trả sách");
         jPanel1.add(jLabel1);
 
-        btnInPhieuMuon.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnInPhieuMuon.setText("In hoá đơn");
-        btnInPhieuMuon.setPreferredSize(new java.awt.Dimension(128, 45));
-        btnInPhieuMuon.addActionListener(new java.awt.event.ActionListener() {
+        btnInPhieuTra.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btnInPhieuTra.setText("In hoá đơn");
+        btnInPhieuTra.setPreferredSize(new java.awt.Dimension(128, 45));
+        btnInPhieuTra.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnInPhieuMuonActionPerformed(evt);
+                btnInPhieuTraActionPerformed(evt);
             }
         });
-        jPanel2.add(btnInPhieuMuon);
+        jPanel2.add(btnInPhieuTra);
 
-        jScrollPane1.setViewportView(txtPhieuMuon);
+        jScrollPane1.setViewportView(txtPhieuTra);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -179,10 +186,10 @@ public class XuatPhieuMuonGUI extends JDialog{
         pack();
     }
 
-    private void btnInPhieuMuonActionPerformed(java.awt.event.ActionEvent evt) {
+    private void btnInPhieuTraActionPerformed(java.awt.event.ActionEvent evt) {
         try {
-            if (!txtPhieuMuon.getText().equals("")) {
-                txtPhieuMuon.print();
+            if (!txtPhieuTra.getText().equals("")) {
+                txtPhieuTra.print();
                 this.dispose();
             }
         } catch (PrinterException ex) {
