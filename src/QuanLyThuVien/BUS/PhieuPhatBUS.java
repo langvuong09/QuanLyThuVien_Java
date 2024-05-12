@@ -51,11 +51,10 @@ public class PhieuPhatBUS {
         return null;
     }
 
-    public ArrayList<PhieuPhat> getListPhieuPhatTheoMaDocGia(String ma){
-        int maDG = Integer.parseInt(ma);
+    public ArrayList<PhieuPhat> getListPhieuPhatTheoDocGia(String docGia){
         ArrayList<PhieuPhat> dspp = new ArrayList<>();
         for(PhieuPhat pp : listPhieuPhat){
-            if(pp.getMaDocGia() == maDG){
+            if(docGiaBUS.getTenDocGia(pp.getMaDocGia()).contains(docGia.trim())){
                 dspp.add(pp);
             }
         }

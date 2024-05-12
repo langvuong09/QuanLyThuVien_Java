@@ -79,4 +79,17 @@ public class TacGiaDAO {
         }
         return false;
     }
+
+    public int maTacGiaLonNhat(){
+        try{
+            String sql = "SELECT MAX(MaTacGia) FROM tacgia";
+            Statement st = MyConnect.conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+        }catch (SQLException e){
+        }
+        return 0;
+    }
 }

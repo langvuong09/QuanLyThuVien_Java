@@ -9,6 +9,7 @@ import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.print.PrinterException;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ public class XuatPhieuPhatGUI extends JDialog{
 
     private void xuLyHienThiPhieuPhat() {
         txtPhieuPhat.setContentType("text/html");
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
         LocalDateTime now = LocalDateTime.now();
         DecimalFormat dcf = new DecimalFormat("###,### VND");
 
@@ -100,7 +101,7 @@ public class XuatPhieuPhatGUI extends JDialog{
         hd += "<tr style='font-family: Tahoma; font-size: 14px;'>"
                 + "<th>Mã Sách</th>"
                 + "<th>Tên Sách</th>"
-                + "<th>Lý do>"
+                + "<th>Lý do"
                 + "</tr>";
         for (Vector vec : dsPhieuPhat) {
             hd += "<tr>";
@@ -117,7 +118,7 @@ public class XuatPhieuPhatGUI extends JDialog{
         hd += "</table>";
         hd += "</div>";
         hd += "<div><pre>  </pre></div>";
-        hd += "<div><pre>================================================================= </pre></div>";
+        hd += "<div><pre>       ================================================================= </pre></div>";
         hd += "<div><pre>  </pre></div>";
         txtPhieuPhat.setText(hd);
     }

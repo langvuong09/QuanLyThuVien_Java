@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 08, 2024 lúc 10:46 AM
+-- Thời gian đã tạo: Th5 12, 2024 lúc 06:30 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -95,7 +95,8 @@ INSERT INTO `docgia` (`MaDocGia`, `Ho`, `Ten`, `GioiTinh`, `SDT`, `Gmail`, `Quye
 (4, 'Tiến', 'Cường', 'Nam', '0916707058\r\n', 'langvuong12345@gmail.com', 1),
 (5, 'Lê Tạ Nguyệt', 'Minh', 'Nữ', '0787520167', 'nguyetminhcute@gmail.com', 1),
 (6, 'Trịnh Hoàng', 'Tuấn', 'Nam', '0896745232', 'tht12082001@gmail.com', 1),
-(7, 'Lê Hoàng', 'Nhật', 'Nam', '0932596952\r\n', 'lehoangnhat10a07@gmail.com', 1);
+(7, 'Lê Hoàng', 'Nhật', 'Nam', '0932596952\r ', 'lehoangnhat10a07@gmail.com', 1),
+(13, 'dcs', 'qưdsc', 'Nam', '1234567890', 'wsadfcxz@gmail.com', 0);
 
 -- --------------------------------------------------------
 
@@ -129,20 +130,20 @@ CREATE TABLE `nhanvien` (
   `Ho` varchar(50) NOT NULL,
   `Ten` varchar(50) NOT NULL,
   `GioiTinh` varchar(50) NOT NULL,
-  `SĐT` varchar(50) NOT NULL,
-  `Gmail` varchar(255) NOT NULL,
-  `Quyen` int(1) NOT NULL
+  `SDT` varchar(50) NOT NULL,
+  `ChucVu` varchar(50) NOT NULL,
+  `Gmail` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Đang đổ dữ liệu cho bảng `nhanvien`
 --
 
-INSERT INTO `nhanvien` (`MaNhanVien`, `Ho`, `Ten`, `GioiTinh`, `SĐT`, `Gmail`, `Quyen`) VALUES
-(1, 'Tiến', 'Cường', 'Nam', '0962385165', 'cuongcanlop7a@gmail.com', 1),
-(2, 'Lang', 'Vương', 'Nam', '0962385165', 'cuongcaotien9a@gmail.com', 1),
-(3, 'Nguyễn Hoàng Thanh', 'Phương', 'Nữ', '0123456789', 'phuongthanh12345@gmail.com', 1),
-(4, 'Huỳnh Thị Tuyết', 'Nhung', 'Nữ', '0945253645', 'nhungnhinhanh123@gmail.com', 1);
+INSERT INTO `nhanvien` (`MaNhanVien`, `Ho`, `Ten`, `GioiTinh`, `SDT`, `ChucVu`, `Gmail`) VALUES
+(1, 'Tiến', 'Cường', 'Nam', '0962385165', 'admin', 'cuongcanlop7a@gmail.com'),
+(2, 'Lang', 'Vương', 'Nam', '0962385165', 'manage', 'cuongcaotien9a@gmail.com'),
+(3, 'Nguyễn Hoàng Thanh', 'Phương', 'Nữ', '0123456789', 'staff', 'phuongthanh12345@gmail.com'),
+(4, 'Huỳnh Thị Tuyết', 'Nhung', 'Nữ', '0945253645', 'staff', 'nhungnhinhanh123@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -350,7 +351,7 @@ INSERT INTO `taikhoan` (`MaNhanVien`, `TenDangNhap`, `MatKhau`, `Quyen`, `TrangT
 (1, 'langvuong', 'langvuong', 'admin', 1),
 (2, 'quanly1', 'quanly1', 'manage', 1),
 (3, 'nhanvien1', 'nhanvien1', 'staff', 1),
-(4, 'nhanvien2', 'nhanvien2', 'staff', 1);
+(4, 'nhanvien2', 'nhanvien2', 'staff', 0);
 
 --
 -- Chỉ mục cho các bảng đã đổ
@@ -458,7 +459,7 @@ ALTER TABLE `taikhoan`
 -- AUTO_INCREMENT cho bảng `docgia`
 --
 ALTER TABLE `docgia`
-  MODIFY `MaDocGia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `MaDocGia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT cho bảng `loaisach`
@@ -470,7 +471,7 @@ ALTER TABLE `loaisach`
 -- AUTO_INCREMENT cho bảng `nhanvien`
 --
 ALTER TABLE `nhanvien`
-  MODIFY `MaNhanVien` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `MaNhanVien` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT cho bảng `nxb`
@@ -500,7 +501,7 @@ ALTER TABLE `phieutra`
 -- AUTO_INCREMENT cho bảng `sach`
 --
 ALTER TABLE `sach`
-  MODIFY `MaSach` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `MaSach` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT cho bảng `tacgia`

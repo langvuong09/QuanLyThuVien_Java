@@ -55,9 +55,12 @@ public class DocGiaDAO {
     }
 
     public boolean themDocGia(DocGia dg){
-        boolean result =false;
         try{
-            String sql ="INSERT INTO docgia VALUES(?,?,?,?,?,?,1)";
+            String sqlCheck = "SET FOREIGN_KEY_CHECKS=0";
+            Statement stCheck = MyConnect.conn.createStatement();
+            stCheck.execute(sqlCheck);
+
+            String sql ="INSERT INTO docgia(MaDocGia,Ho,Ten,GioiTinh,SDT,Gmail,Quyen) VALUES(?,?,?,?,?,?,1)";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             pre.setInt(1,dg.getMaDocGia());
             pre.setString(2, dg.getHo());
@@ -65,16 +68,20 @@ public class DocGiaDAO {
             pre.setString(4,dg.getGioiTinh());
             pre.setString(5,dg.getSDT());
             pre.setString(6,dg.getGmail());
-            result = pre.executeUpdate() > 0;
+            int rowsAffected = pre.executeUpdate();
+
+            String sqlChecks = "SET FOREIGN_KEY_CHECKS=1";
+            Statement stChecks = MyConnect.conn.createStatement();
+            stChecks.execute(sqlChecks);
+            return rowsAffected > 0;
         }catch (SQLException e){
-            return false;
         }
-        return result;
+        return false;
     }
 
     public boolean xoaDocGia(int maDG){
         try{
-            String sql = "DELETE FROM docgia WHERE MaDocGia="+maDG;
+            String sql = "UPDATE docgia SET Quyen=0 WHERE MaDocGia="+maDG;
             Statement st = MyConnect.conn.createStatement();
             st.execute(sql);
             return true;
@@ -93,6 +100,7 @@ public class DocGiaDAO {
             pre.setString(3,dg.getGioiTinh());
             pre.setString(4,dg.getSDT());
             pre.setString(5,dg.getGmail());
+            pre.setInt(6,maDG);
             result = pre.executeUpdate() > 0;
         }catch (SQLException e){
             return false;

@@ -273,7 +273,7 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         btnTimTrongKhoang.setBounds(630,325,50,30);
         btnXuatExcel.setBounds(485, 380, 120, 40);
         btnNhapExcel.setBounds(630, 380, 120, 40);
-        btnPhieuMuon.setBounds(430, 100, 30, 25);
+        btnPhieuMuon.setBounds(430, 70, 30, 25);
         btnSachMuonTrongPhieu.setBounds(760, 50, 30, 25);
 
         pnThongTinPhieuTra.add(btnInthe);

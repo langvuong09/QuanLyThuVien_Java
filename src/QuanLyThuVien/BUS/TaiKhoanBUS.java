@@ -118,5 +118,17 @@ public class TaiKhoanBUS {
         return taiKhoanDAO.getTrangThai(ma);
     }
 
+    public TaiKhoan getTaiKhoan(int maNV){
+        try{
+            for(TaiKhoan tk : listTaiKhoan){
+                if(tk.getMaNhanVien() == maNV){
+                    return tk;
+                }
+            }
+        }catch (Exception e){
+        }
+        return null;
+    }
+
 }
 

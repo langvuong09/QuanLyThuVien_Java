@@ -1,14 +1,20 @@
 package QuanLyThuVien.GUI;
 
+import QuanLyThuVien.BUS.*;
 import QuanLyThuVien.DTO.Sach;
+import QuanLyThuVien.DTO.Loai;
+import QuanLyThuVien.DTO.NXB;
+
 import static Main.Main.changLNF;
 import MyCustom.MyTable;
 import MyCustom.MyDialog;
 import MyCustom.XuLyFileExcel;
 import MyCustom.TransparentPanel;
 import QuanLyThuVien.BUS.SachBUS;
+import QuanLyThuVien.DTO.TacGia;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -17,6 +23,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Vector;
 
 public class PnQuanLySachGUI extends JPanel {
 
@@ -27,14 +35,17 @@ public class PnQuanLySachGUI extends JPanel {
 
     }
 
-
+    LoaiBUS loaiBUS = new LoaiBUS();
+    NXBBUS nxbBUS = new NXBBUS();
+    TacGiaBUS tacGiaBUS = new TacGiaBUS();
     SachBUS sachBUS = new SachBUS();
     final Color colorPanel = new Color(247, 247, 247);
     MyTable tblSach;
     DefaultTableModel dtmSach;
-    JTextField txtIDSach, txtTenSach,txtLoaiSach, txtTacGia, txtGia, txtNXB, txtGhiChu, txtTrangThai, txtTimKiem;
+    JTextField txtIDSach, txtTenSach, txtGia, txtTimKiem;
+    JTextArea txtGhiChu;
     JButton btnThem, btnXoa, btnSua, btnReset, btnXuatExcel, btnNhapExcel, btnTim, btnDocGia, btnSach;
-    JComboBox jComboBox1, jComboBox2;
+    JComboBox<String> cmbLoai, cmbNXB, cmbTacGia;
     final ImageIcon tabbedSelected = new ImageIcon("image/Manager-GUI/tabbed-btn--selected.png");
     final ImageIcon tabbedDefault = new ImageIcon("image/Manager-GUI/tabbed-btn.png");
 
@@ -70,13 +81,12 @@ public class PnQuanLySachGUI extends JPanel {
         //=================PANEL INPUT===========
         int x = 15, y = 15;
         txtIDSach = new JTextField(x);
-
-        txtLoaiSach = new JTextField(x);
+        cmbLoai = new JComboBox<String>();
+        cmbNXB = new JComboBox<String>();
         txtTenSach = new JTextField(x);
-        txtTacGia = new JTextField(x);
+        cmbTacGia = new JComboBox<String>();
         txtGia = new JTextField(y);
-        txtNXB = new JTextField(y);
-        txtGhiChu = new JTextField(y);
+        txtGhiChu = new JTextArea();
         txtTimKiem = new JTextField(x);
 
 
@@ -85,88 +95,76 @@ public class PnQuanLySachGUI extends JPanel {
         JPanel pnThongTinSach = new TransparentPanel();
         pnThongTinSach.setLayout(null);
 
-        JLabel lblIDSach = new JLabel("Mã Sách:");
+        JLabel lblIDSach = new JLabel("Mã sách:");
         lblIDSach.setFont(font);
         txtIDSach.setFont(font);
         txtIDSach.setEditable(false);
         lblIDSach.setBounds(20, 50, 140, 25);
         txtIDSach.setBounds(120, 50, 200, 25);
 
-        JLabel lblTenSach = new JLabel("Ten Sách:");
+        JLabel lblTenSach = new JLabel("Tên sách:");
         lblTenSach.setFont(font);
         txtTenSach.setFont(font);
         lblTenSach.setBounds(20, 100, 140, 25);
         txtTenSach.setBounds(120, 100, 200, 25);
 
-        JLabel lblLoaiSach = new JLabel("Loai sach");
+        JLabel lblLoaiSach = new JLabel("Loại sách:");
         lblLoaiSach.setFont(font);
-        txtLoaiSach.setFont(font);
+        cmbLoai.setFont(font);
+        cmbLoai.setPreferredSize(txtIDSach.getPreferredSize());
         lblLoaiSach.setBounds(20, 150, 140, 25);
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox1.setBounds(120, 150, 200, 25);
-        jComboBox1.setSelectedIndex(-1);
-        jComboBox1.setFont(font);
+        cmbLoai.setBounds(120,150,200,25);
 
-        JLabel lblTacGia = new JLabel("tac gia");
-
+        JLabel lblTacGia = new JLabel("Tác giả:");
         lblTacGia.setFont(font);
-        txtTacGia.setFont(font);
+        cmbTacGia.setFont(font);
         lblTacGia.setBounds(20, 200, 140, 25);
-        txtTacGia.setBounds(120, 200, 200, 25);
+        cmbTacGia.setBounds(120, 200, 200, 25);
 
-        JLabel lblGia = new JLabel("Gia");
+        JLabel lblGia = new JLabel("Giá:");
         lblGia.setFont(font);
         txtGia.setFont(font);
-        txtGia.setEditable(true);
         lblGia.setBounds (20, 250, 140, 25);
         txtGia.setBounds (120, 250, 200, 25);
 
-        JLabel lblTimKiem = new JLabel("Tên Sách cần tìm:");
+        JLabel lblTimKiem = new JLabel("Tên sách cần tìm:");
         lblTimKiem.setFont(font);
         txtTimKiem.setFont(font);
         lblTimKiem.setBounds(350, 225, 300, 25);
-        txtTimKiem.setBounds(500, 225, 250, 25);
+        txtTimKiem.setBounds(520, 225, 250, 25);
 
         pnThongTinSach.add(lblIDSach);
         pnThongTinSach.add(txtIDSach);
         pnThongTinSach.add(lblTenSach);
         pnThongTinSach.add(txtTenSach);
         pnThongTinSach.add(lblLoaiSach);
-        pnThongTinSach.add(jComboBox1);
+        pnThongTinSach.add(cmbLoai);
         pnThongTinSach.add(lblTacGia);
-        pnThongTinSach.add(txtTacGia);
+        pnThongTinSach.add(cmbTacGia);
         pnThongTinSach.add(lblGia);
         pnThongTinSach.add(txtGia);
 
-
-
-
-
-        JLabel lblNXB = new JLabel("NXB");
+        JLabel lblNXB = new JLabel("Nhà xuất bản:");
         lblNXB.setFont(font);
-        txtNXB.setFont(font);
-        //txtNXB.setEditable(false);
+        cmbNXB.setFont(font);
+        cmbNXB.setPreferredSize(txtIDSach.getPreferredSize());
         lblNXB.setBounds(400, 50, 140, 25);
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-        jComboBox2.setBounds(500, 50, 220, 25);
-        jComboBox2.setSelectedIndex(-1);
-        jComboBox2.setFont(font);
+        cmbNXB.setBounds(520,50,220,25);
 
-        //txtNXB.setBounds(500, 50, 220, 25);
 
-        JLabel lblGhiChu = new JLabel("Ghi chu");
+        JLabel lblGhiChu = new JLabel("Ghi chú:");
         lblGhiChu.setFont(font);
         txtGhiChu.setFont(font);
+        txtGhiChu.setLineWrap(true);
+        JScrollPane scrollPane = new JScrollPane(txtGhiChu);
         lblGhiChu.setBounds(400, 100, 140, 25);
-        txtGhiChu.setBounds(500, 100, 220, 100);
+        scrollPane.setBounds(520, 100, 220, 100);
 
 
         pnThongTinSach.add(lblNXB);
-        pnThongTinSach.add(jComboBox2);
+        pnThongTinSach.add(cmbNXB);
         pnThongTinSach.add(lblGhiChu);
-        pnThongTinSach.add(txtGhiChu);
+        pnThongTinSach.add(scrollPane);
         pnThongTinSach.add(lblTimKiem);
         pnThongTinSach.add(txtTimKiem);
 
@@ -225,42 +223,35 @@ public class PnQuanLySachGUI extends JPanel {
         //====================Bảng phiếu mượn====================
         //<editor-fold defaultstate="collapsed" desc="Bảng phiếu mượn">
         dtmSach = new DefaultTableModel();
-        dtmSach.addColumn("Mã sách");
-        dtmSach.addColumn("ten sach");
+        dtmSach.addColumn("Mã");
         dtmSach.addColumn("Loại sách");
-        dtmSach.addColumn("Tac gia");
-        dtmSach.addColumn("Gia");
         dtmSach.addColumn("NXB");
+        dtmSach.addColumn("Tác giả");
+        dtmSach.addColumn("Tên sách");
+        dtmSach.addColumn("Giá");
         dtmSach.addColumn("Ghi chú");
-        dtmSach.addColumn("Trạng thái");
+        dtmSach.addColumn("TT");
 
         tblSach = new MyTable(dtmSach);
 
 
         tblSach.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-        tblSach.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-        tblSach.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
-        tblSach.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
-        tblSach.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
-        tblSach.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
-        tblSach.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
-        tblSach.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
 
         TableColumnModel columnModelSach = tblSach.getColumnModel();
-        columnModelSach.getColumn(0).setPreferredWidth(70);
+        columnModelSach.getColumn(0).setPreferredWidth(50);
         columnModelSach.getColumn(1).setPreferredWidth(150);
         columnModelSach.getColumn(2).setPreferredWidth(150);
         columnModelSach.getColumn(3).setPreferredWidth(130);
         columnModelSach.getColumn(4).setPreferredWidth(130);
         columnModelSach.getColumn(5).setPreferredWidth(130);
         columnModelSach.getColumn(6).setPreferredWidth(130);
-        columnModelSach.getColumn(7).setPreferredWidth(130);
+        columnModelSach.getColumn(7).setPreferredWidth(70);
 
 
         JScrollPane scrTblSach = new JScrollPane(tblSach);
-        scrTblSach.setPreferredSize(new Dimension(900, 150));
+        scrTblSach.setPreferredSize(new Dimension(900, 230));
 
-        scrTblSach.setBounds(0, 370, 820, 155);
+        scrTblSach.setBounds(0, 370, 820, 235);
         //</editor-fold>
         pnThongTinSach.add(scrTblSach, BorderLayout.CENTER);
 
@@ -269,66 +260,88 @@ public class PnQuanLySachGUI extends JPanel {
         pnTableSach.add(pnThongTinSach);
 
         //=======================================================
+
         this.add(pnTableSach);
+        loadDataLoai();
+        loadDataNXB();
+        loadDataTG();
+        loadDataLenTableSach();
     }
 
     private void addEventsSach() {
         btnReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //loadDataLenSach();
                 txtIDSach.setText("");
                 txtTenSach.setText("");
-                txtLoaiSach.setText("");
-                txtTacGia.setText("");
+                cmbLoai.setSelectedIndex(0);
+                cmbTacGia.setSelectedIndex(0);
                 txtGhiChu.setText("");
-                txtNXB.setText("");
+                cmbNXB.setSelectedIndex(0);
                 txtGia.setText("");
-                txtTrangThai.setText("");
                 txtTimKiem.setText("");
+                loadDataLenTableSach();
 
             }
         });
         tblSach.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                //xuLyClickTblSach();
+                xuLyClickTblSach();
             }
         });
         btnThem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 xuLyThemSach();
+                txtIDSach.setText("");
+                txtTenSach.setText("");
+                cmbLoai.setSelectedIndex(0);
+                cmbTacGia.setSelectedIndex(0);
+                txtGhiChu.setText("");
+                cmbNXB.setSelectedIndex(0);
+                txtGia.setText("");
+                txtTimKiem.setText("");
             }
         });
         btnSua.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //xuLySuaSach();
+                xuLySuaSach();
+                txtIDSach.setText("");
+                txtTenSach.setText("");
+                cmbLoai.setSelectedIndex(0);
+                cmbTacGia.setSelectedIndex(0);
+                txtGhiChu.setText("");
+                cmbNXB.setSelectedIndex(0);
+                txtGia.setText("");
+                txtTimKiem.setText("");
             }
         });
         btnXoa.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //xuLyXoaSach();
+                xuLyXoaSach();
+                txtIDSach.setText("");
+                txtTenSach.setText("");
+                cmbLoai.setSelectedIndex(0);
+                cmbTacGia.setSelectedIndex(0);
+                txtGhiChu.setText("");
+                cmbNXB.setSelectedIndex(0);
+                txtGia.setText("");
+                txtTimKiem.setText("");
             }
         });
         btnTim.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //xuLyTimKiem();
-            }
-        });
-        txtTimKiem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //xuLyTimKiem();
+                xuLyTimKiem();
             }
         });
         btnXuatExcel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //xuLyXuatFileExcel();
+                xuLyXuatFileExcel();
             }
         });
         btnNhapExcel.addActionListener(new ActionListener() {
@@ -337,11 +350,161 @@ public class PnQuanLySachGUI extends JPanel {
                 xuLyNhapFileExcel();
             }
         });
+        cmbLoai.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                xuLyThemLoai();
+            }
+        });
+
+        cmbNXB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                xuLyThemNXB();
+            }
+        });
+        cmbTacGia.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                xuLyThemTG();
+            }
+        });
     }
 
-    private void xuLyNhapFileExcel() {
+    private void xuLyThemLoai(){
+        int x = cmbLoai.getSelectedIndex();
+        if(x == cmbLoai.getItemCount() - 1){
+            DlgLoai loaiGUI = new DlgLoai();
+            loaiGUI.setVisible(true);
+            loadDataLoai();
+        }
+    }
+
+    private void loadDataLoai(){
+        cmbLoai.removeAllItems();
+
+        ArrayList<Loai> dsl = loaiBUS.getListLoai();
+        cmbLoai.addItem("0 - Chọn loại");
+        for (Loai l : dsl){
+            cmbLoai.addItem(l.getMaLoai() +" - "+l.getTenLoai());
+        }
+        cmbLoai.addItem("Khác...");
+    }
+
+    private void xuLyThemNXB(){
+        int x = cmbNXB.getSelectedIndex();
+        if(x == cmbNXB.getItemCount() -1){
+            DlgNXB nxbGUI = new DlgNXB();
+            nxbGUI.setVisible(true);
+            loadDataNXB();
+        }
+    }
+
+    private void loadDataNXB(){
+        cmbNXB.removeAllItems();
+
+        ArrayList<NXB> dsnxb = nxbBUS.getListNXB();
+        cmbNXB.addItem("0 - Chọn nxb");
+        for(NXB nxb : dsnxb){
+            cmbNXB.addItem(nxb.getMaNXB() +" - "+nxb.getTenNXB());
+        }
+        cmbNXB.addItem("Khác...");
+    }
+
+    private void xuLyThemTG(){
+        int x = cmbTacGia.getSelectedIndex();
+        if(x == cmbTacGia.getItemCount() -1){
+            DlgTacGia tgGUI = new DlgTacGia();
+            tgGUI.setVisible(true);
+            loadDataTG();
+        }
+    }
+
+    private void loadDataTG(){
+        cmbTacGia.removeAllItems();
+
+        ArrayList<TacGia> dstg = tacGiaBUS.getListTacGia();
+        cmbTacGia.addItem("0 - Chọn tác giả");
+        for(TacGia tg : dstg){
+            cmbTacGia.addItem(tg.getMaTacGia() +" - "+tg.getTenTacGia());
+        }
+        cmbTacGia.addItem("Khác...");
+    }
+
+    private void loadDataLenTableSach(){
+        sachBUS.docDanhSachTong();
+        dtmSach.setRowCount(0);
+
+        ArrayList<Sach> dss = sachBUS.getListSachTong();
+
+        for(Sach s : dss){
+            Vector vec = new Vector<>();
+            vec.add(s.getMaSach());
+            vec.add(loaiBUS.getTenLoai(s.getMaLoaiSach()));
+            vec.add(nxbBUS.getTenNXB(s.getMaNXB()));
+            vec.add(tacGiaBUS.getTenTacGia(s.getMaTacGia()));
+            vec.add(s.getTenSach());
+            vec.add(s.getGiaSach());
+            vec.add(s.getGhiChu());
+            String tt = "";
+            if(s.getTrangThai() == 1){
+                tt = "Còn";
+            }else {
+                tt = "Hết";
+            }
+            vec.add(tt);
+            dtmSach.addRow(vec);
+        }
+    }
+
+    private void xuLyClickTblSach(){
+        int row = tblSach.getSelectedRow();
+        if(row > -1){
+            String maSach = tblSach.getValueAt(row,0)+"";
+            String giaSach = tblSach.getValueAt(row,5)+"";
+            String loai = tblSach.getValueAt(row,1)+"";
+            String tenNXB = tblSach.getValueAt(row,2)+"";
+            String tacGia = tblSach.getValueAt(row,3)+"";
+            txtIDSach.setText(maSach);
+            txtTenSach.setText(tblSach.getValueAt(row,4)+"");
+            txtGia.setText(giaSach);
+            txtGhiChu.setText(tblSach.getValueAt(row,6)+"");
+
+            int l=-1,nxb=-1,tg=-1;
+            for (int i = 0; i < cmbLoai.getItemCount(); i++) {
+                if (cmbLoai.getItemAt(i).contains(loai)) {
+                    l = i;
+                    break;
+                }
+            }
+
+            for(int i=0;i<cmbNXB.getItemCount();i++){
+                if(cmbNXB.getItemAt(i).contains(tenNXB)){
+                    nxb=i;
+                    break;
+                }
+            }
+            for(int i=0;i<cmbTacGia.getItemCount();i++){
+                if(cmbTacGia.getItemAt(i).contains(tacGia)){
+                    tg=i;
+                    break;
+                }
+            }
+
+            cmbLoai.setSelectedIndex(l);
+            cmbNXB.setSelectedIndex(nxb);
+            cmbTacGia.setSelectedIndex(tg);
+        }
+    }
+
+    private void xuLyXuatFileExcel(){
+        XuLyFileExcel xuatFile = new XuLyFileExcel();
+        xuatFile.xuatExcel(tblSach);
+    }
+
+    private void xuLyNhapFileExcel(){
         MyDialog dlg = new MyDialog("Dữ liệu cũ sẽ bị xoá, tiếp tục?", MyDialog.WARNING_DIALOG);
-        if (dlg.getAction() != MyDialog.OK_OPTION) {
+        if(dlg.getAction() != MyDialog.OK_OPTION){
             return;
         }
 
@@ -349,54 +512,69 @@ public class PnQuanLySachGUI extends JPanel {
         nhapFile.nhapExcel(tblSach);
 
         int row = tblSach.getRowCount();
-        for (int i = 0; i < row; i++) {
-            String maSach = tblSach.getValueAt(i, 1) + "";
-            String TenSach = tblSach.getValueAt(i, 2) + "";
-            String LoaiSach = tblSach.getValueAt(i, 3) + "";
-            String TacGia = tblSach.getValueAt(i, 4) + "";
-            String Gia = tblSach.getValueAt(i, 5) + "";
-            String NXB = tblSach.getValueAt(i, 6) + "";
-            String GhiChu = tblSach.getValueAt(i, 7) + "";
-            String TrangThai = tblSach.getValueAt(i, 8) + "";
+        for(int i=0;i<row;i++){
+            String loai = tblSach.getValueAt(i,1)+"";
+            String nxb = tblSach.getValueAt(i,2)+"";
+            String tacGia = tblSach.getValueAt(i,3)+"";
+            String tenSach = tblSach.getValueAt(i,4)+"";
+            String gia = tblSach.getValueAt(i,5)+"";
+            String ghiChu = tblSach.getValueAt(i,6)+"";
+            String trangThai = tblSach.getValueAt(i,7)+"";
+            String tt = "";
+            if(trangThai.equals("Còn")){
+                tt = "1";
+            }else {
+                tt = "0";
+            }
 
-//            SachBUS.nhapSachTuExcel(maSach,TenSach,LoaiSach,TacGia,Gia,NXB,GhiChu,TrangThai);
-        }
-    }
-    private void xuLyXuatFileExcel(){
-        XuLyFileExcel xuatFile = new XuLyFileExcel();
-        xuatFile.xuatExcel(tblSach);
-    }
-
-    private void xuLyClickTblPhieuMuon(){
-        int row = tblSach.getSelectedRow();
-        if(row > -1){
-            String maSach =tblSach.getValueAt(row,0)+"";
-            String TenSach =tblSach.getValueAt(row,1)+"";
-            String loaiSach =tblSach.getValueAt(row,2)+"";
-            String tacgia =tblSach.getValueAt(row,3)+"";
-            String gia =tblSach.getValueAt(row,4)+"";
-            String NXB =tblSach.getValueAt(row,5)+"";
-            String GhiChu =tblSach.getValueAt(row,6)+"";
-            String trangThai =tblSach.getValueAt(row,7)+"";
-
-            txtIDSach.setText(maSach);
-            txtTenSach.setText(TenSach);
-            txtLoaiSach.setText(loaiSach);
-            txtTacGia.setText(tacgia);
-            txtGia.setText(gia);
-            txtNXB.setText(NXB);
-            txtGhiChu.setText(GhiChu);
-            txtTrangThai.setText(trangThai);
+            sachBUS.nhapSachExcel(loai,nxb,tacGia,tenSach,gia,ghiChu,tt);
         }
     }
 
     private void xuLyThemSach(){
-//        boolean flag = sachBUS.ThemSach(txtIDSach.getText(),
-//                txtTenSach.getText(),txtLoaiSach.getText(),txtTacGia.getText(),txtGia.getText(),txtNXB.getText(), txtGhiChu.getText());
-//        sachBUS.docDanhSach();
-//        if(flag) {
-//            //loadDataLenBangPhieuMuon();
-//            //loadDataLenBangCTPhieuMuon("0");
-//        }
+        String loaiSach = (String) cmbLoai.getSelectedItem();
+        String nxbSach = (String) cmbNXB.getSelectedItem();
+        String tacGia = (String) cmbTacGia.getSelectedItem();
+        boolean flag = sachBUS.themSach(loaiSach,nxbSach,tacGia,txtTenSach.getText(),txtGia.getText(),txtGhiChu.getText());
+        loadDataLenTableSach();
+    }
+
+    private void xuLyXoaSach(){
+        boolean flag = sachBUS.xoaSach(txtIDSach.getText());
+        loadDataLenTableSach();
+    }
+
+    private void xuLySuaSach(){
+        String loaiSach = (String) cmbLoai.getSelectedItem();
+        String nxbSach = (String) cmbNXB.getSelectedItem();
+        String tacGia = (String) cmbTacGia.getSelectedItem();
+        String maSach = txtIDSach.getText();
+        boolean flag = sachBUS.suaSach(maSach,loaiSach,nxbSach,tacGia,txtTenSach.getText(),txtGia.getText(),txtGhiChu.getText());
+        loadDataLenTableSach();
+    }
+
+    private void xuLyTimKiem(){
+        dtmSach.setRowCount(0);
+        ArrayList<Sach> dss = null;
+        dss = sachBUS.getListSachTongTheoTenSach(txtTimKiem.getText());
+        for(Sach s : dss){
+            Vector vec = new Vector<>();
+            vec.add(s.getMaSach());
+            vec.add(loaiBUS.getTenLoai(s.getMaLoaiSach()));
+            vec.add(nxbBUS.getTenNXB(s.getMaNXB()));
+            vec.add(tacGiaBUS.getTenTacGia(s.getMaTacGia()));
+            vec.add(s.getTenSach());
+            vec.add(s.getGiaSach());
+            vec.add(s.getGhiChu());
+            String tt = "";
+            if(s.getTrangThai() == 1){
+                tt = "Còn";
+            }else {
+                tt = "Hết";
+            }
+            vec.add(tt);
+            dtmSach.addRow(vec);
+        }
+        MyDialog dlg = new MyDialog("Số kết quả tìm được: " + dss.size(), MyDialog.INFO_DIALOG);
     }
 }

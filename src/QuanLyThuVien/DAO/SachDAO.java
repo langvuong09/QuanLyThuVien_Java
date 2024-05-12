@@ -34,9 +34,9 @@ public class SachDAO {
         return null;
     }
 
-    public ArrayList<Sach> getListSachMuon(){
+    public ArrayList<Sach> getListSachTong(){
         try{
-            String sql = "SELECT * FROM  sach WHERE TrangThai=0";
+            String sql = "SELECT * FROM sach";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             ResultSet rs = pre.executeQuery();
 
@@ -50,6 +50,7 @@ public class SachDAO {
                 s.setTenSach(rs.getString(5));
                 s.setGiaSach(rs.getLong(6));
                 s.setGhiChu(rs.getString(7));
+                s.setTrangThai(rs.getInt(8));
                 dss.add(s);
             }
             return dss;
@@ -110,7 +111,7 @@ public class SachDAO {
         return  false;
     }
 
-    public boolean suaSach(int maSach, Sach s){
+    public boolean suaSach(Sach s){
         boolean result = false;
         try{
             String sql = "UPDATE sach SET MaLoai=?, MaNXB=?, MaTacGia=?, TenSach=?, GiaSach=?, GhiChu=? WHERE MaSach=?";
@@ -121,7 +122,7 @@ public class SachDAO {
             pre.setString(4,s.getTenSach());
             pre.setLong(5,s.getGiaSach());
             pre.setString(6,s.getGhiChu());
-            pre.setInt(7,maSach);
+            pre.setInt(7,s.getMaSach());
             result = pre.executeUpdate() > 0;
         }catch (SQLException e){
             return false;
@@ -151,5 +152,26 @@ public class SachDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean nhapSachTuExcel(Sach s){
+        try{
+            String sql = "DELETE * FROM sach; "+
+                    "INSERT INTO sach(MaSach,MaLoai,MaNXB,MaTacGia,TenSach,GiaSach,GhiChu,TrangThai"+
+                    "VALUES (?,?,?,?,?,?,?,?)";
+
+            PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
+            pre.setInt(1,s.getMaSach());
+            pre.setInt(2,s.getMaLoaiSach());
+            pre.setInt(3,s.getMaNXB());
+            pre.setInt(4,s.getMaTacGia());
+            pre.setString(5,s.getTenSach());
+            pre.setLong(6,s.getGiaSach());
+            pre.setString(7,s.getGhiChu());
+            pre.setInt(8,s.getTrangThai());
+            return pre.executeUpdate() > 0;
+        }catch (SQLException e){
+        }
+        return false;
     }
 }

@@ -7,19 +7,19 @@ public class NhanVien {
     private String gioiTinh;
     private String SDT;
     private String gmail;
-    private int quyen;
+    private String chucVu;
 
     public NhanVien(){
     }
 
-    public NhanVien(int maNhanVien, String ho, String ten, String gioiTinh, String SDT, String gmail, int quyen){
+    public NhanVien(int maNhanVien, String ho, String ten, String gioiTinh, String SDT, String gmail, String chucVu){
         this.maNhanVien = maNhanVien;
         this.ho = ho;
         this.ten = ten;
         this.gioiTinh = gioiTinh;
         this.SDT = SDT;
         this.gmail = gmail;
-        this.quyen = quyen;
+        this.chucVu = chucVu;
     }
 
     public int getMaNhanVien() {
@@ -70,11 +70,11 @@ public class NhanVien {
         this.gmail = gmail;
     }
 
-    public int getQuyen() {
-        return quyen;
+    public String getChucVu() {
+        return chucVu;
     }
 
-    public void setQuyen(int quyen) {
-        this.quyen = quyen;
+    public void setChucVu(String chucVu) {
+        this.chucVu = chucVu;
     }
 }

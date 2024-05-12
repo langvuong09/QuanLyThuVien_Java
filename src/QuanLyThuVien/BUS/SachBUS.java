@@ -14,20 +14,23 @@ import java.util.ArrayList;
 
 public class SachBUS {
     private ArrayList<Sach> listSach = null;
-    private ArrayList<Sach> listSachMuon = null;
+    private ArrayList<Sach> listSachTong = null;
     private SachDAO sachDAO = new SachDAO();
+    private LoaiBUS loaiBUS = new LoaiBUS();
+    private NXBBUS nxbBUS = new NXBBUS();
+    private TacGiaBUS tacGiaBUS = new TacGiaBUS();
 
     public SachBUS() {
         docDanhSach();
-        docDanhSachMuon();
+        docDanhSachTong();
     }
 
     public void docDanhSach(){
         this.listSach = sachDAO.getListSach();
     }
 
-    public void docDanhSachMuon(){
-        this.listSachMuon = sachDAO.getListSachMuon();
+    public void docDanhSachTong(){
+        this.listSachTong = sachDAO.getListSachTong();
     }
 
     public ArrayList<Sach> getListSach(){
@@ -37,11 +40,25 @@ public class SachBUS {
         return listSach;
     }
 
-    public ArrayList<Sach> getListSachMuon(){
-        if(listSachMuon == null){
-            docDanhSachMuon();
+    public ArrayList<Sach> getListSachTong(){
+        if(listSachTong == null){
+            docDanhSachTong();
         }
-        return listSachMuon;
+        return listSachTong;
+    }
+
+    public ArrayList<Sach> getListSachTongTheoTenSach(String tenSach){
+        if(tenSach.trim().equals("")){
+            return listSachTong;
+        }
+        ArrayList<Sach> dss = new ArrayList<>();
+        for(Sach s : listSachTong){
+            if(s.getTenSach().toLowerCase().contains(tenSach.trim().toLowerCase())){
+                dss.add(s);
+            }
+        }
+
+        return dss;
     }
 
     public ArrayList<Sach> timKiemSach(String tuKhoa){
@@ -79,12 +96,7 @@ public class SachBUS {
     }
 
     public String getTenSachMuon(int ma){
-        ArrayList<Sach> listTongHop = new ArrayList<>(listSachMuon); // Khởi tạo danh sách kết hợp từ listSachMuon
-
-        // Thêm tất cả các phần tử từ listSach vào combinedList
-        listTongHop.addAll(listSach);
-
-        for(Sach s : listTongHop){
+        for(Sach s : listSachTong){
             if(s.getMaSach() == ma){
                 return s.getTenSach();
             }
@@ -93,12 +105,7 @@ public class SachBUS {
     }
 
     public int getMaSachMuon(String ten){
-        ArrayList<Sach> listTongHop = new ArrayList<>(listSachMuon); // Khởi tạo danh sách kết hợp từ listSachMuon
-
-        // Thêm tất cả các phần tử từ listSach vào combinedList
-        listTongHop.addAll(listSach);
-
-        for(Sach s : listTongHop){
+        for(Sach s : listSachTong){
             if(s.getTenSach().trim().equals(ten)){
                 return s.getMaSach();
             }
@@ -109,9 +116,7 @@ public class SachBUS {
     public Sach getSach(String ma){
         try {
             int maSach = Integer.parseInt(ma);
-            ArrayList<Sach> listTongHop = new ArrayList<>(listSachMuon);
-            listTongHop.addAll(listSach);
-            for (Sach s : listTongHop) {
+            for (Sach s : listSachTong) {
                 if (s.getMaSach() == maSach)
                     return s;
             }
@@ -126,5 +131,151 @@ public class SachBUS {
 
     public void chonSach(String ma){
         sachDAO.chonSach(ma);
+    }
+
+    public boolean nhapSachExcel(String loai, String nxb, String tacGia, String tenSach, String gia, String ghiChu, String TrangThai){
+        try{
+            String[] mLoai = loai.split(" ");
+            int maLoai = Integer.parseInt(mLoai[0].trim());
+            String[] mNXB = nxb.split(" ");
+            int maNXB = Integer.parseInt(mNXB[0].trim());
+            String[] maTG = tacGia.split(" ");
+            int maTacGia = Integer.parseInt(maTG[0].trim());
+            long giaSach = Long.parseLong(gia.replace(",",""));
+            int tt = Integer.parseInt(TrangThai);
+
+            Sach sach = new Sach();
+            sach.setMaLoaiSach(maLoai);
+            sach.setMaNXB(maNXB);
+            sach.setMaTacGia(maTacGia);
+            sach.setTenSach(tenSach);
+            sach.setGiaSach(giaSach);
+            sach.setGhiChu(ghiChu);
+            sach.setTrangThai(tt);
+
+            sachDAO.nhapSachTuExcel(sach);
+            return true;
+        }catch (Exception e){
+        }
+        return false;
+    }
+
+    public boolean themSach(String loai,String nxb, String tacGia, String tenSach, String gia, String ghiChu){
+        if(tenSach.trim().equals("")){
+            new MyDialog("Không được để trống tên sách!!!", MyDialog.ERROR_DIALOG);
+            return false;
+        }
+        if(tacGia.trim().equals("0 - Chọn tác giả")){
+            new MyDialog("Chưa chọn tác giả!!!", MyDialog.ERROR_DIALOG);
+            return false;
+        }
+        if(gia.trim().equals("")){
+            new MyDialog("Không được để trống giá sách!!!", MyDialog.ERROR_DIALOG);
+            return false;
+        }
+        if(loai.equals("0 - Chọn loại")){
+            new MyDialog("Chưa chọn loại sách!!!", MyDialog.ERROR_DIALOG);
+            return false;
+        }
+        if(nxb.equals("0 - Chọn nxb")){
+            new MyDialog("Chưa chọn loại nhà xuất bản!!!", MyDialog.ERROR_DIALOG);
+            return false;
+        }
+        String[] maLoai = loai.split(" ");
+        String[] maNXB = nxb.split(" ");
+        String[] maTG = tacGia.split(" ");
+        try{
+            int mLoai = Integer.parseInt(maLoai[0]);
+            int mNXB = Integer.parseInt(maNXB[0]);
+            int maTacGia = Integer.parseInt(maTG[0]);
+            long giaSach = Long.parseLong(gia.replace(",",""));
+
+            Sach sach = new Sach();
+            sach.setMaLoaiSach(mLoai);
+            sach.setMaNXB(mNXB);
+            sach.setMaTacGia(maTacGia);
+            sach.setTenSach(tenSach);
+            sach.setGiaSach(giaSach);
+            sach.setGhiChu(ghiChu);
+
+            if(sachDAO.themSach(sach)){
+                new MyDialog("Thêm thành công!", MyDialog.SUCCESS_DIALOG);
+                return true;
+            }else {
+                new MyDialog("Thêm thất bại!", MyDialog.ERROR_DIALOG);
+                return false;
+            }
+        }catch (Exception e){
+            new MyDialog("Nhập số hợp lệ cho giá sách!", MyDialog.ERROR_DIALOG);
+        }
+        return false;
+    }
+
+    public boolean xoaSach(String ma){
+        if(ma.trim().equals("")){
+            new MyDialog("Chưa chọn sách để xóa!!!", MyDialog.ERROR_DIALOG);
+            return false;
+        }
+        int maSach = Integer.parseInt(ma);
+        if(sachDAO.xoaSach(maSach)){
+            new MyDialog("Xóa thành công!", MyDialog.SUCCESS_DIALOG);
+            return true;
+        }else {
+            new MyDialog("Xóa thất bại!", MyDialog.ERROR_DIALOG);
+            return false;
+        }
+    }
+
+    public boolean suaSach(String ma,String loai,String nxb, String tacGia, String tenSach, String gia, String ghiChu){
+        if(tenSach.trim().equals("")){
+            new MyDialog("Không được để trống tên sách!!!", MyDialog.ERROR_DIALOG);
+            return false;
+        }
+        if(tacGia.trim().equals("0 - Chọn tác giả")){
+            new MyDialog("Chưa chọn tác giả!!!", MyDialog.ERROR_DIALOG);
+            return false;
+        }
+        if(gia.trim().equals("")){
+            new MyDialog("Không được để trống giá sách!!!", MyDialog.ERROR_DIALOG);
+            return false;
+        }
+        if(loai.equals("0 - Chọn loại")){
+            new MyDialog("Chưa chọn loại sách!!!", MyDialog.ERROR_DIALOG);
+            return false;
+        }
+        if(nxb.equals("0 - Chọn nxb")){
+            new MyDialog("Chưa chọn loại nhà xuất bản!!!", MyDialog.ERROR_DIALOG);
+            return false;
+        }
+        String[] maLoai = loai.split(" ");
+        String[] maNXB = nxb.split(" ");
+        String[] maTG = tacGia.split(" ");
+        try{
+            int maSach = Integer.parseInt(ma);
+            int mLoai = Integer.parseInt(maLoai[0]);
+            int mNXB = Integer.parseInt(maNXB[0]);
+            int maTacGia = Integer.parseInt(maTG[0]);
+            long giaSach = Long.parseLong(gia.replace(",",""));
+
+            Sach sach = new Sach();
+            sach.setMaSach(maSach);
+            sach.setMaLoaiSach(mLoai);
+            sach.setMaNXB(mNXB);
+            sach.setMaTacGia(maTacGia);
+            sach.setTenSach(tenSach);
+            sach.setGiaSach(giaSach);
+            sach.setGhiChu(ghiChu);
+
+            if(sachDAO.suaSach(sach)){
+                new MyDialog("Sửa thành công!", MyDialog.SUCCESS_DIALOG);
+                return true;
+            }else {
+                new MyDialog("Sửa thất bại!", MyDialog.ERROR_DIALOG);
+                return false;
+            }
+        }catch (Exception e){
+            new MyDialog("Nhập số hợp lệ cho giá sách!", MyDialog.ERROR_DIALOG);
+        }
+        return false;
     }
 }

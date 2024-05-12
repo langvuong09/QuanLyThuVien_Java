@@ -22,6 +22,7 @@ public class TaiKhoanDAO {
                 tk.setTenDangNhap(rs.getString(2));
                 tk.setMatKhau(rs.getString(3));
                 tk.setQuyen(rs.getString(4));
+                tk.setTrangThai(rs.getInt(5));
                 dstk.add(tk);
             }
         }catch (SQLException e){
@@ -48,9 +49,28 @@ public class TaiKhoanDAO {
         return tk;
     }
 
+    public TaiKhoan getTaiKhoan(int maNV){
+        TaiKhoan tk = null;
+        try{
+            String sql = "SELECT * FROM taikhoan WHERE MaNhanVien="+maNV;
+            Statement st = MyConnect.conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            while (rs.next()){
+                tk = new TaiKhoan();
+                tk.setMaNhanVien(rs.getInt(1));
+                tk.setTenDangNhap(rs.getString(2));
+                tk.setMatKhau(rs.getString(3));
+                tk.setQuyen(rs.getString(4));
+            }
+        }catch (Exception e){
+            return null;
+        }
+        return tk;
+    }
+
     public boolean themTaiKhoan(int maNhanVien,String tenDangNhap, String quyen){
         try{
-            String sql = "INSERT INTO taikhoan(MaNhanVien, TenDangNhap, MatKhau, Quyen)" + "VALUES (?,?,?,?)";
+            String sql = "INSERT INTO taikhoan(MaNhanVien, TenDangNhap, MatKhau, Quyen, TrangThai)" + "VALUES (?,?,?,?,1)";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             pre.setInt(1,maNhanVien);
             pre.setString(2,tenDangNhap);
@@ -64,7 +84,7 @@ public class TaiKhoanDAO {
 
     public String getTenDangNhapTheoMa(int maNhanVien){
         try {
-            String sql = "SELECT TenDangNhap FROM taikhoan WHERE ManNhanVien=" + maNhanVien;
+            String sql = "SELECT TenDangNhap FROM taikhoan WHERE MaNhanVien=" + maNhanVien;
             Statement st = MyConnect.conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             if (rs.next()) {

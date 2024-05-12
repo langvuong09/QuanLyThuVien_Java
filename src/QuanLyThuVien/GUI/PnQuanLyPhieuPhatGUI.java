@@ -580,7 +580,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
 
     private void xuLyXuatPhieuPhat(){
         ArrayList<Vector> dspp = new ArrayList<>();
-        int row = tblPhieuPhat.getRowCount();
+        int row = tblPhieuPhat.getSelectedRow();
         int count = 0;
         if(txtMaPhieuPhat.getText().equals("")){
             new MyDialog("Chưa chọn phiếu phạt để in phiếu!!!", MyDialog.ERROR_DIALOG);
@@ -596,33 +596,31 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
             new MyDialog("Phiếu phạt chưa được tạo!!!",MyDialog.ERROR_DIALOG);
             return;
         }
-        for(int i=0;i<row;i++) {
-            Vector vec = new Vector();
-            vec.add(tblPhieuPhat.getValueAt(i, 0));
-            vec.add(tblPhieuPhat.getValueAt(i, 1));
-            vec.add(sachBUS.getMaSach(String.valueOf(tblPhieuPhat.getValueAt(i, 2))));
-            vec.add(tblPhieuPhat.getValueAt(i, 2));
-            vec.add(tblPhieuPhat.getValueAt(i, 3));
-            vec.add(tblPhieuPhat.getValueAt(i, 4));
-            vec.add(tblPhieuPhat.getValueAt(i, 5));
-            vec.add(tblPhieuPhat.getValueAt(i, 6));
-            dspp.add(vec);
-        }
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        Vector vec = new Vector();
+        vec.add(tblPhieuPhat.getValueAt(row, 0));
+        vec.add(tblPhieuPhat.getValueAt(row, 1));
+        vec.add(sachBUS.getMaSach(String.valueOf(tblPhieuPhat.getValueAt(row, 2))));
+        vec.add(tblPhieuPhat.getValueAt(row, 2));
+        vec.add(tblPhieuPhat.getValueAt(row, 3));
+        vec.add(tblPhieuPhat.getValueAt(row, 4));
+        vec.add(tblPhieuPhat.getValueAt(row, 5));
+        vec.add(tblPhieuPhat.getValueAt(row, 6));
+        dspp.add(vec);
         int maPP = Integer.parseInt(txtMaPhieuPhat.getText());
         long tien = Long.parseLong(txtThanhTien.getText());
         XuatPhieuPhatGUI phieuPhatGUI = new XuatPhieuPhatGUI(dspp,maPP,txtDocGia.getText(),
                 nhanVienBUS.getTenNhanVien(dangNhapGUI.maTaiKhoan()),
-                String.valueOf(ptBUS.getPhieuTra(txtMaPhieuTra.getText()).getNgayTraThuc()),
+                String.valueOf(sdf.format(ptBUS.getPhieuTra(txtMaPhieuTra.getText()).getNgayTraThuc())),
                 Long.parseLong(txtThanhTien.getText()));
         phieuPhatGUI.setVisible(true);
     }
 
     private void xuLyTImKiem(){
         String docGia = txtTimKiem.getText();
-        String maDocGia = String.valueOf(docGiaBUS.getMaDocGia(docGia));
         dtmPhieuPhat.setRowCount(0);
         ArrayList<PhieuPhat> dspp = null;
-        dspp = ppBUS.getListPhieuPhatTheoMaDocGia(maDocGia);
+        dspp = ppBUS.getListPhieuPhatTheoDocGia(docGia);
 
         DecimalFormat dcf = new DecimalFormat("###,###");
         for(PhieuPhat pp : dspp){

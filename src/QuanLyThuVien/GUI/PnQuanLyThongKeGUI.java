@@ -155,7 +155,7 @@ public class PnQuanLyThongKeGUI extends JPanel {
         for (int i = year; i >= year - 10; i--)
             cmbNam.addItem(i);
         cmbNam.setFont(new Font("Tahoma", Font.PLAIN, 18));
-        cmbNam.setBounds(800 / 2 - 100 / 2, 410, 120, 35);
+        cmbNam.setBounds(335, 410, 120, 35);
         pnThongKeTong.add(cmbNam);
 
 //        btn_filter = new JButton("Chi tiết");

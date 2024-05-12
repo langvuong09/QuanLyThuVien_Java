@@ -6,7 +6,9 @@ import QuanLyThuVien.DTO.NhanVien;
 import QuanLyThuVien.DAO.NhanVienDAO;
 import MyCustom.MyDialog;
 
+import javax.xml.validation.Validator;
 import java.util.ArrayList;
+import java.util.regex.*;
 
 public class NhanVienBUS {
     private ArrayList<NhanVien> listNhanVien = null;
@@ -44,9 +46,17 @@ public class NhanVienBUS {
         return 0;
     }
 
-    public boolean themNhanVien(int ma,String ho, String ten, String gioiTinh, String SDT, String gmail){
+    public boolean themNhanVien(String ho, String ten, String gioiTinh, String SDT, String chucVu, String gmail){
         if(ten.trim().equals("") || ho.trim().equals("")){
             new MyDialog("Không được để trống họ tên!!!",MyDialog.ERROR_DIALOG);
+            return false;
+        }
+        if(!isName(ho)){
+            new MyDialog("Họ không hợp lệ!!!",MyDialog.ERROR_DIALOG);
+            return false;
+        }
+        if(!isName(ten)){
+            new MyDialog("Tên không hợp lệ!!!",MyDialog.ERROR_DIALOG);
             return false;
         }
         if(gioiTinh.trim().equals("")){
@@ -57,12 +67,29 @@ public class NhanVienBUS {
             new MyDialog("Không được để trống số điện thoại!!!",MyDialog.ERROR_DIALOG);
             return false;
         }
+        if(!isPhoneNumber(SDT)){
+            new MyDialog("Số điện thoại không hợp lệ!!!",MyDialog.ERROR_DIALOG);
+            return false;
+        }
         if(gmail.trim().equals("")){
             new MyDialog("Không được để trống gmail!!!",MyDialog.ERROR_DIALOG);
             return false;
         }
-        ma += 1;
-        NhanVien nv =new NhanVien(ma,ho,ten,gioiTinh,SDT,gmail,1);
+        if(!isEmail(gmail)){
+            new MyDialog("Gmail không hợp lệ!!!",MyDialog.ERROR_DIALOG);
+            return false;
+        }
+        if(chucVu.trim().equals("")){
+            chucVu="Default";
+        }
+        NhanVien nv =new NhanVien();
+        nv.setHo(ho);
+        nv.setTen(ten);
+        nv.setSDT(SDT);
+        nv.setGioiTinh(gioiTinh);
+        nv.setChucVu(chucVu);
+        nv.setGmail(gmail);
+
         if(nhanVienDAO.themNhanVien(nv)){
             new MyDialog("Thêm thành công!",MyDialog.SUCCESS_DIALOG);
             return true;
@@ -70,6 +97,35 @@ public class NhanVienBUS {
             new MyDialog("Thêm thất bại!",MyDialog.ERROR_DIALOG);
             return false;
         }
+    }
+
+    public static boolean isPhoneNumber(String sdt) {
+        sdt = sdt.trim();
+        if (sdt.matches("\\d{10,11}")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isName(String ten){
+        if(ten.trim().isEmpty()){
+            return false;
+        }
+        String regex = "^[\\p{L}\\s]+$";
+        if (!Pattern.matches(regex, ten)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    public static boolean isEmail(String email) {
+        // Biểu thức chính quy để kiểm tra địa chỉ email
+        String regex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+
+        // Kiểm tra địa chỉ email có phù hợp với biểu thức chính quy không
+        return Pattern.matches(regex, email);
     }
 
     public boolean xoaNhanVien(String ma){
@@ -87,30 +143,51 @@ public class NhanVienBUS {
         }
     }
 
-    public boolean suaNhanVien(String ma, NhanVien nv){
-        if(ma.trim().equals("")){
-            new MyDialog("Chưa chọn nhân viên để xóa!!!",MyDialog.ERROR_DIALOG);
-            return false;
-        }
-
-        if(nv.getHo().trim().equals("") || nv.getTen().trim().equals("")){
+    public boolean suaNhanVien(String ma,String ho, String ten, String gioiTinh, String SDT, String chucVu, String gmail){
+        if(ten.trim().equals("") || ho.trim().equals("")){
             new MyDialog("Không được để trống họ tên!!!",MyDialog.ERROR_DIALOG);
             return false;
         }
-        if(nv.getGioiTinh().trim().equals("")){
+        if(!isName(ho)){
+            new MyDialog("Họ không hợp lệ!!!",MyDialog.ERROR_DIALOG);
+            return false;
+        }
+        if(!isName(ten)){
+            new MyDialog("Tên không hợp lệ!!!",MyDialog.ERROR_DIALOG);
+            return false;
+        }
+        if(gioiTinh.trim().equals("")){
             new MyDialog("Chưa chọn giới tính!!!",MyDialog.ERROR_DIALOG);
             return false;
         }
-        if(nv.getSDT().trim().equals("")){
+        if(SDT.trim().equals("")){
             new MyDialog("Không được để trống số điện thoại!!!",MyDialog.ERROR_DIALOG);
             return false;
         }
-        if(nv.getGmail().trim().equals("")){
+        if(!isPhoneNumber(SDT)){
+            new MyDialog("Số điện thoại không hợp lệ!!!",MyDialog.ERROR_DIALOG);
+            return false;
+        }
+        if(gmail.trim().equals("")){
             new MyDialog("Không được để trống gmail!!!",MyDialog.ERROR_DIALOG);
             return false;
         }
+        if(!isEmail(gmail)){
+            new MyDialog("Gmail không hợp lệ!!!",MyDialog.ERROR_DIALOG);
+            return false;
+        }
+        if(chucVu.trim().equals("")){
+            chucVu="Default";
+        }
 
         int maNV = Integer.parseInt(ma);
+        NhanVien nv =new NhanVien();
+        nv.setHo(ho);
+        nv.setTen(ten);
+        nv.setSDT(SDT);
+        nv.setGioiTinh(gioiTinh);
+        nv.setChucVu(chucVu);
+        nv.setGmail(gmail);
         if (nhanVienDAO.suaNhanVien(maNV,nv)) {
             new MyDialog("Sửa thành công!", MyDialog.SUCCESS_DIALOG);
             return true;
@@ -120,21 +197,34 @@ public class NhanVienBUS {
         }
     }
 
-    public boolean nhapNhanVienTuExcel(String manv, String tenNV, String hoNV, String gioitinh, String gmail, String sdt) {
+    public boolean nhapNhanVienTuExcel(String manv, String tenNV, String hoNV, String gioitinh, String sdt, String chucVu, String gmail) {
 
         try {
             NhanVien nv = new NhanVien();
-            int maNV = this.getMaNhanVien(manv);
+            int maNV = Integer.parseInt(manv);
             nv.setMaNhanVien(maNV);
             nv.setHo(hoNV);
             nv.setTen(tenNV);
             nv.setGioiTinh(gioitinh);
-            nv.setGmail(gmail);
             nv.setSDT(sdt);
+            nv.setChucVu(chucVu);
+            nv.setGmail(gmail);
 
             nhanVienDAO.nhapNhanVienTuExcel(nv);
+            return true;
         } catch (Exception e) {
         }
         return false;
+    }
+
+    public ArrayList<NhanVien> timDocGia(String ten){
+        ArrayList<NhanVien> dsnv = new ArrayList<>();
+        for(NhanVien nv : listNhanVien){
+            if(nv.getHo().toLowerCase().contains(ten.trim().toLowerCase()) ||
+                    nv.getTen().toLowerCase().contains(ten.trim().toLowerCase())){
+                dsnv.add(nv);
+            }
+        }
+        return dsnv;
     }
 }

@@ -58,7 +58,7 @@ public class PhanQuyenDAO {
             pre.setInt(2,phanQuyen.getQlNhanVien());
             pre.setInt(3,phanQuyen.getQlDocGia());
             pre.setInt(4,phanQuyen.getThongKe());
-            pre.setString(4,phanQuyen.getQuyen());
+            pre.setString(5,phanQuyen.getQuyen());
             return pre.executeUpdate() >0;
         }catch (Exception e){
         }
@@ -81,16 +81,15 @@ public class PhanQuyenDAO {
         return false;
     }
 
-    public boolean xoaQuyen(String phanQuyen){
+    public boolean xoaQuyen(String phanQuyen) {
         try {
-            String sql1 = "UPDATE taikhoan SET Quyen='Default' WHERE Quyen='"+phanQuyen+"'";
+            String sql1 = "UPDATE taikhoan SET Quyen='Default' WHERE Quyen='" + phanQuyen + "'";
             Statement st1 = MyConnect.conn.createStatement();
             st1.executeUpdate(sql1);
-            String sql = "DELETE FROM phanquyen WHERE Quyen'"+phanQuyen+"'";
+            String sql = "DELETE FROM phanquyen WHERE Quyen='" + phanQuyen + "'";
             Statement st = MyConnect.conn.createStatement();
             return st.executeUpdate(sql) > 0;
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
