@@ -106,6 +106,13 @@ public class PhieuTraBUS {
 
             if(ptDAO.themPhieuTra(pt)){
                 new MyDialog("Thêm thành công!", MyDialog.SUCCESS_DIALOG);
+                java.util.Date ngayMuonUtil = pmBUS.getPhieuMuon(maPM).getNgayMuon();
+                java.sql.Date ngayMuon = new java.sql.Date(ngayMuonUtil.getTime());
+                long sqlSoNgayMuon = sqlNgay.getTime() - ngayMuon.getTime();
+                long soNgayMuon = sqlSoNgayMuon / (1000 * 60 * 60 * 24);
+                if(soNgayMuon > 20){
+                    new MyDialog("Cảnh báo số ngày mượn vượt quá hạn trả "+(soNgayMuon-20)+"ngày!!!", MyDialog.WARNING_DIALOG);
+                }
                 return true;
             }else {
                 new MyDialog("Thêm thất bại!", MyDialog.ERROR_DIALOG);

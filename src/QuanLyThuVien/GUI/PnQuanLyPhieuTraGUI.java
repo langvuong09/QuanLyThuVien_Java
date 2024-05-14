@@ -650,6 +650,7 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             txtNgayMuon.setText(String.valueOf(sdf.format(timPhieuMuonGUI.phieuMuonTimDuoc.getNgayMuon())));
         }
+        loadDataLenBangCTPhieuTra("0");
     }
 
     private void xuLyTimCTPhieuMuon(){
