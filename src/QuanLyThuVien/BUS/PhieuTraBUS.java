@@ -111,7 +111,7 @@ public class PhieuTraBUS {
                 long sqlSoNgayMuon = sqlNgay.getTime() - ngayMuon.getTime();
                 long soNgayMuon = sqlSoNgayMuon / (1000 * 60 * 60 * 24);
                 if(soNgayMuon > 20){
-                    new MyDialog("Cảnh báo số ngày mượn vượt quá hạn trả "+(soNgayMuon-20)+"ngày!!!", MyDialog.WARNING_DIALOG);
+                    new MyDialog("Cảnh báo số ngày mượn vượt quá hạn trả "+(soNgayMuon-20)+" ngày!!!", MyDialog.WARNING_DIALOG);
                 }
                 return true;
             }else {

@@ -133,7 +133,8 @@ public class DlgTimPhieuMuon extends JDialog{
         }
     }
 
-    private void loadDataLenTable() {
+    public void loadDataLenTable() {
+        phieuMuonBUS.docListPhieuMuon();
         dtmTimPhieuMuon.setRowCount(0);
         ArrayList<PhieuMuon> dspm = phieuMuonBUS.getListPhieuMuon();
         if (dspm != null) {
