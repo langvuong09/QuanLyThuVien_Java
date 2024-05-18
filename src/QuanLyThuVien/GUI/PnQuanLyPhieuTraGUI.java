@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -48,11 +50,12 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
     PhieuTraBUS ptBUS = new PhieuTraBUS();
     CTPhieuTraBUS ctPhieuTraBUS = new CTPhieuTraBUS();
     final Color colorPanel = new Color(247, 247, 247);
+    ArrayList<CTPhieuTra> danhSachctpt = new ArrayList<>();
     MyTable tblPhieuTra, tblSachTra;
     DefaultTableModel dtmPhieuTra, dtmSachTra;
-    JTextField txtMaPhieuTra,txtMaPhieuMuon ,txtDocGia, txtNgayMuon, txtNgayTraThuc, txtTimKiem, txtMaSach, txtTenSach;
+    JTextField txtMaPhieuTra,txtMaPhieuMuon ,txtDocGia, txtNgayMuon, txtNgayTraThuc, txtTimKiem;
     JDateChooser dateBD, dateKT;
-    JButton btnThem, btnXoa, btnInthe, btnReset, btnXuatExcel, btnNhapExcel, btnTim, btnThemSach, btnXoaSach, btnPhieuMuon, btnSachMuonTrongPhieu, btnTimTrongKhoang;
+    JButton btnThem, btnXoa, btnInthe, btnReset, btnXuatExcel, btnNhapExcel, btnTim, btnThemSach, btnXoaSach, btnPhieuMuon, btnTimTrongKhoang;
 
     private void addConTrolsPhieuTra() {
         Font font = new Font("Tahoma", Font.PLAIN, 16);
@@ -90,8 +93,6 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         txtDocGia = new JTextField(x);
         txtNgayMuon = new JTextField(x);
         txtNgayTraThuc = new JTextField(x);
-        txtMaSach = new JTextField(y);
-        txtTenSach = new JTextField(y);
         txtTimKiem = new JTextField(y);
         dateBD = new JDateChooser();
         dateBD.setDateFormatString("dd/MM/yyyy");
@@ -183,50 +184,34 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         lblTitleCTPhieuTra.setFont(new Font("Arial", Font.BOLD, 22));
         lblTitleCTPhieuTra.setBounds(550, 0, 300, 25);
 
-        JLabel lblMaSach = new JLabel("Mã sách:");
-        lblMaSach.setFont(font);
-        txtMaSach.setFont(font);
-        txtMaSach.setEditable(false);
-        lblMaSach.setBounds(510, 50, 120, 25);
-        txtMaSach.setBounds(600, 50, 150, 25);
-
-        JLabel lblTenSach = new JLabel("Tên sách:");
-        lblTenSach.setFont(font);
-        txtTenSach.setFont(font);
-        txtTenSach.setEditable(false);
-        lblTenSach.setBounds(510, 100, 120, 25);
-        txtTenSach.setBounds(600, 100, 190, 25);
-
         Font fontB = new Font("Tahoma", Font.PLAIN, 16);
-        btnThemSach = new JButton("Thêm");
+        btnThemSach = new JButton("Trả");
         btnThemSach.setFont(fontB);
-        btnThemSach.setBounds(540, 150, 100, 30);
+        btnThemSach.setBounds(540, 260, 100, 35);
 
-        btnXoaSach = new JButton("Xóa");
+        btnXoaSach = new JButton("Bỏ");
         btnXoaSach.setFont(fontB);
-        btnXoaSach.setBounds(660, 150, 100, 30);
+        btnXoaSach.setBounds(660, 260, 100, 35);
 
         dtmSachTra = new DefaultTableModel();
         dtmSachTra.addColumn("Mã");
         dtmSachTra.addColumn("Tên sách");
+        dtmSachTra.addColumn("TT");
         tblSachTra = new MyTable(dtmSachTra);
 
         tblSachTra.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
 
         TableColumnModel columnModelSachTra = tblSachTra.getColumnModel();
         columnModelSachTra.getColumn(0).setPreferredWidth(30);
-        columnModelSachTra.getColumn(1).setPreferredWidth(190);
+        columnModelSachTra.getColumn(1).setPreferredWidth(140);
+        columnModelSachTra.getColumn(2).setPreferredWidth(50);
 
         JScrollPane srclblSachTra = new JScrollPane(tblSachTra);
-        srclblSachTra.setPreferredSize(new Dimension(200, 75));
-        srclblSachTra.setBounds(510, 200, 290, 105);
+        srclblSachTra.setPreferredSize(new Dimension(200, 200));
+        srclblSachTra.setBounds(510, 50, 290, 195);
         srclblSachTra.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
         pnThongTinPhieuTra.add(lblTitleCTPhieuTra);
-        pnThongTinPhieuTra.add(lblMaSach);
-        pnThongTinPhieuTra.add(txtMaSach);
-        pnThongTinPhieuTra.add(lblTenSach);
-        pnThongTinPhieuTra.add(txtTenSach);
         pnThongTinPhieuTra.add(btnThemSach);
         pnThongTinPhieuTra.add(btnXoaSach);
         pnThongTinPhieuTra.add(srclblSachTra, BorderLayout.CENTER);
@@ -244,7 +229,6 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         btnXuatExcel = new JButton("Xuất");
         btnNhapExcel = new JButton("Nhập");
         btnPhieuMuon = new JButton("...");
-        btnSachMuonTrongPhieu = new JButton("...");
 
         Font fontButton = new Font("Tahoma", Font.PLAIN, 16);
         btnThem.setFont(fontButton);
@@ -256,7 +240,6 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         btnXuatExcel.setFont(fontButton);
         btnNhapExcel.setFont(fontButton);
         btnPhieuMuon.setFont(fontButton);
-        btnSachMuonTrongPhieu.setFont(fontButton);
 
         btnThem.setIcon(new ImageIcon("image/add-icon.png"));
         btnXoa.setIcon(new ImageIcon("image/delete-icon.png"));
@@ -274,7 +257,6 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         btnXuatExcel.setBounds(485, 380, 120, 40);
         btnNhapExcel.setBounds(630, 380, 120, 40);
         btnPhieuMuon.setBounds(430, 70, 30, 25);
-        btnSachMuonTrongPhieu.setBounds(760, 50, 30, 25);
 
         pnThongTinPhieuTra.add(btnInthe);
         pnThongTinPhieuTra.add(btnThem);
@@ -284,7 +266,6 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         pnThongTinPhieuTra.add(btnXuatExcel);
         pnThongTinPhieuTra.add(btnNhapExcel);
         pnThongTinPhieuTra.add(btnPhieuMuon);
-        pnThongTinPhieuTra.add(btnSachMuonTrongPhieu);
 
         pnTablePhieuTra.add(pnThongTinPhieuTra);
 
@@ -340,24 +321,17 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
                 txtDocGia.setText("");
                 txtNgayMuon.setText("");
                 txtNgayTraThuc.setText("");
-                txtMaSach.setText("");
-                txtTenSach.setText("");
                 txtTimKiem.setText("");
                 dateBD.setDate(null);
                 dateKT.setDate(null);
-                loadDataLenBangCTPhieuTra("0");
+                dtmSachTra.setRowCount(0);
+                danhSachctpt.clear();
             }
         });
         tblPhieuTra.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 xuLyClickTblPhieuTra();
-            }
-        });
-        tblSachTra.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                xuLyClickTblCTPhieuTra();
             }
         });
         btnInthe.addActionListener(new ActionListener() {
@@ -375,9 +349,7 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
                 txtDocGia.setText("");
                 txtNgayMuon.setText("");
                 txtNgayTraThuc.setText("");
-                txtMaSach.setText("");
-                txtTenSach.setText("");
-                loadDataLenBangCTPhieuTra("0");
+                dtmSachTra.setRowCount(0);
             }
         });
         btnXoa.addActionListener(new ActionListener() {
@@ -389,11 +361,10 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
                 txtDocGia.setText("");
                 txtNgayMuon.setText("");
                 txtNgayTraThuc.setText("");
-                txtMaSach.setText("");
-                txtTenSach.setText("");
-                loadDataLenBangCTPhieuTra("0");
+                dtmSachTra.setRowCount(0);
             }
         });
+
         btnTim.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -423,14 +394,23 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 xuLyTimPhieuMuon();
                 xuLyThemNgayThang();
+                danhSachctpt.clear();
             }
         });
-        btnSachMuonTrongPhieu.addActionListener(new ActionListener() {
+        txtMaPhieuMuon.getDocument().addDocumentListener(new DocumentListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                if(!txtMaPhieuMuon.getText().equals(""))
-                    timSachMuonGUI.loadDataLenTable(txtMaPhieuMuon.getText());
-                xuLyTimCTPhieuMuon();
+            public void insertUpdate(DocumentEvent e) {
+                loadDataLenBangCTPhieuTraKhiChon();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                loadDataLenBangCTPhieuTraKhiChon();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                loadDataLenBangCTPhieuTraKhiChon();
             }
         });
         btnThemSach.addActionListener(new ActionListener() {
@@ -482,14 +462,37 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         }
     }
 
-    private void loadDataLenBangCTPhieuTra(String maPT){
-        ArrayList<CTPhieuTra> listCTPhieuTra = ctPhieuTraBUS.getListCTPhieuTraTheoMaPT(maPT);
+    private void loadDataLenBangCTPhieuTra(){
+        ArrayList<CTPhieuTra> listCTPhieuTra = ctPhieuTraBUS.getListCTPhieuTraTheoMaPT(txtMaPhieuTra.getText());
         ctPhieuTraBUS.docListCTPhieuTra();
         dtmSachTra.setRowCount(0);
         for(CTPhieuTra ctpt : listCTPhieuTra){
             Vector vec = new Vector<>();
             vec.add(ctpt.getMaSach());
-            vec.add(sachBUS.getTenSachMuon(ctpt.getMaSach()));
+            vec.add(sachBUS.getTenSach(ctpt.getMaSach()));
+            vec.add("Đã trả");
+            dtmSachTra.addRow(vec);
+        }
+    }
+
+    private void loadDataLenBangCTPhieuTraKhiChon(){
+        ArrayList<CTPhieuMuon> listCTPhieuTra = ctPhieuMuonBUS.getListCTPhieuMuonTheoMaPM(txtMaPhieuMuon.getText());
+        ctPhieuMuonBUS.docListCTPhieuMuon();
+        dtmSachTra.setRowCount(0);
+        for(CTPhieuMuon ctpm : listCTPhieuTra){
+            int count = 0;
+            Vector vec = new Vector<>();
+            vec.add(ctpm.getMaSach());
+            vec.add(sachBUS.getTenSach(ctpm.getMaSach()));
+            for(CTPhieuTra ctpt : ctPhieuTraBUS.luaChon(txtMaPhieuMuon.getText())){
+                if(ctpt.getMaSach() == ctpm.getMaSach()){
+                    vec.add("Đã trả");
+                    count = 1;
+                }
+            }
+            if(count == 0){
+                vec.add("Mượn");
+            }
             dtmSachTra.addRow(vec);
         }
     }
@@ -509,73 +512,53 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
             txtDocGia.setText(docGia);
             txtNgayMuon.setText(ngayMuon);
             txtNgayTraThuc.setText(ngayTraThuc);
-            loadDataLenBangCTPhieuTra(maPhieuTra);
-        }
-    }
-
-    private void xuLyClickTblCTPhieuTra(){
-        int row = tblSachTra.getSelectedRow();
-        if(row > -1){
-            String maSach = tblSachTra.getValueAt(row, 0)+"";
-            String tenSach = tblSachTra.getValueAt(row,1)+"";
-
-            txtMaSach.setText(maSach);
-            txtTenSach.setText(tenSach);
+            loadDataLenBangCTPhieuTra();
+            danhSachctpt.clear();
         }
     }
 
     private void xuLyThemPhieuTra(){
+        if(danhSachctpt.size() == 0){
+            new MyDialog("Chưa chọn sách trả!!!", MyDialog.ERROR_DIALOG);
+            return;
+        }
         boolean flag = ptBUS.themPhieuTra(txtMaPhieuTra.getText(),
                 txtMaPhieuMuon.getText(),
-                txtDocGia.getText(),
+                txtDocGia.getText(), String.valueOf(dangNhapGUI.maTaiKhoan()),
                 txtNgayTraThuc.getText());
         ptBUS.docListPhieuTra();
         if(flag) {
-            xuLyThemCTPhieuTra(txtMaPhieuTra.getText());
+            xuLyThemCTPhieuTraTuArray();
             loadDataLenBangPhieuTra();
-            loadDataLenBangCTPhieuTra("0");
+            dtmSachTra.setRowCount(0);
         }
+        danhSachctpt.clear();
     }
 
     private void xuLyThemCTPhieuTra(){
-        if(txtMaSach.getText().equals("")){
-            new MyDialog("Chưa chọn sách trả!!!", MyDialog.ERROR_DIALOG);
+        int row = tblSachTra.getSelectedRow();
+        if(row < 0){
+            new MyDialog("Hãy chọn sách trả!!!", MyDialog.ERROR_DIALOG);
             return;
         }else {
-            int row = dtmSachTra.getRowCount();
-            for(int i=0;i < row; i++){
-                String maSach = String.valueOf(dtmSachTra.getValueAt(i,0));
-                if(maSach.trim().equals(txtMaSach.getText())){
-                    new MyDialog("Sách đã được thêm vào phiếu trả!!!", MyDialog.ERROR_DIALOG);
-                    return;
-                }
+            String tt = dtmSachTra.getValueAt(row,2)+"";
+            if(tt.equals("Đã trả")){
+                new MyDialog("Sách đã được trả!!!", MyDialog.ERROR_DIALOG);
+                return;
+            }else {
+                dtmSachTra.setValueAt("Đã trả",row,2);
+                CTPhieuTra ctpt = new CTPhieuTra();
+                ctpt.setMaPhieuTra(Integer.parseInt(txtMaPhieuTra.getText()));
+                ctpt.setMaSach(Integer.parseInt(dtmSachTra.getValueAt(row,0)+""));
+                danhSachctpt.add(ctpt);
             }
-
-            String maSach = txtMaSach.getText();
-            String tenSach = txtTenSach.getText();
-
-            btnThemSachAction(maSach, tenSach);
-
-            ctPhieuTraBUS.chonSachTra(maSach);
-
-            txtMaSach.setText("");
-            txtTenSach.setText("");
         }
     }
 
-    private void btnThemSachAction(String ma, String ten){
-        Vector<Object> rowData = new Vector<>();
-        rowData.add(ma);
-        rowData.add(ten);
-        dtmSachTra.addRow(rowData);
-    }
-
-    private void xuLyThemCTPhieuTra(String maPT){
-        int row = dtmSachTra.getRowCount();
-        for(int i=0;i<row;i++){
-            String maSach = String.valueOf(dtmSachTra.getValueAt(i,0));
-            String tenSach = String.valueOf(dtmSachTra.getValueAt(i,1));
-
+    private void xuLyThemCTPhieuTraTuArray(){
+        for(CTPhieuTra ctpt : danhSachctpt){
+            String maPT = String.valueOf(ctpt.getMaPhieuTra());
+            String maSach = String.valueOf(ctpt.getMaSach());
             boolean flag = ctPhieuTraBUS.themCTPhieuTra(maPT, maSach);
         }
     }
@@ -590,22 +573,29 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
     }
 
     private void xuLyXoaCTPhieuTra(){
-        if(txtMaSach.getText().equals("")){
-            new MyDialog("Chưa chọn sách trả để xóa!!!",MyDialog.ERROR_DIALOG);
+        int row = tblSachTra.getSelectedRow();
+        if(row < 0){
+            new MyDialog("Chưa chọn sách trả để bỏ chọn!!!",MyDialog.ERROR_DIALOG);
             return;
         }
         else {
-            int selectedRow = tblSachTra.getSelectedRow();
-            if(selectedRow >= 0){
-                String maSach = String.valueOf(dtmSachTra.getValueAt(selectedRow,0));
+            if(!ctPhieuTraBUS.xacDinhCTPT(dtmSachTra.getValueAt(row, 0) + "", txtMaPhieuMuon.getText())) {
+                if ((dtmSachTra.getValueAt(row, 2) + "").equals("Mượn")) {
+                    new MyDialog("Sách chưa được trả!!!", MyDialog.ERROR_DIALOG);
+                    return;
+                } else {
+                    dtmSachTra.setValueAt("Mượn", row, 2);
 
-                dtmSachTra.removeRow(selectedRow);
-                sachBUS.chonSach(txtMaSach.getText());
-                txtMaSach.setText("");
-                txtTenSach.setText("");
+                    int maPT = Integer.parseInt(txtMaPhieuTra.getText());
+                    int maS = Integer.parseInt(dtmSachTra.getValueAt(row, 0) + "");
+
+                    danhSachctpt.removeIf(ctpt -> ctpt.getMaSach() == maS);
+                }
+            }else {
+                new MyDialog("Sách đã được trả trước rồi!!!", MyDialog.ERROR_DIALOG);
+                return;
             }
         }
-        timSachMuonGUI.loadDataLenTable(txtMaPhieuMuon.getText());
     }
 
     private boolean xuLyXoaCTPhieuTra(String ma){
@@ -643,27 +633,13 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
     }
 
     private void xuLyTimPhieuMuon(){
+        dtmSachTra.setRowCount(0);
         timPhieuMuonGUI.setVisible(true);
         if(timPhieuMuonGUI.phieuMuonTimDuoc != null){
             txtMaPhieuMuon.setText(String.valueOf(timPhieuMuonGUI.phieuMuonTimDuoc.getMaPhieuMuon()));
             txtDocGia.setText(docGiaBUS.getTenDocGia(timPhieuMuonGUI.phieuMuonTimDuoc.getMaDocGia()));
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             txtNgayMuon.setText(String.valueOf(sdf.format(timPhieuMuonGUI.phieuMuonTimDuoc.getNgayMuon())));
-        }
-        loadDataLenBangCTPhieuTra("0");
-    }
-
-    private void xuLyTimCTPhieuMuon(){
-        if(txtMaPhieuMuon.getText().equals("")){
-            new MyDialog("Chưa chọn mã phiếu mượn!!!", MyDialog.ERROR_DIALOG);
-            return;
-        }
-        timSachMuonGUI.xuLyChonCTPhieuMuon();
-        timSachMuonGUI.setMaPm(txtMaPhieuMuon.getText());
-        timSachMuonGUI.setVisible(true);
-        if(timSachMuonGUI.ctPhieuMuonTimDuoc != null){
-            txtMaSach.setText(String.valueOf(timSachMuonGUI.ctPhieuMuonTimDuoc.getMaSach()));
-            txtTenSach.setText(String.valueOf(sachBUS.getTenSachMuon(timSachMuonGUI.ctPhieuMuonTimDuoc.getMaSach())));
         }
     }
 
@@ -717,21 +693,17 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         ArrayList<Vector> dspt = new ArrayList<>();
         ArrayList<Vector> dsctpm = new ArrayList<>();
         int row = tblSachTra.getRowCount();
-        int row_pt = tblPhieuTra.getRowCount();
-        int count = 0;
+        int rowPT = tblPhieuTra.getRowCount();
         if(row == 0) return;
-        if(txtMaPhieuTra.getText().equals("")){
-            new MyDialog("Chưa chọn phiếu trả để in phiếu!!!",MyDialog.ERROR_DIALOG);
-            return;
-        }
-        for(int i=0;i<row_pt;i++){
-            if(txtMaPhieuTra.getText().equals(tblPhieuTra.getValueAt(i,0))){
+        int count = 0;
+        for(int i=0;i<rowPT;i++) {
+            String ma = dtmPhieuTra.getValueAt(i,0)+"";
+            if (ma.equals(txtMaPhieuTra.getText())) {
                 count = 1;
-                break;
             }
         }
-        if(count != 0){
-            new MyDialog("Phiếu trả chưa được tạo!!!",MyDialog.ERROR_DIALOG);
+        if(count == 0){
+            new MyDialog("Phiếu trả chưa được tạo!!!", MyDialog.ERROR_DIALOG);
             return;
         }
         for(int i=0;i<row;i++){

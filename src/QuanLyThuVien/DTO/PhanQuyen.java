@@ -6,16 +6,18 @@ public class    PhanQuyen {
     private int qlSach;
     private int qlNhanVien;
     private int qlDocGia;
+    private int qlNhapSach;
     private int thongKe;
 
     public PhanQuyen() {
     }
 
-    public PhanQuyen(String quyen, int qlSach, int qlNhanVien, int qlDocGia, int thongKe) {
+    public PhanQuyen(String quyen, int qlSach, int qlNhanVien, int qlDocGia, int qlNhapSach, int thongKe) {
         this.quyen = quyen;
         this.qlSach = qlSach;
         this.qlNhanVien = qlNhanVien;
         this.qlDocGia = qlDocGia;
+        this.qlNhapSach = qlNhapSach;
         this.thongKe = thongKe;
     }
 
@@ -49,6 +51,14 @@ public class    PhanQuyen {
 
     public void setQlDocGia(int qlDocGia) {
         this.qlDocGia = qlDocGia;
+    }
+
+    public int getQlNhapSach() {
+        return qlNhapSach;
+    }
+
+    public void setQlNhapSach(int qlNhapSach) {
+        this.qlNhapSach = qlNhapSach;
     }
 
     public int getThongKe() {

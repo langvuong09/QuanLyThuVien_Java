@@ -48,8 +48,8 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
 
     MyTable tblPhieuPhat;
     DefaultTableModel dtmPhieuPhat;
-    JTextField txtMaPhieuPhat, txtMaPhieuTra, txtMaSach, txtTenSach, txtDocGia, txtThanhTien, txtNgayTraMuon, txtTimKiem, txtMin, txtMax;
-    JComboBox<String> cmbLyDo;
+    JTextField txtMaPhieuPhat, txtMaPhieuTra, txtMaSach, txtTenSach, txtDocGia, txtThanhTien, txtNgayTraMuon, txtTimKiem;
+    JComboBox<String> cmbLyDo, txtMin, txtMax;
     JButton btnThem, btnXoa, btnSua, btnInThe, btnReset, btnXuatExcel, btnNhapExcel, btnTimKiem, btnTimKiemKhoang, btnPhieuTra, btnSachPhat;
 
     private void addConTrolsPhieuPhat(){
@@ -92,8 +92,8 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         txtThanhTien = new JTextField(x);
         txtNgayTraMuon = new JTextField(x);
         txtTimKiem = new JTextField(x);
-        txtMin = new JTextField(x);
-        txtMax = new JTextField(x);
+        txtMin = new JComboBox<String>();
+        txtMax = new JComboBox<String>();
 
         //=================Thông tin phiếu phạt==============
 
@@ -169,12 +169,15 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         lblTimKiem.setBounds(420,270,200,25);
         txtTimKiem.setBounds(530,270,200,25);
 
-        JLabel lblMin = new JLabel("Tổng tiền phạt:     từ ");
-        JLabel lblMax = new JLabel(" đến ");
+        JLabel lblMin = new JLabel(" Lỗi bị phạt :      ");
+        JLabel lblMax = new JLabel(" hoặc ");
         lblMin.setFont(font);
         lblMax.setFont(font);
         txtMin.setFont(font);
         txtMax.setFont(font);
+        String[] luaChonKhoang = {"Lựa chọn","Trả muộn", "Rách sách", "Ướt sách", "Mất sách", "Mất trang"};
+        txtMin = new JComboBox<>(luaChonKhoang);
+        txtMax = new JComboBox<>(luaChonKhoang);
         lblMin.setBounds(100,320,200,25);
         lblMax.setBounds(400,320,200,25);
         txtMin.setBounds(280,320,100,25);
@@ -312,8 +315,8 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
                 txtNgayTraMuon.setText("");
                 txtDocGia.setText("");
                 txtTimKiem.setText("");
-                txtMin.setText("");
-                txtMax.setText("");
+                txtMin.setSelectedIndex(0);
+                txtMax.setSelectedIndex(0);
             }
         });
         tblPhieuPhat.addMouseListener(new MouseAdapter() {
@@ -437,7 +440,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
             Vector vec = new Vector();
             vec.add(pp.getMaPhieuPhat());
             vec.add(pp.getMaPhieuTra());
-            vec.add(sachBUS.getTenSachMuon(pp.getMaSach()));
+            vec.add(sachBUS.getTenSach(pp.getMaSach()));
             vec.add(docGiaBUS.getTenDocGia(pp.getMaDocGia()));
             vec.add(nhanVienBUS.getTenNhanVien(pp.getMaNhanVien()));
             vec.add(pp.getLyDo());
@@ -455,7 +458,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
             Vector vec = new Vector<>();
             vec.add(pp.getMaPhieuPhat());
             vec.add(pp.getMaPhieuTra());
-            vec.add(sachBUS.getTenSachMuon(pp.getMaSach()));
+            vec.add(sachBUS.getTenSach(pp.getMaSach()));
             vec.add(docGiaBUS.getTenDocGia(pp.getMaDocGia()));
             vec.add(nhanVienBUS.getTenNhanVien(pp.getMaNhanVien()));
             vec.add(pp.getLyDo());
@@ -493,7 +496,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
 
             txtMaPhieuPhat.setText(maPhieuPhat);
             txtMaPhieuTra.setText(maPhieuTra);
-            txtMaSach.setText(String.valueOf(sachBUS.getMaSachMuon(tenSach)));
+            txtMaSach.setText(String.valueOf(sachBUS.getMaSach(tenSach)));
             txtTenSach.setText(tenSach);
             txtDocGia.setText(docGia);
             cmbLyDo.setSelectedIndex(index);
@@ -516,7 +519,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         lyDoTong = lyDo + lyDo1;
         boolean flag = ppBUS.themPhieuPhat(txtMaPhieuPhat.getText(),
                             txtMaPhieuTra.getText(),txtMaSach.getText(),
-                            txtDocGia.getText(),lyDoTong,
+                            txtDocGia.getText(), String.valueOf(dangNhapGUI.maTaiKhoan()),lyDoTong,
                             txtThanhTien.getText());
         ppBUS.docListPhieuPhat();
         loadDataLenBangPhieuPhat();
@@ -545,7 +548,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         lyDoTong = lyDo + lyDo1;
         boolean flag = ppBUS.suaPhieuPhat(txtMaPhieuPhat.getText(),
                 txtMaPhieuTra.getText(),txtMaSach.getText(),
-                txtDocGia.getText(),lyDoTong,
+                txtDocGia.getText(), String.valueOf(dangNhapGUI.maTaiKhoan()),lyDoTong,
                 txtThanhTien.getText());
         ppBUS.docListPhieuPhat();
         loadDataLenBangPhieuPhat();
@@ -639,7 +642,9 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
 
     private void xuLyTimKiemKhoang(){
         dtmPhieuPhat.setRowCount(0);
-        ArrayList<PhieuPhat> dspp = ppBUS.timKiemTheoKhoang(txtMin.getText(),txtMax.getText());
+        String min = String.valueOf(txtMin.getSelectedItem());
+        String max = String.valueOf(txtMax.getSelectedItem());
+        ArrayList<PhieuPhat> dspp = ppBUS.timKiemTheoKhoang(min,max);
         if(dspp == null){
             return;
         }
@@ -665,7 +670,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         timSachPhatGUI.setVisible(true);
         if(timSachPhatGUI.ctPhieuTraTimDuoc != null){
             txtMaSach.setText(String.valueOf(timSachPhatGUI.ctPhieuTraTimDuoc.getMaSach()));
-            txtTenSach.setText(String.valueOf(sachBUS.getTenSachMuon(timSachPhatGUI.ctPhieuTraTimDuoc.getMaSach())));
+            txtTenSach.setText(String.valueOf(sachBUS.getTenSach(timSachPhatGUI.ctPhieuTraTimDuoc.getMaSach())));
         }
     }
 

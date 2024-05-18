@@ -35,7 +35,7 @@ public class PnQuanLyDocGiaGUI extends JPanel{
     DefaultTableModel dtmDocGia;
     JTextField txtIDDocGia, txtTenDocGia,txtHoDocGia, txtSDT, txtTimKiem;
     JTextArea txtGmail;
-    JButton btnThem, btnXoa, btnSua, btnReset, btnTim;
+    JButton btnThem, btnXoa, btnSua, btnReset, btnTim, btnLoc;
     JLabel lblTabbedDocGia;
     JRadioButton rdbNam, rdbNu;
     final ImageIcon tabbedSelected = new ImageIcon("image/Manager-GUI/tabbed-btn--selected.png");
@@ -163,6 +163,7 @@ public class PnQuanLyDocGiaGUI extends JPanel{
         btnXoa = new JButton("Xoá");
         btnTim = new JButton("Tìm");
         btnSua = new JButton("Sửa");
+        btnLoc = new JButton("Đọc giả chưa trả sách");
 
         Font fontButton = new Font("Tahoma", Font.PLAIN, 16);
         btnThem.setFont(fontButton);
@@ -170,21 +171,25 @@ public class PnQuanLyDocGiaGUI extends JPanel{
         btnTim.setFont(fontButton);
         btnSua.setFont(fontButton);
         btnSua.setFont(fontButton);
+        btnLoc.setFont(fontButton);
 
         btnThem.setIcon(new ImageIcon("image/add-icon.png"));
         btnXoa.setIcon(new ImageIcon("image/delete-icon.png"));
         btnTim.setIcon(new ImageIcon("image/Search-icon.png"));
         btnSua.setIcon(new ImageIcon("image/Pencil-icon.png"));
+        btnLoc.setIcon(new ImageIcon("image/pheu-icon.png"));
 
-        btnTim.setBounds(540,300,120,40);
-        btnSua.setBounds(395,300,120,40);
-        btnThem.setBounds(105,300,120,40);
-        btnXoa.setBounds(250,300,120,40);
+        btnTim.setBounds(395,300,120,40);
+        btnSua.setBounds(270,300,120,40);
+        btnThem.setBounds(20,300,120,40);
+        btnXoa.setBounds(145,300,120,40);
+        btnLoc.setBounds(520,300,260,40);
 
         pnThongTinDocGia.add(btnSua);
         pnThongTinDocGia.add(btnThem);
         pnThongTinDocGia.add(btnXoa);
         pnThongTinDocGia.add(btnTim);
+        pnThongTinDocGia.add(btnLoc);
 
         pnTableDocGia.add(pnThongTinDocGia);
 
@@ -196,23 +201,26 @@ public class PnQuanLyDocGiaGUI extends JPanel{
         dtmDocGia.addColumn("SDT");
         dtmDocGia.addColumn("Giới tính");
         dtmDocGia.addColumn("Gmail");
+        dtmDocGia.addColumn("SL sách mượn");
         tblDocGia = new MyTable(dtmDocGia);
 
         tblDocGia.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
         tblDocGia.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+        tblDocGia.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
 
         TableColumnModel columnModelPhieuMuon = tblDocGia.getColumnModel();
         columnModelPhieuMuon.getColumn(0).setPreferredWidth(60);
         columnModelPhieuMuon.getColumn(1).setPreferredWidth(110);
-        columnModelPhieuMuon.getColumn(2).setPreferredWidth(80);
-        columnModelPhieuMuon.getColumn(3).setPreferredWidth(110);
-        columnModelPhieuMuon.getColumn(4).setPreferredWidth(100);
-        columnModelPhieuMuon.getColumn(5).setPreferredWidth(300);
+        columnModelPhieuMuon.getColumn(2).setPreferredWidth(70);
+        columnModelPhieuMuon.getColumn(3).setPreferredWidth(100);
+        columnModelPhieuMuon.getColumn(4).setPreferredWidth(90);
+        columnModelPhieuMuon.getColumn(5).setPreferredWidth(180);
+        columnModelPhieuMuon.getColumn(6).setPreferredWidth(140);
 
         JScrollPane scrTblDocGia = new JScrollPane(tblDocGia);
-        scrTblDocGia.setPreferredSize(new Dimension(900,230));
+        scrTblDocGia.setPreferredSize(new Dimension(800,230));
 
-        scrTblDocGia.setBounds(0,370,820,235);
+        scrTblDocGia.setBounds(0,370,800,235);
         //</editor-fold>
         pnThongTinDocGia.add(scrTblDocGia, BorderLayout.CENTER);
 
@@ -266,6 +274,12 @@ public class PnQuanLyDocGiaGUI extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 xuLyTimKiem();
+            }
+        });
+        btnLoc.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                xuLyLocDocGiaConMuonSach();
             }
         });
     }
@@ -372,6 +386,25 @@ public class PnQuanLyDocGiaGUI extends JPanel{
         }
         MyDialog dlg = new MyDialog("Số kết quả tìm được: " + dsdg.size(), MyDialog.INFO_DIALOG);
     }
+
+    public void xuLyLocDocGiaConMuonSach(){
+        dtmDocGia.setRowCount(0);
+        docGiaBUS.docDanhSach();
+        ArrayList<DocGia> dsdg = docGiaBUS.getListDocGia();
+        for(DocGia dg : dsdg){
+            Vector vec = new Vector<>();
+            vec.add(dg.getMaDocGia());
+            vec.add(dg.getHo());
+            vec.add(dg.getTen());
+            vec.add(dg.getSDT());
+            vec.add(dg.getGioiTinh());
+            vec.add(dg.getGmail());
+            vec.add(docGiaBUS.locDocGia(String.valueOf(dg.getMaDocGia())));
+            if(docGiaBUS.locDocGia(String.valueOf(dg.getMaDocGia())) != 0)
+                dtmDocGia.addRow(vec);
+        }
+    }
+
 }
 
 

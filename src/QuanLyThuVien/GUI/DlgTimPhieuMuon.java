@@ -126,6 +126,7 @@ public class DlgTimPhieuMuon extends JDialog{
                 long tongTien = Long.parseLong(tblTimPhieuMuon.getValueAt(row, 5) + ""); // Sửa index thành 5
 
                 phieuMuonTimDuoc = new PhieuMuon(ma, maDocGia, maNhanVien, ngayM, hanT, tongTien);
+
                 this.dispose();
             } catch (NumberFormatException | ParseException ex) {
                 ex.printStackTrace();

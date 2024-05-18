@@ -4,25 +4,23 @@ public class Sach {
 
     private int maSach;
     private int maLoaiSach;
-    private int maNXB;
     private int maTacGia;
     private String tenSach;
     private long giaSach;
     private String ghiChu;
-    private int trangThai;
+    private int soLuong;
 
     public Sach(){
     }
 
-    public Sach(int maSach,int maLoaiSach,int maNXB,int maTacGia,String tenSach,long giaSach,String ghiChu,int trangThai){
+    public Sach(int maSach,int maLoaiSach,int maTacGia,String tenSach,long giaSach,String ghiChu,int soLuong){
         this.maSach = maSach;
         this.maLoaiSach = maLoaiSach;
-        this.maNXB = maNXB;
         this.maTacGia = maTacGia;
         this.tenSach = tenSach;
         this.giaSach = giaSach;
         this.ghiChu = ghiChu;
-        this.trangThai = trangThai;
+        this.soLuong = soLuong;
     }
 
     public int getMaSach() {
@@ -39,14 +37,6 @@ public class Sach {
 
     public void setMaLoaiSach(int maLoaiSach) {
         this.maLoaiSach = maLoaiSach;
-    }
-
-    public int getMaNXB() {
-        return maNXB;
-    }
-
-    public void setMaNXB(int maNXB) {
-        this.maNXB = maNXB;
     }
 
     public int getMaTacGia() {
@@ -81,11 +71,11 @@ public class Sach {
         this.ghiChu = ghiChu;
     }
 
-    public int getTrangThai() {
-        return trangThai;
+    public int getSoLuong() {
+        return soLuong;
     }
 
-    public void setTrangThai(int trangThai) {
-        this.trangThai = trangThai;
+    public void setSoLuong(int soLuong) {
+        this.soLuong = soLuong;
     }
 }

@@ -34,7 +34,7 @@ import javax.swing.table.TableColumnModel;
 public class PnQuanLyPhieuMuonGUI extends JPanel{
 
     private DlgTimDocGia timDocGiaGUI = new DlgTimDocGia();
-    private DlgTimSach timSachGUI = new DlgTimSach();
+    private DlgTimSach timSachGUI;
     private SachBUS sachBUS = new SachBUS();
     private DocGiaBUS docGiaBUS = new DocGiaBUS();
     private NhanVienBUS nhanVienBUS = new NhanVienBUS();
@@ -526,7 +526,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         for (CTPhieuMuon ctpm : listCTPhieuMuon) {
             Vector vec = new Vector();
             vec.add(ctpm.getMaSach());
-            String tenSach = sachBUS.getTenSachMuon(ctpm.getMaSach());
+            String tenSach = sachBUS.getTenSach(ctpm.getMaSach());
             vec.add(tenSach);
             vec.add(dcf.format(ctpm.getGiaTien()));
             dtmSachMuon.addRow(vec);
@@ -535,7 +535,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
 
     private void xuLyThemPhieuMuon(){
         boolean flag = pmBUS.themPhieuMuon(txtMaPhieuMuon.getText(),
-                txtDocGia.getText(),
+                txtDocGia.getText(), String.valueOf(dangNhapGUI.maTaiKhoan()),
                 txtNgayMuon.getText(),
                 txtNgayTra.getText(),
                 txtTongTien.getText());
@@ -586,6 +586,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
     }
 
     private void xuLyTimSach(){
+        timSachGUI = new DlgTimSach();
         timSachGUI.setVisible(true);
         if(timSachGUI.sachTimDuoc != null){
             txtMaSach.setText(timSachGUI.sachTimDuoc.getMaSach()+"");
@@ -626,16 +627,20 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
     }
 
     private void xuLyThemCTPhieuMuon() {
-        if (txtDocGia.getText().equals("")){
-            new MyDialog("Chưa chọn đọc giả mượn sách!!!",MyDialog.ERROR_DIALOG);
+        if (txtDocGia.getText().equals("")) {
+            new MyDialog("Chưa chọn đọc giả mượn sách!!!", MyDialog.ERROR_DIALOG);
             return;
         }
-        if (txtMaSach.getText().equals("")){
-            new MyDialog("Chưa chọn sách mượn!!!",MyDialog.ERROR_DIALOG);
+        if (txtMaSach.getText().equals("")) {
+            new MyDialog("Chưa chọn sách mượn!!!", MyDialog.ERROR_DIALOG);
             return;
-        }else {
+        } else {
+            if(sachBUS.getSach(txtMaSach.getText()).getSoLuong() == 0){
+                new MyDialog("Sách đã được mượn hết!!!", MyDialog.ERROR_DIALOG);
+                return;
+            }
             int rowCount = dtmSachMuon.getRowCount();
-            if (rowCount == 3 ) {
+            if (rowCount == 4) {
                 new MyDialog("Số lượng sách mượn đã đạt tối đa!!!", MyDialog.ERROR_DIALOG);
                 return;
             }
@@ -643,11 +648,6 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
                 String maSach = String.valueOf(dtmSachMuon.getValueAt(i, 0));
                 String tenSach = String.valueOf(dtmSachMuon.getValueAt(i, 1));
                 String thanhTien = String.valueOf(dtmSachMuon.getValueAt(i, 2));
-                timSachGUI.dtmSach.removeRow(timSachGUI.hang);
-                if(maSach.trim().equals(txtMaSach.getText())){
-                    new MyDialog("Sách đã được thêm vào phiếu mượn!!!",MyDialog.ERROR_DIALOG);
-                    return;
-                }
             }
 
             String maSach = txtMaSach.getText();
@@ -657,6 +657,8 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
             btnThemSachAction(maSach, tenSach, thanhTien);
 
             ctPhieuMuonBUS.chonSachMuon(maSach);
+            timSachGUI = new DlgTimSach();
+            timSachGUI.loadDataLenTable(); // Load lại dữ liệu vào bảng
 
             // Xóa dữ liệu trong các trường nhập liệu
             txtMaSach.setText("");
@@ -696,6 +698,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
                 txtThanhTien.setText("");
             }
         }
+        timSachGUI = new DlgTimSach();
         timSachGUI.loadDataLenTable();
     }
 

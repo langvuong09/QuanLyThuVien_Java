@@ -120,7 +120,7 @@ public class DlgTimSachPhat extends JDialog{
             for(CTPhieuTra ctpt : dsctpt){
                 Vector vec = new Vector();
                 vec.add(ctpt.getMaSach());
-                vec.add(sachBUS.getTenSachMuon(ctpt.getMaSach()));
+                vec.add(sachBUS.getTenSach(ctpt.getMaSach()));
                 dtmTimCTPhieuTra.addRow(vec);
             }
         }

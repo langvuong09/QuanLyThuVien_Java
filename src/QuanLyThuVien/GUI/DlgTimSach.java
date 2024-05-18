@@ -22,10 +22,8 @@ import java.text.DecimalFormat;
 public class DlgTimSach extends  JDialog {
     private SachBUS sachBUS = new SachBUS();
     private LoaiBUS loaiBUS = new LoaiBUS();
-    private NXBBUS nxbBUS = new NXBBUS();
     private TacGiaBUS tacGiaBUS = new TacGiaBUS();
     public static Sach sachTimDuoc = null;
-    protected int hang;
 
     public DlgTimSach() {
         addControls();
@@ -61,11 +59,11 @@ public class DlgTimSach extends  JDialog {
         dtmSach = new DefaultTableModel();
         dtmSach.addColumn("Mã");
         dtmSach.addColumn("Loại");
-        dtmSach.addColumn("NXB");
         dtmSach.addColumn("Tác giả");
         dtmSach.addColumn("Tên sách");
         dtmSach.addColumn("Giá");
         dtmSach.addColumn("Ghi chú");
+        dtmSach.addColumn("SL");
         tblSach = new MyTable(dtmSach);
         JScrollPane scrSach = new JScrollPane(tblSach);
         pnTable.add(scrSach, BorderLayout.CENTER);
@@ -113,18 +111,15 @@ public class DlgTimSach extends  JDialog {
             int ma = Integer.parseInt(tblSach.getValueAt(row, 0) + "");
             String loai = String.valueOf(tblSach.getValueAt(row, 1));
             int maLoai = loaiBUS.getMaLoai(loai);
-            String nxb = String.valueOf(tblSach.getValueAt(row, 2));
-            int maNXB = nxbBUS.getMaNXB(nxb);
-            String tacGia = String.valueOf(tblSach.getValueAt(row, 3));
+            String tacGia = String.valueOf(tblSach.getValueAt(row, 2));
             int maTacGia = tacGiaBUS.getMaTacGia(tacGia);
-            String ten = tblSach.getValueAt(row, 4) + "";
-            String giaMuon = tblSach.getValueAt(row, 5).toString().replace(",", "");
+            String ten = tblSach.getValueAt(row, 3) + "";
+            String giaMuon = tblSach.getValueAt(row, 4).toString().replace(",", "");
             long gia = Long.parseLong(giaMuon);
-            String ghiChu = tblSach.getValueAt(row,6) + "";
+            String ghiChu = tblSach.getValueAt(row,5) + "";
 
-            sachTimDuoc = new Sach(ma, maLoai, maNXB, maTacGia, ten, gia, ghiChu,1);
+            sachTimDuoc = new Sach(ma, maLoai, maTacGia, ten, gia, ghiChu,1);
 
-            hang = row;
         }
         this.dispose();
     }
@@ -138,16 +133,14 @@ public class DlgTimSach extends  JDialog {
                 vec.add(s.getMaSach());
                 String tenLoai = loaiBUS.getTenLoai(s.getMaLoaiSach());
                 vec.add(tenLoai);
-                String tenNXB = nxbBUS.getTenNXB(s.getMaNXB());
-                vec.add(tenNXB);
                 String tenTacGia = tacGiaBUS.getTenTacGia(s.getMaTacGia());
                 vec.add(tenTacGia);
                 vec.add(s.getTenSach());
                 DecimalFormat formatter = new DecimalFormat("###,###");
                 String giaSach = formatter.format(s.getGiaSach());
                 vec.add(giaSach);
-                vec.add(s.getGiaSach());
                 vec.add(s.getGhiChu());
+                vec.add(s.getSoLuong());
                 dtmSach.addRow(vec);
             }
         }
@@ -162,8 +155,6 @@ public class DlgTimSach extends  JDialog {
                 vec.add(s.getMaSach());
                 String tenLoai = loaiBUS.getTenLoai(s.getMaLoaiSach());
                 vec.add(tenLoai);
-                String tenNXB = nxbBUS.getTenNXB(s.getMaNXB());
-                vec.add(tenNXB);
                 String tenTacGia = tacGiaBUS.getTenTacGia(s.getMaTacGia());
                 vec.add(tenTacGia);
                 vec.add(s.getTenSach());

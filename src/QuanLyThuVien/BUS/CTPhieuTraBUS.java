@@ -1,6 +1,7 @@
 package QuanLyThuVien.BUS;
 
 import MyCustom.MyDialog;
+import QuanLyThuVien.DTO.CTPhieuMuon;
 import QuanLyThuVien.DTO.CTPhieuTra;
 import QuanLyThuVien.DAO.CTPhieuTraDAO;
 import QuanLyThuVien.BUS.SachBUS;
@@ -23,6 +24,9 @@ public class CTPhieuTraBUS {
     }
 
     public ArrayList<CTPhieuTra> getListCTPhieuTraTheoMaPT(String maPT){
+        if(maPT.equals("")){
+            return listCTPhieuTra;
+        }
         int maT = Integer.parseInt(maPT);
         ArrayList<CTPhieuTra> dsctpt = new ArrayList<>();
         for(CTPhieuTra ctpt : listCTPhieuTra){
@@ -73,5 +77,23 @@ public class CTPhieuTraBUS {
             }
         }
         return dsctpt;
+    }
+
+    public ArrayList<CTPhieuTra> luaChon(String maPM) {
+        if(maPM.equals("")){
+            return listCTPhieuTra;
+        }
+        int ma = Integer.parseInt(maPM);
+        return ctPhieuTraDAO.getListCTPhieuTraTheoMaPM(ma);
+    }
+
+    public boolean xacDinhCTPT(String maSach, String maPM){
+        int maS = Integer.parseInt(maSach);
+        int maM = Integer.parseInt(maPM);
+        if(ctPhieuTraDAO.xacDinhCTPhieuTra(maS,maM)){
+            return true;
+        }else {
+            return false;
+        }
     }
 }

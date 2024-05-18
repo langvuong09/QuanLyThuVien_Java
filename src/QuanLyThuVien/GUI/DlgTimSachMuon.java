@@ -120,7 +120,7 @@ public class DlgTimSachMuon extends JDialog{
             for(CTPhieuMuon ctpm : dsctpm){
             Vector vec = new Vector();
                 vec.add(ctpm.getMaSach());
-                vec.add(sachBUS.getTenSachMuon(ctpm.getMaSach()));
+                vec.add(sachBUS.getTenSach(ctpm.getMaSach()));
                 dtmTimCTPhieuMuon.addRow(vec);
             }
         }

@@ -2,6 +2,7 @@ package QuanLyThuVien.BUS;
 
 import QuanLyThuVien.DAO.PhanQuyenDAO;
 import QuanLyThuVien.DTO.PhieuMuon;
+import QuanLyThuVien.DTO.CTPhieuMuon;
 import QuanLyThuVien.DTO.PhieuTra;
 import QuanLyThuVien.DAO.PhieuTraDAO;
 import QuanLyThuVien.BUS.DocGiaBUS;
@@ -21,7 +22,6 @@ public class PhieuTraBUS {
     private PhieuMuonBUS pmBUS = new PhieuMuonBUS();
     private DocGiaBUS docGiaBUS = new DocGiaBUS();
     private NhanVienBUS nhanVienBUS = new NhanVienBUS();
-    private DangNhapGUI dangNhapGUI = new DangNhapGUI();
     public PhieuTraBUS(){docListPhieuTra();}
     public void docListPhieuTra(){
         listPhieuTra = ptDAO.getListPhieuTra();
@@ -85,7 +85,7 @@ public class PhieuTraBUS {
         return false;
     }
 
-    public boolean themPhieuTra(String maPT, String maPM, String docGia, String ngayTraThuc){
+    public boolean themPhieuTra(String maPT, String maPM, String docGia, String nhanVien, String ngayTraThuc){
         if(maPM.trim().equals("")){
             new MyDialog("Không được để trống mã phiếu mượn!!!", MyDialog.ERROR_DIALOG);
             return false;
@@ -93,6 +93,7 @@ public class PhieuTraBUS {
         try{
             int maT = Integer.parseInt(maPT);
             int maM = Integer.parseInt(maPM);
+            int maNhanVien = Integer.parseInt(nhanVien);
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             Date ngay = sdf.parse(ngayTraThuc);
             java.sql.Date sqlNgay = new java.sql.Date(ngay.getTime());
@@ -101,7 +102,7 @@ public class PhieuTraBUS {
             pt.setMaPhieuTra(maT);
             pt.setMaPhieuMuon(maM);
             pt.setMaDocGia(docGiaBUS.getMaDocGia(docGia));
-            pt.setMaNhanVien(dangNhapGUI.maTaiKhoan());
+            pt.setMaNhanVien(maNhanVien);
             pt.setNgayTraThuc(sqlNgay);
 
             if(ptDAO.themPhieuTra(pt)){

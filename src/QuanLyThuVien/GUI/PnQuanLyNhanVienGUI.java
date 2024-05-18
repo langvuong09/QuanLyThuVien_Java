@@ -48,7 +48,6 @@ public class PnQuanLyNhanVienGUI extends JPanel{
     JButton btnThem, btnXoa, btnSua, btnReset, btnXuatExcel, btnNhapExcel, btnTim, btnCapTK, btnMKQuyen, btnKhoa;
     JLabel lblTabbedNhanVien, lblTabbedQuyen;
     JRadioButton rdbNam, rdbNu;
-    JComboBox jComboBox1;
     final ImageIcon tabbedSelected = new ImageIcon("image/Manager-GUI/tabbed-btn--selected.png");
     final ImageIcon tabbedDefault = new ImageIcon("image/Manager-GUI/tabbed-btn.png");
 
@@ -297,7 +296,7 @@ public class PnQuanLyNhanVienGUI extends JPanel{
         //</editor-fold>
         pnThongTinNhanVien.add(scrTblNhanVien, BorderLayout.CENTER);
 
-//        loadDataLenBangNhanVien();
+        loadDataLenTableNhanVien();
 
         pnTableNhanVien.add(pnThongTinNhanVien);
 
@@ -338,15 +337,20 @@ public class PnQuanLyNhanVienGUI extends JPanel{
         ckbQLNhanVien.setFont(font);
         ckbQLNhanVien.setBounds(320,200,200,30);
 
+        ckbQLNhapSach = new JCheckBox("Quản lý nhập sách.");
+        ckbQLNhapSach.setFont(font);
+        ckbQLNhapSach.setBounds(320,250,200,30);
+
         ckbQLThongKe = new JCheckBox("Quản lý thống kê");
         ckbQLThongKe.setFont(font);
-        ckbQLThongKe.setBounds(320,250,200,30);
+        ckbQLThongKe.setBounds(320,300,200,30);
 
         Dimension ckbSize = ckbQLSach.getPreferredSize();
         cmbPhanQuyen.setPreferredSize(ckbSize);
         ckbQLSach.setPreferredSize(ckbSize);
         ckbQLDocGia.setPreferredSize(ckbSize);
         ckbQLNhanVien.setPreferredSize(ckbSize);
+        ckbQLNhapSach.setPreferredSize(ckbSize);
         ckbQLThongKe.setPreferredSize(ckbSize);
 
         btnThemQuyen = new JButton("Thêm quyền");
@@ -360,15 +364,16 @@ public class PnQuanLyNhanVienGUI extends JPanel{
         btnXoaQuyen.setIcon(new ImageIcon("image/delete-icon.png"));
         btnSuaQuyen.setPreferredSize(btnThemQuyen.getPreferredSize());
         btnXoaQuyen.setPreferredSize(btnThemQuyen.getPreferredSize());
-        btnThemQuyen.setBounds(100,300,180,40);
-        btnXoaQuyen.setBounds(315,300,180,40);
-        btnSuaQuyen.setBounds(530,300,180,40);
+        btnThemQuyen.setBounds(100,350,180,40);
+        btnXoaQuyen.setBounds(315,350,180,40);
+        btnSuaQuyen.setBounds(530,350,180,40);
 
         pnPhanQuyen.add(lblCmbQuyen);
         pnPhanQuyen.add(cmbPhanQuyen);
         pnPhanQuyen.add(ckbQLSach);
         pnPhanQuyen.add(ckbQLDocGia);
         pnPhanQuyen.add(ckbQLNhanVien);
+        pnPhanQuyen.add(ckbQLNhapSach);
         pnPhanQuyen.add(ckbQLThongKe);
         pnPhanQuyen.add(btnThemQuyen);
         pnPhanQuyen.add(btnXoaQuyen);
@@ -383,12 +388,11 @@ public class PnQuanLyNhanVienGUI extends JPanel{
         pnCardTabNhanVien.add(pnTablePhanQuyen,"2");
 
         this.add(pnCardTabNhanVien);
-        loadDataLenTableNhanVien();
         loadDataCmbQuyen();
     }
 
     JComboBox<String> cmbPhanQuyen;
-    JCheckBox ckbQLSach, ckbQLNhanVien, ckbQLDocGia, ckbQLThongKe;
+    JCheckBox ckbQLSach, ckbQLNhanVien, ckbQLDocGia, ckbQLNhapSach, ckbQLThongKe;
     JButton btnThemQuyen, btnXoaQuyen, btnSuaQuyen;
 
     private void addEventsNhanVien(){
@@ -755,6 +759,7 @@ public class PnQuanLyNhanVienGUI extends JPanel{
                 phanQuyen.setQlSach(pq.getQlSach());
                 phanQuyen.setQlDocGia(pq.getQlDocGia());
                 phanQuyen.setQlNhanVien(pq.getQlNhanVien());
+                phanQuyen.setQlNhapSach(pq.getQlNhapSach());
                 phanQuyen.setThongKe(pq.getThongKe());
                 break;
             }
@@ -762,6 +767,7 @@ public class PnQuanLyNhanVienGUI extends JPanel{
         ckbQLSach.setSelected(false);
         ckbQLDocGia.setSelected(false);
         ckbQLNhanVien.setSelected(false);
+        ckbQLNhapSach.setSelected(false);
         ckbQLThongKe.setSelected(false);
         if(phanQuyen.getQlSach() == 1){
             ckbQLSach.setSelected(true);
@@ -771,6 +777,9 @@ public class PnQuanLyNhanVienGUI extends JPanel{
         }
         if(phanQuyen.getQlNhanVien() == 1){
             ckbQLNhanVien.setSelected(true);
+        }
+        if(phanQuyen.getQlNhapSach() == 1){
+            ckbQLNhapSach.setSelected(true);
         }
         if(phanQuyen.getThongKe() == 1){
             ckbQLThongKe.setSelected(true);
@@ -811,9 +820,10 @@ public class PnQuanLyNhanVienGUI extends JPanel{
         int sach = ckbQLSach.isSelected() ? 1 : 0;
         int nhanVien = ckbQLNhanVien.isSelected() ? 1 : 0;
         int docGia = ckbQLDocGia.isSelected() ? 1 : 0;
+        int nhapSach = ckbQLDocGia.isSelected() ? 1 : 0;
         int thongKe = ckbQLThongKe.isSelected() ? 1 : 0;
 
-        boolean flag = phanQuyenBUS.suaQuyen(tenQuyen, sach, nhanVien, docGia, thongKe);
+        boolean flag = phanQuyenBUS.suaQuyen(tenQuyen, sach, nhanVien, docGia, nhapSach, thongKe);
         if (flag) {
             loadDataCmbQuyen();
         }

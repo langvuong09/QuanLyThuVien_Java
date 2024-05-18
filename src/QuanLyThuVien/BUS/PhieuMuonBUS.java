@@ -1,6 +1,7 @@
 package QuanLyThuVien.BUS;
 
 import QuanLyThuVien.DAO.PhanQuyenDAO;
+import QuanLyThuVien.DTO.CTPhieuMuon;
 import QuanLyThuVien.DTO.PhieuMuon;
 import QuanLyThuVien.DAO.PhieuMuonDAO;
 import QuanLyThuVien.BUS.DocGiaBUS;
@@ -18,7 +19,6 @@ public class PhieuMuonBUS {
     private PhieuMuonDAO pmDAO = new PhieuMuonDAO();
     private DocGiaBUS docGiaBUS = new DocGiaBUS();
     private NhanVienBUS nhanVienBUS = new NhanVienBUS();
-    private DangNhapGUI dangNhapGUI = new DangNhapGUI();
     public PhieuMuonBUS(){docListPhieuMuon();}
     public void docListPhieuMuon(){
         listPhieuMuon = pmDAO.getListPhieuMuon();
@@ -85,7 +85,7 @@ public class PhieuMuonBUS {
         return false;
     }
 
-    public boolean themPhieuMuon(String maPM, String DocGia, String ngayMuon, String ngayTra, String tongTien) {
+    public boolean themPhieuMuon(String maPM, String DocGia, String nhanVien, String ngayMuon, String ngayTra, String tongTien) {
         // Kiểm tra nhập liệu
         if (DocGia.trim().equals("")) {
             new MyDialog("Đọc giả không được để rỗng!", MyDialog.ERROR_DIALOG);
@@ -112,12 +112,13 @@ public class PhieuMuonBUS {
             tongTien = tongTien.replace(",", "");
             long tongTienPM = Long.parseLong(tongTien);
             int ma = Integer.parseInt(maPM);
+            int maNhanVien = Integer.parseInt(nhanVien);
 
             // Tạo đối tượng PhieuMuon mới và gọi phương thức themPhieuMuon từ DAO
             PhieuMuon pm = new PhieuMuon();
             pm.setMaPhieuMuon(ma);
             pm.setMaDocGia(docGiaBUS.getMaDocGia(DocGia));
-            pm.setMaNhanVien(dangNhapGUI.maTaiKhoan());
+            pm.setMaNhanVien(maNhanVien);
             pm.setNgayMuon(sqlDateMuon);
             pm.setNgayTra(sqlDateTra);
             pm.setTongTien(tongTienPM);

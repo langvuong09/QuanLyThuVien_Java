@@ -24,8 +24,8 @@ public class PhanQuyenBUS {
         return this.listPhanQuyen;
     }
 
-    public boolean suaQuyen(String tenQuyen, int sach, int nhanVien, int docGia, int thongKe){
-        PhanQuyen phanQuyen = new PhanQuyen(tenQuyen,sach,nhanVien,docGia,thongKe);
+    public boolean suaQuyen(String tenQuyen, int sach, int nhanVien, int docGia,int nhapSach, int thongKe){
+        PhanQuyen phanQuyen = new PhanQuyen(tenQuyen,sach,nhanVien,docGia,nhapSach,thongKe);
         boolean flag = phanQuyenDAO.suaQuyen(phanQuyen);
         if(flag){
             new MyDialog("Sửa thành công", MyDialog.SUCCESS_DIALOG);
@@ -45,7 +45,7 @@ public class PhanQuyenBUS {
             return false;
         }
 
-        PhanQuyen phanQuyen = new PhanQuyen(tenQuyen,0,0,0,0);
+        PhanQuyen phanQuyen = new PhanQuyen(tenQuyen,0,0,0,0,0);
         boolean flag = phanQuyenDAO.themQuyen(phanQuyen);
         if(flag){
             new MyDialog("Thêm thành công! Hãy hiệu chỉnh quyền", MyDialog.SUCCESS_DIALOG);

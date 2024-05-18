@@ -18,6 +18,9 @@ public class CTPhieuMuonBUS {
     public ArrayList<CTPhieuMuon> getListCTPhieuMuon(){return  listCTPhieuMuon;}
 
     public ArrayList<CTPhieuMuon> getListCTPhieuMuonTheoMaPM(String maPhieuMuon){
+        if(maPhieuMuon.equals("")){
+            return listCTPhieuMuon;
+        }
         int ma = Integer.parseInt(maPhieuMuon);
         ArrayList<CTPhieuMuon> dsctpm = new ArrayList<>();
         for(CTPhieuMuon ctpm : listCTPhieuMuon){

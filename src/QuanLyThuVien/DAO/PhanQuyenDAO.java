@@ -20,7 +20,8 @@ public class PhanQuyenDAO {
                 phanQuyen.setQlSach(rs.getInt(2));
                 phanQuyen.setQlNhanVien(rs.getInt(3));
                 phanQuyen.setQlDocGia(rs.getInt(4));
-                phanQuyen.setThongKe(rs.getInt(5));
+                phanQuyen.setQlNhapSach(rs.getInt(5));
+                phanQuyen.setThongKe(rs.getInt(6));
                 dspq.add(phanQuyen);
             }
             return dspq;
@@ -41,7 +42,8 @@ public class PhanQuyenDAO {
                 phanQuyen.setQlSach(rs.getInt(2));
                 phanQuyen.setQlNhanVien(rs.getInt(3));
                 phanQuyen.setQlDocGia(rs.getInt(4));
-                phanQuyen.setThongKe(rs.getInt(5));
+                phanQuyen.setQlNhapSach(rs.getInt(5));
+                phanQuyen.setThongKe(rs.getInt(6));
                 return phanQuyen;
             }
         }
@@ -52,13 +54,14 @@ public class PhanQuyenDAO {
 
     public boolean suaQuyen(PhanQuyen phanQuyen){
         try{
-            String sql = "UPDATE phanquyen SET QLSach=?, QLNhanVien=?, QLDocGia=?, ThongKe=? WHERE Quyen=?";
+            String sql = "UPDATE phanquyen SET QLSach=?, QLNhanVien=?, QLDocGia=?, QLNhapSach=?, ThongKe=? WHERE Quyen=?";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             pre.setInt(1,phanQuyen.getQlSach());
             pre.setInt(2,phanQuyen.getQlNhanVien());
             pre.setInt(3,phanQuyen.getQlDocGia());
-            pre.setInt(4,phanQuyen.getThongKe());
-            pre.setString(5,phanQuyen.getQuyen());
+            pre.setInt(4,phanQuyen.getQlNhapSach());
+            pre.setInt(5,phanQuyen.getThongKe());
+            pre.setString(6,phanQuyen.getQuyen());
             return pre.executeUpdate() >0;
         }catch (Exception e){
         }
@@ -67,13 +70,14 @@ public class PhanQuyenDAO {
 
     public boolean themQuyen(PhanQuyen phanQuyen){
         try {
-            String sql = "INSERT INTO phanquyen VALUES (?,?,?,?,?)";
+            String sql = "INSERT INTO phanquyen VALUES (?,?,?,?,?,?)";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             pre.setString(1,phanQuyen.getQuyen());
             pre.setInt(2,phanQuyen.getQlSach());
             pre.setInt(3,phanQuyen.getQlNhanVien());
             pre.setInt(4,phanQuyen.getQlDocGia());
-            pre.setInt(5,phanQuyen.getThongKe());
+            pre.setInt(5,phanQuyen.getQlNhapSach());
+            pre.setInt(6,phanQuyen.getThongKe());
             return pre.executeUpdate() > 0;
         }
         catch (Exception e){

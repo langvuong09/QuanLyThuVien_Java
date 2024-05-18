@@ -88,7 +88,7 @@ public class PhieuPhatBUS {
         return false;
     }
 
-    public boolean themPhieuPhat(String maPP, String maPT, String maSach, String docGia, String lyDo, String thanhTien){
+    public boolean themPhieuPhat(String maPP, String maPT, String maSach, String docGia, String nhanVien, String lyDo, String thanhTien){
         if(maPT.trim().equals("")){
             new MyDialog("Không được để trống mã phiếu trả!!!", MyDialog.ERROR_DIALOG);
             return false;
@@ -102,13 +102,14 @@ public class PhieuPhatBUS {
             int maPhieuTra = Integer.parseInt(maPT);
             int maS = Integer.parseInt(maSach);
             long tien = Long.parseLong(thanhTien);
+            int maNhanVien = Integer.parseInt(nhanVien);
 
             PhieuPhat pp = new PhieuPhat();
             pp.setMaPhieuPhat(maPhieuPhat);
             pp.setMaPhieuTra(maPhieuTra);
             pp.setMaSach(maS);
             pp.setMaDocGia(docGiaBUS.getMaDocGia(docGia));
-            pp.setMaNhanVien(dangNhapGUI.maTaiKhoan());
+            pp.setMaNhanVien(maNhanVien);
             pp.setLyDo(lyDo);
             pp.setThanhTien(tien);
 
@@ -139,7 +140,7 @@ public class PhieuPhatBUS {
         }
     }
 
-    public boolean suaPhieuPhat(String maPP, String maPT, String maSach, String docGia, String lyDo, String thanhTien){
+    public boolean suaPhieuPhat(String maPP, String maPT, String maSach, String docGia, String nhanVien, String lyDo, String thanhTien){
         if(maPP.trim().equals("")){
             new MyDialog("Chưa chọn phiếu phạt để sửa!!!", MyDialog.ERROR_DIALOG);
             return false;
@@ -157,13 +158,14 @@ public class PhieuPhatBUS {
             int maPhieuTra = Integer.parseInt(maPT);
             int maS = Integer.parseInt(maSach);
             long tien = Long.parseLong(thanhTien);
+            int maNhanVien = Integer.parseInt(nhanVien);
 
             PhieuPhat pp = new PhieuPhat();
             pp.setMaPhieuPhat(maPhieuPhat);
             pp.setMaPhieuTra(maPhieuTra);
             pp.setMaSach(maS);
             pp.setMaDocGia(docGiaBUS.getMaDocGia(docGia));
-            pp.setMaNhanVien(dangNhapGUI.maTaiKhoan());
+            pp.setMaNhanVien(maNhanVien);
             pp.setLyDo(lyDo);
             pp.setThanhTien(tien);
 
@@ -180,23 +182,18 @@ public class PhieuPhatBUS {
     }
 
     public ArrayList<PhieuPhat> timKiemTheoKhoang(String txtMin, String txtMax){
-        if(txtMin.trim().equals("") && txtMax.trim().equals("")){
+        if(txtMin.trim().equals("Lựa chọn") && txtMax.trim().equals("Lựa chọn")){
             return listPhieuPhat;
         }
         try{
             ArrayList<PhieuPhat> dspp = new ArrayList<>();
-            txtMin = txtMin.replace(",", "");
-            txtMax = txtMax.replace(",","");
-            long min = Long.parseLong(txtMin);
-            long max = Long.parseLong(txtMax);
             for(PhieuPhat pp : listPhieuPhat){
-                if (pp.getThanhTien() >= min && pp.getThanhTien() <= max){
+                if (pp.getLyDo().contains(txtMin) || pp.getLyDo().contains(txtMax)){
                     dspp.add(pp);
                 }
             }
             return dspp;
         }catch (Exception e){
-            new MyDialog("Hãy nhập giá trị nguyên phù hợp!", MyDialog.ERROR_DIALOG);
         }
         return null;
     }

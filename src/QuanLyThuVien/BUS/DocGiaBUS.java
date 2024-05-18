@@ -1,5 +1,7 @@
 package QuanLyThuVien.BUS;
 
+import QuanLyThuVien.DAO.CTPhieuMuonDAO;
+import QuanLyThuVien.DAO.CTPhieuTraDAO;
 import QuanLyThuVien.DTO.DocGia;
 import QuanLyThuVien.DAO.DocGiaDAO;
 import MyCustom.MyDialog;
@@ -12,6 +14,8 @@ import java.util.regex.*;
 public class DocGiaBUS {
     private ArrayList<DocGia> listDocGia = null;
     private DocGiaDAO docGiaDAO = new DocGiaDAO();
+    private CTPhieuMuonDAO ctpmDAO = new CTPhieuMuonDAO();
+    private CTPhieuTraDAO ctptDAO = new CTPhieuTraDAO();
 
     public DocGiaBUS(){docDanhSach();}
     public void docDanhSach() {this.listDocGia = docGiaDAO.getListDocGia();}
@@ -216,5 +220,12 @@ public class DocGiaBUS {
             }
         }
         return dsdg;
+    }
+
+    public int locDocGia(String maDocGia){
+        int maDG = Integer.parseInt(maDocGia);
+        int slSM = ctpmDAO.locDocGia(maDG);
+        int slST = ctptDAO.locDocGia(maDG);
+        return slSM - slST;
     }
 }

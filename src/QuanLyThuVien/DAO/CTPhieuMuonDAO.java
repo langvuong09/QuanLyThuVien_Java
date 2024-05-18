@@ -2,6 +2,7 @@ package QuanLyThuVien.DAO;
 
 import QuanLyThuVien.DTO.CTPhieuMuon;
 import QuanLyThuVien.DTO.PhieuMuon;
+import QuanLyThuVien.DAO.SachDAO;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class CTPhieuMuonDAO {
+    SachDAO sachDAO = new SachDAO();
 
     public ArrayList<CTPhieuMuon> getListCTPhieuMuon(){
         ArrayList<CTPhieuMuon> dsctpm = new ArrayList<>();
@@ -33,7 +35,7 @@ public class CTPhieuMuonDAO {
     public ArrayList<CTPhieuMuon> getListCTPhieuMuonTheoTrangThai(){
         ArrayList<CTPhieuMuon> dsctpm = new ArrayList<>();
         try{
-            String sql = "SELECT * FROM ctphieumuon WHERE MaSach IN (SELECT MaSach FROM sach WHERE TrangThai=0)";
+            String sql = "SELECT * FROM ctphieumuon WHERE MaSach IN (SELECT MaSach FROM sach )";
             Statement st = MyConnect.conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()){
@@ -70,5 +72,19 @@ public class CTPhieuMuonDAO {
         }catch (Exception e){
         }
         return false;
+    }
+
+    public int locDocGia(int maDocGia){
+        try{
+            String sql = "SELECT COUNT(MaSach) FROM ctphieumuon,phieumuon WHERE ctphieumuon.MaPhieuMuon=phieumuon.MaPhieuMuon " +
+                    "AND phieumuon.MaDocGia="+maDocGia;
+            Statement st = MyConnect.conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+        }catch (SQLException e){
+        }
+        return 0;
     }
 }
