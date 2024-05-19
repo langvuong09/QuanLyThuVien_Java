@@ -407,6 +407,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         btnSachPhat.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                timSachPhatGUI = new DlgTimSachPhat();
                 if(!txtMaPhieuTra.getText().equals(""))
                     timSachPhatGUI.loadDataLenTable(txtMaPhieuTra.getText());
                 xuLyTimSachPhat();
@@ -653,6 +654,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
     }
 
     private void xuLyTimPhieuTra(){
+        timPhieuTraGUI = new DlgTimPhieuTra();
         timPhieuTraGUI.setVisible(true);
         if(timPhieuTraGUI.phieuTraTimDuoc != null){
             txtMaPhieuTra.setText(String.valueOf(timPhieuTraGUI.phieuTraTimDuoc.getMaPhieuTra()));

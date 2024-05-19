@@ -553,7 +553,6 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
             boolean flags = xuLyXoaCTPhieuMuon(txtMaPhieuMuon.getText());
             boolean flag = pmBUS.xoaPhieuMuon(txtMaPhieuMuon.getText());
             loadDataLenBangPhieuMuon();
-            timSachGUI.loadDataLenTable();
         }
     }
 

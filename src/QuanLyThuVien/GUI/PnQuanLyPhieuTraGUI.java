@@ -392,6 +392,8 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         btnPhieuMuon.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                timPhieuMuonGUI = new DlgTimPhieuMuon();
+                timPhieuMuonGUI.setVisible(true);
                 xuLyTimPhieuMuon();
                 xuLyThemNgayThang();
                 danhSachctpt.clear();
@@ -633,8 +635,7 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
     }
 
     private void xuLyTimPhieuMuon(){
-        dtmSachTra.setRowCount(0);
-        timPhieuMuonGUI.setVisible(true);
+
         if(timPhieuMuonGUI.phieuMuonTimDuoc != null){
             txtMaPhieuMuon.setText(String.valueOf(timPhieuMuonGUI.phieuMuonTimDuoc.getMaPhieuMuon()));
             txtDocGia.setText(docGiaBUS.getTenDocGia(timPhieuMuonGUI.phieuMuonTimDuoc.getMaDocGia()));
