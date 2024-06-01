@@ -95,6 +95,11 @@ public class SachBUS {
         return null;
     }
 
+    public String getAnh(String ma){
+        int maSach = Integer.parseInt(ma);
+        return sachDAO.getAnh(maSach);
+    }
+
     public void capNhatTrangThaiSach(String ma){
         sachDAO.capNhatTrangThaiSach(ma);
     }
@@ -103,7 +108,7 @@ public class SachBUS {
         sachDAO.chonSach(ma);
     }
 
-    public boolean nhapSachExcel(String loai, String tacGia, String tenSach, String gia, String ghiChu, String soLuong){
+    public boolean nhapSachExcel(String loai, String tacGia, String tenSach, String gia, String hinhAnh, String soLuong){
         try{
             String[] mLoai = loai.split(" ");
             int maLoai = Integer.parseInt(mLoai[0].trim());
@@ -117,7 +122,7 @@ public class SachBUS {
             sach.setMaTacGia(maTacGia);
             sach.setTenSach(tenSach);
             sach.setGiaSach(giaSach);
-            sach.setGhiChu(ghiChu);
+            sach.setHinhAnh(hinhAnh);
             sach.setSoLuong(sl);
 
             sachDAO.nhapSachTuExcel(sach);
@@ -127,7 +132,7 @@ public class SachBUS {
         return false;
     }
 
-    public boolean themSach(String loai, String tacGia, String tenSach, String gia, String ghiChu, String soLuong){
+    public boolean themSach(String loai, String tacGia, String tenSach, String gia, String hinhAnh, String soLuong){
         if(tenSach.trim().equals("")){
             new MyDialog("Không được để trống tên sách!!!", MyDialog.ERROR_DIALOG);
             return false;
@@ -161,7 +166,7 @@ public class SachBUS {
             sach.setMaTacGia(maTacGia);
             sach.setTenSach(tenSach);
             sach.setGiaSach(giaSach);
-            sach.setGhiChu(ghiChu);
+            sach.setHinhAnh(hinhAnh);
             sach.setSoLuong(sl);
 
             if(sachDAO.themSach(sach)){
@@ -192,7 +197,7 @@ public class SachBUS {
         }
     }
 
-    public boolean suaSach(String ma,String loai, String tacGia, String tenSach, String gia, String ghiChu, String soLuong){
+    public boolean suaSach(String ma,String loai, String tacGia, String tenSach, String gia, String hinhAnh, String soLuong){
         if(tenSach.trim().equals("")){
             new MyDialog("Không được để trống tên sách!!!", MyDialog.ERROR_DIALOG);
             return false;
@@ -228,7 +233,7 @@ public class SachBUS {
             sach.setMaTacGia(maTacGia);
             sach.setTenSach(tenSach);
             sach.setGiaSach(giaSach);
-            sach.setGhiChu(ghiChu);
+            sach.setHinhAnh(hinhAnh);
             sach.setSoLuong(sl);
 
             if(sachDAO.suaSach(sach)){

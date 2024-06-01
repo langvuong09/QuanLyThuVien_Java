@@ -15,4 +15,10 @@ public class ThongKeBUS {
     public double getDoanhThuThang(int thang, int nam) {
         return thongKeDAO.getDoanhThuThang(thang, nam);
     }
+
+
+
+
+
+
 }

@@ -13,8 +13,10 @@ import MyCustom.TransparentPanel;
 import QuanLyThuVien.BUS.SachBUS;
 import QuanLyThuVien.DTO.TacGia;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -23,6 +25,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -43,8 +49,9 @@ public class PnQuanLySachGUI extends JPanel {
     MyTable tblSach;
     DefaultTableModel dtmSach;
     JTextField txtIDSach, txtTenSach, txtGia, txtTimKiem, txtSoLuong;
-    JTextArea txtGhiChu;
-    JButton btnThem, btnXoa, btnSua, btnReset, btnXuatExcel, btnNhapExcel, btnTim, btnDocGia, btnSach;
+    JLabel lblHinhAnh;
+    File fileAnhSach;
+    JButton btnThem, btnXoa, btnSua, btnReset, btnXuatExcel, btnNhapExcel, btnTim, btnDocGia, btnChonAnh;
     JComboBox<String> cmbLoai, cmbTacGia;
     final ImageIcon tabbedSelected = new ImageIcon("image/Manager-GUI/tabbed-btn--selected.png");
     final ImageIcon tabbedDefault = new ImageIcon("image/Manager-GUI/tabbed-btn.png");
@@ -85,8 +92,8 @@ public class PnQuanLySachGUI extends JPanel {
         txtTenSach = new JTextField(x);
         cmbTacGia = new JComboBox<String>();
         txtGia = new JTextField(y);
-        txtGhiChu = new JTextArea();
         txtSoLuong = new JTextField(x);
+        lblHinhAnh = new JLabel();
         txtTimKiem = new JTextField(x);
 
 
@@ -138,13 +145,10 @@ public class PnQuanLySachGUI extends JPanel {
         pnThongTinSach.add(lblGia);
         pnThongTinSach.add(txtGia);
 
-        JLabel lblGhiChu = new JLabel("Ghi chú:");
-        lblGhiChu.setFont(font);
-        txtGhiChu.setFont(font);
-        txtGhiChu.setLineWrap(true);
-        JScrollPane scrollPane = new JScrollPane(txtGhiChu);
-        lblGhiChu.setBounds(400, 50, 140, 25);
-        scrollPane.setBounds(520, 50, 220, 125);
+        lblHinhAnh.setPreferredSize(new Dimension(180,180));
+        lblHinhAnh.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        lblHinhAnh.setIcon(getAnhSach(""));
+        lblHinhAnh.setBounds(540, 0, 180, 180);
 
         JLabel lblSoLuong = new JLabel("Số lượng:");
         lblSoLuong.setFont(font);
@@ -158,8 +162,7 @@ public class PnQuanLySachGUI extends JPanel {
         lblTimKiem.setBounds(350, 250, 300, 25);
         txtTimKiem.setBounds(520, 250, 250, 25);
 
-        pnThongTinSach.add(lblGhiChu);
-        pnThongTinSach.add(scrollPane);
+        pnThongTinSach.add(lblHinhAnh);
         pnThongTinSach.add(lblSoLuong);
         pnThongTinSach.add(txtSoLuong);
         pnThongTinSach.add(lblTimKiem);
@@ -179,8 +182,8 @@ public class PnQuanLySachGUI extends JPanel {
         btnTim = new JButton("Tìm kiếm");
         btnXuatExcel = new JButton("Xuất");
         btnNhapExcel = new JButton("Nhập");
+        btnChonAnh = new JButton("Chọn ảnh");
         btnDocGia = new JButton("...");
-        btnSach = new JButton("...");
 
         Font fontButton = new Font("Tahoma", Font.PLAIN, 16);
         btnThem.setFont(fontButton);
@@ -190,7 +193,7 @@ public class PnQuanLySachGUI extends JPanel {
         btnXuatExcel.setFont(fontButton);
         btnNhapExcel.setFont(fontButton);
         btnDocGia.setFont(fontButton);
-        btnSach.setFont(fontButton);
+        btnChonAnh.setFont(fontButton);
 
         btnThem.setIcon(new ImageIcon("image/add-icon.png"));
         btnSua.setIcon(new ImageIcon("image/Pencil-icon.png"));
@@ -205,7 +208,7 @@ public class PnQuanLySachGUI extends JPanel {
         btnTim.setBounds(410, 300, 110, 40);
         btnXuatExcel.setBounds(525, 300, 105, 40);
         btnNhapExcel.setBounds(635, 300, 105, 40);
-        //btnSach.setBounds(705, 50, 30, 25);
+        btnChonAnh.setBounds(400, 150, 120, 30);
 
         pnThongTinSach.add(btnThem);
         pnThongTinSach.add(btnSua);
@@ -213,7 +216,7 @@ public class PnQuanLySachGUI extends JPanel {
         pnThongTinSach.add(btnTim);
         pnThongTinSach.add(btnXuatExcel);
         pnThongTinSach.add(btnNhapExcel);
-        // pnThongTinSach.add(btnSach);
+         pnThongTinSach.add(btnChonAnh);
 
         pnTableSach.add(pnThongTinSach);
 
@@ -225,7 +228,7 @@ public class PnQuanLySachGUI extends JPanel {
         dtmSach.addColumn("Tác giả");
         dtmSach.addColumn("Tên sách");
         dtmSach.addColumn("Giá");
-        dtmSach.addColumn("Ghi chú");
+        dtmSach.addColumn("Hình ảnh");
         dtmSach.addColumn("SL");
 
         tblSach = new MyTable(dtmSach);
@@ -235,12 +238,12 @@ public class PnQuanLySachGUI extends JPanel {
         tblSach.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
 
         TableColumnModel columnModelSach = tblSach.getColumnModel();
-        columnModelSach.getColumn(0).setPreferredWidth(50);
-        columnModelSach.getColumn(1).setPreferredWidth(150);
-        columnModelSach.getColumn(2).setPreferredWidth(130);
+        columnModelSach.getColumn(0).setPreferredWidth(60);
+        columnModelSach.getColumn(1).setPreferredWidth(160);
+        columnModelSach.getColumn(2).setPreferredWidth(150);
         columnModelSach.getColumn(3).setPreferredWidth(230);
-        columnModelSach.getColumn(4).setPreferredWidth(130);
-        columnModelSach.getColumn(5).setPreferredWidth(170);
+        columnModelSach.getColumn(4).setPreferredWidth(140);
+        columnModelSach.getColumn(5).setPreferredWidth(120);
         columnModelSach.getColumn(6).setPreferredWidth(80);
 
 
@@ -271,7 +274,7 @@ public class PnQuanLySachGUI extends JPanel {
                 txtTenSach.setText("");
                 cmbLoai.setSelectedIndex(0);
                 cmbTacGia.setSelectedIndex(0);
-                txtGhiChu.setText("");
+                lblHinhAnh.setIcon(null);
                 txtGia.setText("");
                 txtSoLuong.setText("");
                 txtTimKiem.setText("");
@@ -293,7 +296,7 @@ public class PnQuanLySachGUI extends JPanel {
                 txtTenSach.setText("");
                 cmbLoai.setSelectedIndex(0);
                 cmbTacGia.setSelectedIndex(0);
-                txtGhiChu.setText("");
+                lblHinhAnh.setIcon(null);
                 txtGia.setText("");
                 txtSoLuong.setText("");
                 txtTimKiem.setText("");
@@ -307,7 +310,7 @@ public class PnQuanLySachGUI extends JPanel {
                 txtTenSach.setText("");
                 cmbLoai.setSelectedIndex(0);
                 cmbTacGia.setSelectedIndex(0);
-                txtGhiChu.setText("");
+                lblHinhAnh.setIcon(null);
                 txtGia.setText("");
                 txtTimKiem.setText("");
                 txtSoLuong.setText("");
@@ -321,7 +324,7 @@ public class PnQuanLySachGUI extends JPanel {
                 txtTenSach.setText("");
                 cmbLoai.setSelectedIndex(0);
                 cmbTacGia.setSelectedIndex(0);
-                txtGhiChu.setText("");
+                lblHinhAnh.setIcon(null);
                 txtGia.setText("");
                 txtTimKiem.setText("");
                 txtSoLuong.setText("");
@@ -343,6 +346,12 @@ public class PnQuanLySachGUI extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 xuLyNhapFileExcel();
+            }
+        });
+        btnChonAnh.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                xuLyChonAnh();
             }
         });
         cmbLoai.addActionListener(new ActionListener() {
@@ -412,10 +421,62 @@ public class PnQuanLySachGUI extends JPanel {
             vec.add(tacGiaBUS.getTenTacGia(s.getMaTacGia()));
             vec.add(s.getTenSach());
             vec.add(s.getGiaSach());
-            vec.add(s.getGhiChu());
+            vec.add(s.getHinhAnh());
            vec.add(s.getSoLuong());
             dtmSach.addRow(vec);
         }
+    }
+
+    private void loadAnh(String hinhAnh){lblHinhAnh.setIcon(getAnhSach(hinhAnh));}
+
+    private void luuFileAnh(){
+        BufferedImage bImage = null;
+        try{
+            File fImage = new File(fileAnhSach.getPath());
+            bImage = ImageIO.read(fImage);
+
+            ImageIO.write(bImage,"png", new File("image/Sach/"+fileAnhSach.getName()));
+        }catch (IOException e){
+            System.out.println("Exception occured :" + e.getMessage());
+        }
+    }
+
+    private void xuLyChonAnh(){
+        JFileChooser fileChooser = new JFileChooser("image/Sach/");
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Tệp hình ảnh","jpg","png","jpeg");
+        fileChooser.setFileFilter(filter);
+        int returnVal = fileChooser.showOpenDialog(null);
+
+        if(returnVal == JFileChooser.APPROVE_OPTION){
+            fileAnhSach = fileChooser.getSelectedFile();
+            lblHinhAnh.setIcon(getAnhSach(fileAnhSach.getPath()));
+        }
+    }
+
+    private ImageIcon getAnhSach(String src){
+        src = src.trim().equals("") ? "default.png" : src;
+        //Xử lý ảnh
+        BufferedImage img = null;
+        File fileImg = new File(src);
+
+        if (!fileImg.exists()) {
+            src = "default.png";
+            fileImg = new File("image/Sach/" + src);
+        }
+
+        try {
+            img = ImageIO.read(fileImg);
+            fileAnhSach = new File(src);
+        } catch (IOException e) {
+            fileAnhSach = new File("imgs/anhthe/avatar.jpg");
+        }
+
+        if (img != null) {
+            Image dimg = img.getScaledInstance(180, 180, Image.SCALE_SMOOTH);
+            return new ImageIcon(dimg);
+        }
+
+        return null;
     }
 
     private void xuLyClickTblSach(){
@@ -425,10 +486,10 @@ public class PnQuanLySachGUI extends JPanel {
             String giaSach = tblSach.getValueAt(row,4)+"";
             String loai = tblSach.getValueAt(row,1)+"";
             String tacGia = tblSach.getValueAt(row,2)+"";
+            String anh = tblSach.getValueAt(row,5)+"";
             txtIDSach.setText(maSach);
             txtTenSach.setText(tblSach.getValueAt(row,3)+"");
             txtGia.setText(giaSach);
-            txtGhiChu.setText(tblSach.getValueAt(row,5)+"");
             txtSoLuong.setText(tblSach.getValueAt(row,6)+"");
 
             int l=-1,nxb=-1,tg=-1;
@@ -447,6 +508,7 @@ public class PnQuanLySachGUI extends JPanel {
 
             cmbLoai.setSelectedIndex(l);
             cmbTacGia.setSelectedIndex(tg);
+            loadAnh("image/Sach/"+ anh);
         }
     }
 
@@ -478,10 +540,12 @@ public class PnQuanLySachGUI extends JPanel {
     }
 
     private void xuLyThemSach(){
+        String anh =fileAnhSach.getName();
         String loaiSach = (String) cmbLoai.getSelectedItem();
         String tacGia = (String) cmbTacGia.getSelectedItem();
-        boolean flag = sachBUS.themSach(loaiSach,tacGia,txtTenSach.getText(),txtGia.getText(),txtGhiChu.getText(),txtSoLuong.getText());
+        boolean flag = sachBUS.themSach(loaiSach,tacGia,txtTenSach.getText(),txtGia.getText(),anh,txtSoLuong.getText());
         loadDataLenTableSach();
+        luuFileAnh();
     }
 
     private void xuLyXoaSach(){
@@ -490,11 +554,13 @@ public class PnQuanLySachGUI extends JPanel {
     }
 
     private void xuLySuaSach(){
+        String anh = fileAnhSach.getName();
         String loaiSach = (String) cmbLoai.getSelectedItem();
         String tacGia = (String) cmbTacGia.getSelectedItem();
         String maSach = txtIDSach.getText();
-        boolean flag = sachBUS.suaSach(maSach,loaiSach,tacGia,txtTenSach.getText(),txtGia.getText(),txtGhiChu.getText(),txtSoLuong.getText());
+        boolean flag = sachBUS.suaSach(maSach,loaiSach,tacGia,txtTenSach.getText(),txtGia.getText(),anh,txtSoLuong.getText());
         loadDataLenTableSach();
+        luuFileAnh();
     }
 
     private void xuLyTimKiem(){
@@ -508,7 +574,7 @@ public class PnQuanLySachGUI extends JPanel {
             vec.add(tacGiaBUS.getTenTacGia(s.getMaTacGia()));
             vec.add(s.getTenSach());
             vec.add(s.getGiaSach());
-            vec.add(s.getGhiChu());
+            vec.add(s.getHinhAnh());
             vec.add(s.getSoLuong());
             dtmSach.addRow(vec);
         }

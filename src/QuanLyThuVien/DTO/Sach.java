@@ -7,19 +7,19 @@ public class Sach {
     private int maTacGia;
     private String tenSach;
     private long giaSach;
-    private String ghiChu;
+    private String hinhAnh;
     private int soLuong;
 
     public Sach(){
     }
 
-    public Sach(int maSach,int maLoaiSach,int maTacGia,String tenSach,long giaSach,String ghiChu,int soLuong){
+    public Sach(int maSach,int maLoaiSach,int maTacGia,String tenSach,long giaSach,String hinhAnh,int soLuong){
         this.maSach = maSach;
         this.maLoaiSach = maLoaiSach;
         this.maTacGia = maTacGia;
         this.tenSach = tenSach;
         this.giaSach = giaSach;
-        this.ghiChu = ghiChu;
+        this.hinhAnh = hinhAnh;
         this.soLuong = soLuong;
     }
 
@@ -63,12 +63,12 @@ public class Sach {
         this.giaSach = giaSach;
     }
 
-    public String getGhiChu() {
-        return ghiChu;
+    public String getHinhAnh() {
+        return hinhAnh;
     }
 
-    public void setGhiChu(String ghiChu) {
-        this.ghiChu = ghiChu;
+    public void setHinhAnh(String hinhAnh) {
+        this.hinhAnh = hinhAnh;
     }
 
     public int getSoLuong() {

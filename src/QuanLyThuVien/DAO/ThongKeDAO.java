@@ -194,4 +194,25 @@ public class ThongKeDAO {
         }
         return 0;
     }
+//    public double getTongTienPhieuNhapTheoQuy(int nam, int thang){
+//        try{
+//            String thangBD = nam+"-"+thang+"-01";
+//            String thangKT = nam+"-"+(thang+1)+"-01";
+//            String sql = "SELECT SUM(ThanhTien) FROM phieunhap WHERE NgayLap BETWEEN ? AND ?";
+//            PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
+//            pre.setString(1,thangBD);
+//            pre.setString(2,thangKT);
+//            ResultSet rs = pre.executeQuery();
+//            while (rs.next()){
+//                return rs.getDouble(1);
+//            }
+//        }catch (SQLException e){
+//        }
+//        return 0;
+//    }
+
+
+
+
+
 }

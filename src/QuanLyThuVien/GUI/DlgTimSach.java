@@ -139,7 +139,7 @@ public class DlgTimSach extends  JDialog {
                 DecimalFormat formatter = new DecimalFormat("###,###");
                 String giaSach = formatter.format(s.getGiaSach());
                 vec.add(giaSach);
-                vec.add(s.getGhiChu());
+                vec.add(s.getHinhAnh());
                 vec.add(s.getSoLuong());
                 dtmSach.addRow(vec);
             }
@@ -162,7 +162,7 @@ public class DlgTimSach extends  JDialog {
                 String giaSach = formatter.format(s.getGiaSach());
                 vec.add(giaSach);
                 vec.add(s.getGiaSach());
-                vec.add(s.getGhiChu());
+                vec.add(s.getHinhAnh());
                 dtmSach.addRow(vec);
             }
         }
