@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.regex.*;
 
 public class DocGiaBUS {
-    private ArrayList<DocGia> listDocGia = null;
+    private ArrayList<DocGia>   listDocGia = null;
     private DocGiaDAO docGiaDAO = new DocGiaDAO();
     private CTPhieuMuonDAO ctpmDAO = new CTPhieuMuonDAO();
     private CTPhieuTraDAO ctptDAO = new CTPhieuTraDAO();
