@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th5 19, 2024 lúc 05:30 AM
+-- Thời gian đã tạo: Th9 12, 2024 lúc 11:47 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -55,8 +55,6 @@ INSERT INTO `ctphieumuon` (`MaPhieuMuon`, `MaSach`, `ThanhTien`) VALUES
 (7, 18, 10000),
 (8, 11, 8100),
 (8, 8, 11800),
-(9, 12, 25100),
-(9, 9, 8000),
 (10, 3, 5200),
 (10, 4, 8500);
 
@@ -116,8 +114,7 @@ INSERT INTO `ctphieutra` (`MaPhieuTra`, `MaSach`) VALUES
 (6, 8),
 (7, 3),
 (7, 4),
-(8, 12),
-(9, 9);
+(10, 10);
 
 -- --------------------------------------------------------
 
@@ -146,9 +143,10 @@ INSERT INTO `docgia` (`MaDocGia`, `Ho`, `Ten`, `GioiTinh`, `SDT`, `Gmail`, `Quye
 (4, 'Tiến', 'Cường', 'Nam', '0916707058\r\n', 'langvuong12345@gmail.com', 1),
 (5, 'Lê Tạ Nguyệt', 'Minh', 'Nữ', '0787520167', 'nguyetminhcute@gmail.com', 1),
 (6, 'Trịnh Hoàng', 'Tuấn', 'Nam', '0896745232', 'tht12082001@gmail.com', 1),
-(7, 'Lê Hoàng', 'Nhật', 'Nam', '0932596952\r ', 'lehoangnhat10a07@gmail.com', 1),
+(7, 'Lê Hoàng', 'Nhật', 'Nam', '0932596952\r ', 'lehoangnhat10a07@gmail.com', 0),
 (13, 'dcs', 'qưdsc', 'Nam', '1234567890', 'wsadfcxz@gmail.com', 0),
-(14, 'ewds', 'ewfdc', 'Nam', '43512345678', 'cuong@gmail.com', 0);
+(14, 'ewds', 'ewfdc', 'Nam', '43512345678', 'cuong@gmail.com', 0),
+(15, 'Cali khat', 'nuoc', 'Nam', '0945675183', 'manhnvl@gmail.com', 1);
 
 -- --------------------------------------------------------
 
@@ -241,7 +239,7 @@ CREATE TABLE `phanquyen` (
 INSERT INTO `phanquyen` (`Quyen`, `QLSach`, `QLNhanVien`, `QLDocGia`, `QLNhapSach`, `ThongKe`) VALUES
 ('admin', 1, 1, 1, 1, 1),
 ('default', 0, 0, 0, 0, 0),
-('manage', 1, 1, 1, 1, 0),
+('manage', 1, 0, 1, 1, 0),
 ('staff', 1, 0, 1, 0, 0);
 
 -- --------------------------------------------------------
@@ -272,7 +270,6 @@ INSERT INTO `phieumuon` (`MaPhieuMuon`, `MaDocGia`, `MaNhanVien`, `NgayMuon`, `N
 (6, 4, 4, '2024-05-15', '2024-06-04', 20000),
 (7, 5, 1, '2024-05-19', '2024-06-08', 50500),
 (8, 6, 1, '2024-05-19', '2024-06-08', 19900),
-(9, 7, 1, '2024-05-19', '2024-06-08', 33100),
 (10, 2, 1, '2024-05-19', '2024-06-08', 13700);
 
 -- --------------------------------------------------------
@@ -353,8 +350,7 @@ INSERT INTO `phieutra` (`MaPhieuTra`, `MaPhieuMuon`, `MaDocGia`, `MaNhanVien`, `
 (5, 6, 4, 1, '2024-05-19'),
 (6, 8, 6, 1, '2024-05-19'),
 (7, 10, 2, 1, '2024-05-19'),
-(8, 9, 7, 1, '2024-05-19'),
-(9, 9, 7, 1, '2024-05-19');
+(10, 5, 6, 1, '2024-05-20');
 
 -- --------------------------------------------------------
 
@@ -368,7 +364,7 @@ CREATE TABLE `sach` (
   `MaTacGia` int(11) NOT NULL,
   `TenSach` varchar(50) NOT NULL,
   `GiaSach` int(50) NOT NULL,
-  `GhiChu` varchar(255) NOT NULL,
+  `HinhAnh` varchar(255) NOT NULL,
   `SoLuong` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -376,27 +372,27 @@ CREATE TABLE `sach` (
 -- Đang đổ dữ liệu cho bảng `sach`
 --
 
-INSERT INTO `sach` (`MaSach`, `MaLoai`, `MaTacGia`, `TenSach`, `GiaSach`, `GhiChu`, `SoLuong`) VALUES
-(1, 1, 1, 'Trạng Quỳnh tập 1', 15000, 'Tái bản lần thứ 11', 10),
-(2, 1, 1, 'Trạng Quỳnh tập 2', 15000, 'Tái bản lần thứ 11', 10),
-(3, 3, 2, 'Nhật ký trong tù', 52000, 'Tái bản', 11),
-(4, 1, 3, 'Tôi là Bêtô', 85000, 'Tái bản 2023', 8),
-(5, 1, 1, 'Trạng Quỳnh tập 3', 15000, 'Tái bản lần thứ 11', 11),
-(6, 4, 5, 'I am Đàn bà', 99000, 'Xuất bản năm 1993', 10),
-(7, 2, 4, 'The Lord of the Rings', 210000, 'null', 10),
-(8, 2, 6, 'Nhựa cây', 118000, 'Dịch bởi Hoàng Anh', 9),
-(9, 1, 7, 'Your name', 80000, 'Boxset, Chính truyện, Another side', 9),
-(10, 1, 8, 'Thiên sứ nhà bên', 79000, 'Bìa cứng, sáng tác vào tháng 1 năm 2024', 10),
-(11, 3, 10, 'Điểm số không phải là tất cả', 81000, 'Bìa mềm, đồng tác giả: Lý Thừa Vận', 9),
-(12, 3, 9, 'Trung Quốc - Lịch sử kế thừa', 251000, 'Sách tham khảo', 8),
-(13, 1, 11, 'những vụ án của sherlock holmes', 180000, 'Thích hợp độ tuổi 16+', 9),
-(14, 1, 3, 'Những người hàng xóm', 200000, 'Phiên bản thông thường', 9),
-(15, 1, 3, 'Mắt biếc', 110000, 'Hiện đã có phim', 10),
-(16, 1, 11, 'Sherlock Holmes quyển 1', 115000, 'bìa cứng', 9),
-(17, 1, 11, 'Sherlock Holmes quyển 2', 110000, 'bìa cứng', 9),
-(18, 1, 11, 'Sherlock Holmes quyển 3', 100000, 'bìa cứng', 9),
-(19, 1, 3, 'Kính vạn hoa', 130000, 'bìa mềm', 10),
-(20, 2, 12, 'Kẻ khôn đi lối khác', 170000, 'bìa mềm ', 10);
+INSERT INTO `sach` (`MaSach`, `MaLoai`, `MaTacGia`, `TenSach`, `GiaSach`, `HinhAnh`, `SoLuong`) VALUES
+(1, 1, 1, 'Trạng Quỳnh tập 1', 15000, 'trangQuynh1.png', 10),
+(2, 1, 1, 'Trạng Quỳnh tập 2', 15000, 'trangQuynh2.png', 10),
+(3, 3, 2, 'Nhật ký trong tù', 52000, 'nhatKiTrongTu.png', 11),
+(4, 1, 3, 'Tôi là Bêtô', 85000, 'toiLaBeTo.png', 7),
+(5, 1, 1, 'Trạng Quỳnh tập 3', 15000, 'trangQuynh3.png', 11),
+(6, 4, 5, 'I am Đàn bà', 99000, 'iAmDanBa.png', 10),
+(7, 2, 4, 'The Lord of the Rings', 210000, 'theLordsOfTheRings.png', 10),
+(8, 2, 6, 'Nhựa cây', 118000, 'nhuaCay.png', 9),
+(9, 1, 7, 'Your name', 80000, 'yourName.png', 9),
+(10, 1, 8, 'Thiên sứ nhà bên', 79000, 'thienSuNhaKeBen.png', 10),
+(11, 3, 10, 'Điểm số không phải là tất cả', 81000, 'diemSoKhongPhaiLaTatca.png', 9),
+(12, 3, 9, 'Trung Quốc - Lịch sử kế thừa', 251000, 'TQ-lichSuKeThua.png', 8),
+(13, 1, 11, 'những vụ án của sherlock holmes', 180000, 'nhungVuAnCuaSherlockHolmes.png', 9),
+(14, 1, 3, 'Những người hàng xóm', 200000, 'nhungNguoiHangXom.png', 9),
+(15, 1, 3, 'Mắt biếc', 110000, 'matBiec.png', 10),
+(16, 1, 11, 'Sherlock Holmes quyển 1', 115000, 'SherlockHolmes1.png', 9),
+(17, 1, 11, 'Sherlock Holmes quyển 2', 110000, 'SherlockHolmes2.png', 9),
+(18, 1, 11, 'Sherlock Holmes quyển 3', 100000, 'SherlockHolmes3.png', 9),
+(19, 1, 3, 'Kính vạn hoa', 130000, 'kinhVanHoa.png', 10),
+(20, 2, 12, 'Kẻ khôn đi lối khác', 170000, 'keKhonDiLoiKhac.png', 10);
 
 -- --------------------------------------------------------
 
@@ -571,7 +567,7 @@ ALTER TABLE `taikhoan`
 -- AUTO_INCREMENT cho bảng `docgia`
 --
 ALTER TABLE `docgia`
-  MODIFY `MaDocGia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `MaDocGia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT cho bảng `loaisach`
@@ -607,13 +603,13 @@ ALTER TABLE `phieuphat`
 -- AUTO_INCREMENT cho bảng `phieutra`
 --
 ALTER TABLE `phieutra`
-  MODIFY `MaPhieuTra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `MaPhieuTra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT cho bảng `sach`
 --
 ALTER TABLE `sach`
-  MODIFY `MaSach` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `MaSach` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT cho bảng `tacgia`
