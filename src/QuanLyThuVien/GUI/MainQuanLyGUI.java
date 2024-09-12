@@ -30,11 +30,12 @@ public class MainQuanLyGUI extends JFrame{
 
     JLabel btnDoiMatKhau;
 
-    JPanel pnTitle, pnMenuLeft, pnCard, pnSach, pnDocGia, pnMuonSach, pnTraSach, pnQuaHan, pnNhanVien, pnNhapSach, pnThongKe;
+    JPanel pnTitle, pnMenuLeft, pnCard, pnSach, pnKhuVuc, pnDocGia, pnMuonSach, pnTraSach, pnQuaHan, pnNhanVien, pnNhapSach, pnThongKe;
 
-    JLabel btnClose, btnMinimize,lblSach,lblDocGia, lblMuonSach, lblTraSach, lblQuaHan, lblNhanVien, lblNhapSach, lblThongKe;
+    JLabel btnClose, btnMinimize,lblSach,lblKhuVuc,lblDocGia, lblMuonSach, lblTraSach, lblQuaHan, lblNhanVien, lblNhapSach, lblThongKe;
 
     PnQuanLySachGUI sachPanel;
+    PnQuanLyKhuVucGUI khuVucPanel;
     PnQuanLyDocGiaGUI docGiaPanel;
     PnQuanLyPhieuMuonGUI phieuMuonPanel;
     PnQuanLyPhieuTraGUI phieuTraPanel;
@@ -106,6 +107,7 @@ public class MainQuanLyGUI extends JFrame{
         lblAvatar.setPreferredSize(new Dimension(250, 130));
 
         lblSach = new JLabel(new ImageIcon("image/Manager-GUI/lblSach.png"));
+        lblKhuVuc = new JLabel(new ImageIcon("image/Manager-GUI/lblKhuVuc.png"));
         lblDocGia = new JLabel(new ImageIcon("image/Manager-GUI/lblDocGia.png"));
         lblMuonSach = new JLabel(new ImageIcon("image/Manager-GUI/lblPhieuMuon.png"));
         lblTraSach = new JLabel(new ImageIcon("image/Manager-GUI/lblPhieuTra.png"));
@@ -117,6 +119,7 @@ public class MainQuanLyGUI extends JFrame{
         listMenuLeft = new ArrayList<>();
         pnMenuLeft.add(lblAvatar);
         listMenuLeft.add(lblSach);
+        listMenuLeft.add(lblKhuVuc);
         listMenuLeft.add(lblDocGia);
         listMenuLeft.add(lblMuonSach);
         listMenuLeft.add(lblTraSach);
@@ -136,6 +139,7 @@ public class MainQuanLyGUI extends JFrame{
 
         lblSach.setBackground(clLeftItemSelected);
         lblSach.setVisible(true);
+        lblKhuVuc.setVisible(true);
         lblDocGia.setVisible(true);
         lblMuonSach.setVisible(true);
         lblTraSach.setVisible(true);
@@ -151,6 +155,7 @@ public class MainQuanLyGUI extends JFrame{
         pnCard = new JPanel(cardMenuLeftGroup);
 
         pnSach = new JPanel();
+        pnKhuVuc = new JPanel();
         pnDocGia = new JPanel();
         pnMuonSach = new JPanel();
         pnTraSach = new JPanel();
@@ -160,18 +165,23 @@ public class MainQuanLyGUI extends JFrame{
         pnThongKe = new JPanel();
 
         pnCard.add(pnSach, "1");
-        pnCard.add(pnDocGia, "2");
-        pnCard.add(pnMuonSach, "3");
-        pnCard.add(pnTraSach, "4");
-        pnCard.add(pnQuaHan, "5");
-        pnCard.add(pnNhanVien,"6");
-        pnCard.add(pnNhapSach,"7");
-        pnCard.add(pnThongKe, "8");
+        pnCard.add(pnKhuVuc,"2");
+        pnCard.add(pnDocGia, "3");
+        pnCard.add(pnMuonSach, "4");
+        pnCard.add(pnTraSach, "5");
+        pnCard.add(pnQuaHan, "6");
+        pnCard.add(pnNhanVien,"7");
+        pnCard.add(pnNhapSach,"8");
+        pnCard.add(pnThongKe, "9");
 
         //==========ADD PANEL KHÔNG PHÂN QUYỀN==========//
         sachPanel = new PnQuanLySachGUI();
         pnSach.setLayout(new BorderLayout());
         pnSach.add(sachPanel,BorderLayout.CENTER);
+
+        khuVucPanel = new PnQuanLyKhuVucGUI();
+        pnKhuVuc.setLayout(new BorderLayout());
+        pnKhuVuc.add(khuVucPanel,BorderLayout.CENTER);
 
         docGiaPanel = new PnQuanLyDocGiaGUI();
         pnDocGia.setLayout(new BorderLayout());
@@ -304,20 +314,22 @@ public class MainQuanLyGUI extends JFrame{
                     String cardName = "";
                     if (lbl == lblSach) {
                         cardName = "1";
-                    } else if (lbl == lblDocGia) {
+                    } else if (lbl == lblKhuVuc) {
                         cardName = "2";
-                    } else if (lbl == lblMuonSach) {
+                    } else if (lbl == lblDocGia) {
                         cardName = "3";
-                    } else if (lbl == lblTraSach) {
+                    } else if (lbl == lblMuonSach) {
                         cardName = "4";
-                    } else if (lbl == lblQuaHan) {
+                    } else if (lbl == lblTraSach) {
                         cardName = "5";
-                    } else if (lbl == lblNhanVien) {
+                    } else if (lbl == lblQuaHan) {
                         cardName = "6";
-                    } else if (lbl == lblNhapSach) {
+                    } else if (lbl == lblNhanVien) {
                         cardName = "7";
-                    } else {
+                    } else if (lbl == lblNhapSach) {
                         cardName = "8";
+                    } else {
+                        cardName = "9";
                     }
                     cardMenuLeftGroup.show(pnCard, cardName);
                 }

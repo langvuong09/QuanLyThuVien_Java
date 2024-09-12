@@ -103,10 +103,11 @@ public class DlgTimSachMuon extends JDialog{
         int row = tblTimCTPhieuMuon.getSelectedRow();
         if (row > -1) {
             int maSach = Integer.parseInt(tblTimCTPhieuMuon.getValueAt(row, 0) + "");
+            int maPhanSach = Integer.parseInt(tblTimCTPhieuMuon.getValueAt(row, 1) + "");
             String maPhieuMuonString = this.maPm;
             int maPhieuMuon = Integer.parseInt(maPhieuMuonString);
 
-            ctPhieuMuonTimDuoc = new CTPhieuMuon(maPhieuMuon, maSach, 0);
+            ctPhieuMuonTimDuoc = new CTPhieuMuon(maPhieuMuon, maSach, maPhanSach, 0);
 
         }
         this.dispose();

@@ -57,6 +57,7 @@ public class DlgTimSachPhat extends JDialog{
         pnTable.setLayout(new BorderLayout());
         dtmTimCTPhieuTra = new DefaultTableModel();
         dtmTimCTPhieuTra.addColumn("Mã sách");
+        dtmTimCTPhieuTra.addColumn("Mã phân sách");
         dtmTimCTPhieuTra.addColumn("Tên sách");
         tblTimCTPhieuTra = new MyTable(dtmTimCTPhieuTra);
         JScrollPane srcTimCTPhieuTra = new JScrollPane(tblTimCTPhieuTra);
@@ -103,10 +104,11 @@ public class DlgTimSachPhat extends JDialog{
         int row = tblTimCTPhieuTra.getSelectedRow();
         if (row > -1) {
             int maSach = Integer.parseInt(tblTimCTPhieuTra.getValueAt(row, 0) + "");
+            int maPhanSach = Integer.parseInt(tblTimCTPhieuTra.getValueAt(row, 1) + "");
             String maPhieuTraString = this.maPt;
             int maPhieuMuon = Integer.parseInt(maPhieuTraString);
 
-            ctPhieuTraTimDuoc = new CTPhieuTra(maPhieuMuon, maSach);
+            ctPhieuTraTimDuoc = new CTPhieuTra(maPhieuMuon, maSach, maPhanSach);
 
         }
         this.dispose();
@@ -120,6 +122,7 @@ public class DlgTimSachPhat extends JDialog{
             for(CTPhieuTra ctpt : dsctpt){
                 Vector vec = new Vector();
                 vec.add(ctpt.getMaSach());
+                vec.add(ctpt.getMaPhanSach());
                 vec.add(sachBUS.getTenSach(ctpt.getMaSach()));
                 dtmTimCTPhieuTra.addRow(vec);
             }
@@ -132,6 +135,7 @@ public class DlgTimSachPhat extends JDialog{
         for(CTPhieuTra ctpt : dsctpt){
             Vector vec = new Vector();
             vec.add(ctpt.getMaSach());
+            vec.add(ctpt.getMaPhanSach());
             vec.add(sachBUS.getTenSach(ctpt.getMaSach()));
             dtmTimCTPhieuTra.addRow(vec);
         }

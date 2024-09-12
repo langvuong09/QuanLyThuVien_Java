@@ -6,6 +6,7 @@ public class PhieuPhat {
     private int maPhieuPhat;
     private int maPhieuTra;
     private int maSach;
+    private int maPhanSach;
     private int maDocGia;
     private int maNhanVien;
     private String lyDo;
@@ -14,10 +15,11 @@ public class PhieuPhat {
     public PhieuPhat(){
     }
 
-    public PhieuPhat(int maPhieuPhat, int maPhieuTra, int maSach, int maDocGia, int maNhanVien, String lyDo, long thanhTien){
+    public PhieuPhat(int maPhieuPhat, int maPhieuTra, int maSach, int maPhanSach, int maDocGia, int maNhanVien, String lyDo, long thanhTien){
         this.maPhieuPhat = maPhieuPhat;
         this.maPhieuTra = maPhieuTra;
         this.maSach = maSach;
+        this.maPhanSach = maPhanSach;
         this.maDocGia = maDocGia;
         this.maNhanVien = maNhanVien;
         this.lyDo = lyDo;
@@ -46,6 +48,14 @@ public class PhieuPhat {
 
     public void setMaSach(int maSach) {
         this.maSach = maSach;
+    }
+
+    public int getMaPhanSach() {
+        return maPhanSach;
+    }
+
+    public void setMaPhanSach(int maPhanSach) {
+        this.maPhanSach = maPhanSach;
     }
 
     public int getMaDocGia() {

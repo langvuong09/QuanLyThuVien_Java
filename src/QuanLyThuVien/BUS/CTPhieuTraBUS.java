@@ -37,14 +37,16 @@ public class CTPhieuTraBUS {
         return dsctpt;
     }
 
-    public boolean themCTPhieuTra(String maPhieuTra, String maSach){
+    public boolean themCTPhieuTra(String maPhieuTra, String maSach, String maPhanSach){
         try {
             int maPT = Integer.parseInt(maPhieuTra);
             int maS = Integer.parseInt(maSach);
+            int maPS = Integer.parseInt(maPhanSach);
 
             CTPhieuTra ctpt = new CTPhieuTra();
             ctpt.setMaPhieuTra(maPT);
             ctpt.setMaSach(maS);
+            ctpt.setMaPhanSach(maPS);
 
             return ctPhieuTraDAO.themCTPhieuTra(ctpt);
         }catch (Exception e){
@@ -87,10 +89,11 @@ public class CTPhieuTraBUS {
         return ctPhieuTraDAO.getListCTPhieuTraTheoMaPM(ma);
     }
 
-    public boolean xacDinhCTPT(String maSach, String maPM){
+    public boolean xacDinhCTPT(String maSach, String maPhanSach, String maPM){
         int maS = Integer.parseInt(maSach);
         int maM = Integer.parseInt(maPM);
-        if(ctPhieuTraDAO.xacDinhCTPhieuTra(maS,maM)){
+        int maPS = Integer.parseInt(maPhanSach);
+        if(ctPhieuTraDAO.xacDinhCTPhieuTra(maS,maPS,maM)){
             return true;
         }else {
             return false;

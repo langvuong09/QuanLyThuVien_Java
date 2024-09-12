@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class XuatPhieuNhapGUI extends javax.swing.JDialog {
     private DangNhapGUI dangNhapGUI = new DangNhapGUI();
     private NXBBUS nxbBUS = new NXBBUS();
+    private PhanSachBUS phanSachBUS = new PhanSachBUS();
     private ArrayList<CTPhieuNhap> listCTPhieuNhap = null;
     private long tongTien;
     private boolean checkNhap = false;

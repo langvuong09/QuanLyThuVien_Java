@@ -1,5 +1,6 @@
 package QuanLyThuVien.GUI;
 
+import QuanLyThuVien.BUS.PhanSachBUS;
 import QuanLyThuVien.BUS.PhieuMuonBUS;
 import QuanLyThuVien.BUS.CTPhieuMuonBUS;
 import MyCustom.MyDialog;
@@ -20,6 +21,7 @@ import javax.swing.event.DocumentListener;
 public class XuatPhieuMuonGUI extends JDialog{
     private PhieuMuonBUS phieuMuonBUS = new PhieuMuonBUS();
     private CTPhieuMuonBUS ctPhieuMuonBUS = new CTPhieuMuonBUS();
+    private PhanSachBUS phanSachBUS = new PhanSachBUS();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnInPhieuMuon;
@@ -100,14 +102,18 @@ public class XuatPhieuMuonGUI extends JDialog{
         hd += "<table style='max-width:100%; margin: auto;'>";
         hd += "<tr style='font-family: Tahoma; font-size: 14px;'>"
                 + "<th>Mã Sách</th>"
+                + "<th>Mã Phân Sách</th>"
                 + "<th>Tên Sách</th>"
                 + "<th>Tiền mượn</th>"
+                + "<th>Trạng thái</th>"
                 + "</tr>";
         for (Vector vec : dsCTPhieuMuon) {
             hd += "<tr>";
             hd += "<td style='text-align:center;'>" + vec.get(0) + "</td>";
             hd += "<td style='text-align:center;'>" + vec.get(1) + "</td>";
             hd += "<td style='text-align:center;'>" + vec.get(2) + "</td>";
+            hd += "<td style='text-align:center;'>" + vec.get(3) + "</td>";
+            hd += "<td style='text-align:center;'>" + phanSachBUS.trangThaiSach(String.valueOf(vec.get(0)),String.valueOf(vec.get(1))) + "</td>";
             hd += "</tr>";
         }
         hd += "<tr>";

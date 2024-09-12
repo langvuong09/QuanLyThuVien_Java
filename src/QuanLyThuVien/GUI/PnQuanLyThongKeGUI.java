@@ -94,12 +94,12 @@ public class PnQuanLyThongKeGUI extends JPanel {
         lblThongKePT.setForeground(Color.WHITE);
         lblThongKePP.setForeground(Color.WHITE);
 
-        lblThongKeSach.setBounds(205,150,50,50);
-        lblThongKeDocGia.setBounds(365,150,50,50);
-        lblThongKeNhanVien.setBounds(525,150,50,50);
-        lblThongKePM.setBounds(205,300,50,50);
-        lblThongKePT.setBounds(365,300,50,50);
-        lblThongKePP.setBounds(525,300,50,50);
+        lblThongKeSach.setBounds(185,150,100,50);
+        lblThongKeDocGia.setBounds(345,150,100,50);
+        lblThongKeNhanVien.setBounds(505,150,100,50);
+        lblThongKePM.setBounds(185,300,100,50);
+        lblThongKePT.setBounds(345,300,100,50);
+        lblThongKePP.setBounds(505,300,100,50);
 
         pnThongKeTong.add(lblTitleThongKeTong);
         pnThongKeTong.add(lblThongKeSach);

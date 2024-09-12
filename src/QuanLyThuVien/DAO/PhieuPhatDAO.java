@@ -22,10 +22,11 @@ public class PhieuPhatDAO {
                 pp.setMaPhieuPhat(rs.getInt(1));
                 pp.setMaPhieuTra(rs.getInt(2));
                 pp.setMaSach(rs.getInt(3));
-                pp.setMaDocGia(rs.getInt(4));
-                pp.setMaNhanVien(rs.getInt(5));
-                pp.setLyDo(rs.getString(6));
-                pp.setThanhTien(rs.getLong(7));
+                pp.setMaPhanSach(rs.getInt(4));
+                pp.setMaDocGia(rs.getInt(5));
+                pp.setMaNhanVien(rs.getInt(6));
+                pp.setLyDo(rs.getString(7));
+                pp.setThanhTien(rs.getLong(8));
                 dspp.add(pp);
             }
             return dspp;
@@ -44,10 +45,11 @@ public class PhieuPhatDAO {
                 pp = new PhieuPhat();
                 pp.setMaPhieuTra(rs.getInt(1));
                 pp.setMaSach(rs.getInt(2));
-                pp.setMaDocGia(rs.getInt(3));
-                pp.setMaNhanVien(rs.getInt(4));
-                pp.setLyDo(rs.getString(5));
-                pp.setThanhTien(rs.getLong(6));
+                pp.setMaSach(rs.getInt(3));
+                pp.setMaDocGia(rs.getInt(4));
+                pp.setMaNhanVien(rs.getInt(5));
+                pp.setLyDo(rs.getString(6));
+                pp.setThanhTien(rs.getLong(7));
             }
             return pp;
         }catch (SQLException e){
@@ -70,15 +72,16 @@ public class PhieuPhatDAO {
 
     public boolean themPhieuPhat(PhieuPhat pp){
         try {
-            String sql = "INSERT INTO phieuphat VALUES(?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO phieuphat VALUES(?,?,?,?,?,?,?,?)";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             pre.setInt(1, pp.getMaPhieuPhat());
             pre.setInt(2, pp.getMaPhieuTra());
             pre.setInt(3, pp.getMaSach());
-            pre.setInt(4, pp.getMaDocGia());
-            pre.setInt(5, pp.getMaNhanVien());
-            pre.setString(6, pp.getLyDo());
-            pre.setLong(7, pp.getThanhTien());
+            pre.setInt(4, pp.getMaSach());
+            pre.setInt(5, pp.getMaDocGia());
+            pre.setInt(6, pp.getMaNhanVien());
+            pre.setString(7, pp.getLyDo());
+            pre.setLong(8, pp.getThanhTien());
             return pre.executeUpdate() > 0;
         }catch (SQLException e){
         }
@@ -106,15 +109,16 @@ public class PhieuPhatDAO {
 
     public boolean suaPhieuPhat(PhieuPhat pp){
         try{
-            String sql = "UPDATE phieuphat SET MaPhieuTra=?, MaSach=?, MaDocGia=?, MaNhanVien=?, LyDo=?, ThanhTien=? WHERE MaPhieuPhat=?";
+            String sql = "UPDATE phieuphat SET MaPhieuTra=?, MaSach=?, MaPhanSach=?, MaDocGia=?, MaNhanVien=?, LyDo=?, ThanhTien=? WHERE MaPhieuPhat=?";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             pre.setInt(1,pp.getMaPhieuTra());
             pre.setInt(2,pp.getMaSach());
-            pre.setInt(3,pp.getMaDocGia());
-            pre.setInt(4,pp.getMaNhanVien());
-            pre.setString(5,pp.getLyDo());
-            pre.setLong(6,pp.getThanhTien());
-            pre.setInt(7,pp.getMaPhieuPhat());
+            pre.setInt(3,pp.getMaSach());
+            pre.setInt(4,pp.getMaDocGia());
+            pre.setInt(5,pp.getMaNhanVien());
+            pre.setString(6,pp.getLyDo());
+            pre.setLong(7,pp.getThanhTien());
+            pre.setInt(8,pp.getMaPhieuPhat());
             return pre.executeUpdate() > 0;
         }catch (SQLException e){
         }
@@ -124,16 +128,17 @@ public class PhieuPhatDAO {
     public boolean nhapPhieuPhatTuExcel(PhieuPhat pp){
         try{
             String sql = "DELETE * FROM phieuphat; "+
-                    "INSERT INTO phieuphat(MaPhieuPhat, MaPhieuTra, MaSach, MaDocGia, MaNhanVien, LyDo, ThanhTien)"+
+                    "INSERT INTO phieuphat(MaPhieuPhat, MaPhieuTra, MaSach, MaPhanSach, MaDocGia, MaNhanVien, LyDo, ThanhTien)"+
                     "VALUES(?,?,?,?,?,?,?)";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             pre.setInt(1,pp.getMaPhieuPhat());
             pre.setInt(2,pp.getMaPhieuTra());
             pre.setInt(3,pp.getMaSach());
-            pre.setInt(4,pp.getMaDocGia());
-            pre.setInt(5,pp.getMaNhanVien());
-            pre.setString(6,pp.getLyDo());
-            pre.setLong(7,pp.getThanhTien());
+            pre.setInt(4,pp.getMaSach());
+            pre.setInt(5,pp.getMaDocGia());
+            pre.setInt(6,pp.getMaNhanVien());
+            pre.setString(7,pp.getLyDo());
+            pre.setLong(8,pp.getThanhTien());
 
             return pre.executeUpdate() > 0;
         }catch (SQLException e){

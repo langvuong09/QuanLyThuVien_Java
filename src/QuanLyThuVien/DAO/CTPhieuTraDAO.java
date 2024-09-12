@@ -20,6 +20,7 @@ public class CTPhieuTraDAO {
                 CTPhieuTra ctpt = new CTPhieuTra();
                 ctpt.setMaPhieuTra(rs.getInt(1));
                 ctpt.setMaSach(rs.getInt(2));
+                ctpt.setMaPhanSach(rs.getInt(3));
                 dsctpt.add(ctpt);
             }
             return dsctpt;
@@ -40,6 +41,7 @@ public class CTPhieuTraDAO {
                 CTPhieuTra ctpt = new CTPhieuTra();
                 ctpt.setMaPhieuTra(rs.getInt(1));
                 ctpt.setMaSach(rs.getInt(2));
+                ctpt.setMaPhanSach(rs.getInt(3));
                 dsctpt.add(ctpt);
             }
             return dsctpt;
@@ -54,6 +56,7 @@ public class CTPhieuTraDAO {
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             pre.setInt(1,ctpt.getMaPhieuTra());
             pre.setInt(2,ctpt.getMaSach());
+            pre.setInt(3,ctpt.getMaPhanSach());
             return pre.executeUpdate() > 0;
         }catch (SQLException e){
         }
@@ -70,13 +73,14 @@ public class CTPhieuTraDAO {
         return false;
     }
 
-    public boolean xacDinhCTPhieuTra(int maSach, int maPM){
+    public boolean xacDinhCTPhieuTra(int maSach, int maPS, int maPM){
         try{
-            String sql = "SELECT * FROM ctphieutra,phieutra WHERE ctphieutra.MaSach=? AND phieutra.MaPhieuMuon=? " +
-                    "AND ctphieutra.MaPhieuTra=phieutra.MaPhieuTra";
+            String sql = "SELECT * FROM ctphieutra,phieutra WHERE ctphieutra.MaSach=? AND ctphieutra.MaPhanSach=?" +
+                    " AND phieutra.MaPhieuMuon=? AND ctphieutra.MaPhieuTra=phieutra.MaPhieuTra";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             pre.setInt(1,maSach);
-            pre.setInt(2,maPM);
+            pre.setInt(2,maPS);
+            pre.setInt(3,maPM);
             return pre.executeUpdate() > 0;
         }catch (SQLException e){
         }

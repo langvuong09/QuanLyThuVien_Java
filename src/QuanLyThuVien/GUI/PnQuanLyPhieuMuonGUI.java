@@ -137,11 +137,11 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         lblTongTien.setBounds(20,250,150,25);
         txtTongTien.setBounds(200,250,220,25);
 
-        JLabel lblTimKiem = new JLabel("Họ tên đọc giả cần tìm:");
+        JLabel lblTimKiem = new JLabel("Họ tên ĐG cần tìm:");
         lblTimKiem.setFont(font);
         txtTimKiem.setFont(font);
         lblTimKiem.setBounds(20,300,300,25);
-        txtTimKiem.setBounds(210,300,250,25);
+        txtTimKiem.setBounds(170,300,250,25);
 
         pnThongTinPhieuMuon.add(lblMaPhieuMuon);
         pnThongTinPhieuMuon.add(txtMaPhieuMuon);
@@ -162,11 +162,11 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         lblTitleCTPhieuMuon.setFont(new Font("Arial", Font.BOLD, 22));
         lblTitleCTPhieuMuon.setBounds(550,0,300,25);
 
-        JLabel lblMaSach = new JLabel("Mã sách:");
+        JLabel lblMaSach = new JLabel("ID sách | ID PS:");
         lblMaSach.setFont(font);
         txtMaSach.setFont(font);
         txtMaSach.setEditable(false);
-        lblMaSach.setBounds(510,50,120,25);
+        lblMaSach.setBounds(465,50,120,25);
         txtMaSach.setBounds(600,50,150,25);
 
         JLabel lblTenSach = new JLabel("Tên sách:");
@@ -194,8 +194,9 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
 
         dtmSachMuon = new DefaultTableModel();
         dtmSachMuon.addColumn("Mã");
+        dtmSachMuon.addColumn("Mã PS");
         dtmSachMuon.addColumn("Tên sách");
-        dtmSachMuon.addColumn("Giá mượn");
+        dtmSachMuon.addColumn("Giá");
         tblSachMuon = new MyTable(dtmSachMuon);
 
         tblSachMuon.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
@@ -203,12 +204,13 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
 
         TableColumnModel columnModelSachMuon = tblSachMuon.getColumnModel();
         columnModelSachMuon.getColumn(0).setPreferredWidth(20);
-        columnModelSachMuon.getColumn(1).setPreferredWidth(135);
-        columnModelSachMuon.getColumn(2).setPreferredWidth(65);
+        columnModelSachMuon.getColumn(1).setPreferredWidth(30);
+        columnModelSachMuon.getColumn(2).setPreferredWidth(120);
+        columnModelSachMuon.getColumn(3).setPreferredWidth(50);
 
         JScrollPane srclblSachMuon = new JScrollPane(tblSachMuon);
-        srclblSachMuon.setPreferredSize(new Dimension(200,75));
-        srclblSachMuon.setBounds(510,230,290,105);
+        srclblSachMuon.setPreferredSize(new Dimension(260,75));
+        srclblSachMuon.setBounds(450,230,350,105);
         srclblSachMuon.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
 
         pnThongTinPhieuMuon.add(lblTitleCTPhieuMuon);
@@ -526,6 +528,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         for (CTPhieuMuon ctpm : listCTPhieuMuon) {
             Vector vec = new Vector();
             vec.add(ctpm.getMaSach());
+            vec.add(ctpm.getMaPhanSach());
             String tenSach = sachBUS.getTenSach(ctpm.getMaSach());
             vec.add(tenSach);
             vec.add(dcf.format(ctpm.getGiaTien()));
@@ -588,9 +591,10 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         timSachGUI = new DlgTimSach();
         timSachGUI.setVisible(true);
         if(timSachGUI.sachTimDuoc != null){
-            txtMaSach.setText(timSachGUI.sachTimDuoc.getMaSach()+"");
-            txtTenSach.setText(timSachGUI.sachTimDuoc.getTenSach());
-            long tien = (timSachGUI.sachTimDuoc.getGiaSach() * 10)/100;
+            txtMaSach.setText(timSachGUI.sachTimDuoc.getMaSach()+" | "+timSachGUI.sachTimDuoc.getMaPhanSach());
+            txtTenSach.setText(sachBUS.getTenSach(timSachGUI.sachTimDuoc.getMaSach()));
+            Sach sach = sachBUS.getSach(String.valueOf(timSachGUI.sachTimDuoc.getMaSach()));
+            long tien = (sach.getGiaSach() * 10)/100 ;
             DecimalFormat formatter = new DecimalFormat("###,###");
             String tienMuon = formatter.format(tien);
             txtThanhTien.setText(tienMuon);
@@ -617,9 +621,10 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         }
     }
 
-    private void btnThemSachAction(String maSach, String tenSach, String thanhTien) {
+    private void btnThemSachAction(String maSach,String maPhanSach, String tenSach, String thanhTien) {
         Vector<Object> rowData = new Vector<>();
         rowData.add(maSach);
+        rowData.add(maPhanSach);
         rowData.add(tenSach);
         rowData.add(thanhTien);
         dtmSachMuon.addRow(rowData);
@@ -634,10 +639,10 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
             new MyDialog("Chưa chọn sách mượn!!!", MyDialog.ERROR_DIALOG);
             return;
         } else {
-            if(sachBUS.getSach(txtMaSach.getText()).getSoLuong() == 0){
-                new MyDialog("Sách đã được mượn hết!!!", MyDialog.ERROR_DIALOG);
-                return;
-            }
+//            if(sachBUS.getSach(txtMaSach.getText()).getSoLuong() == 0){
+//                new MyDialog("Sách đã được mượn hết!!!", MyDialog.ERROR_DIALOG);
+//                return;
+//            }
             int rowCount = dtmSachMuon.getRowCount();
             if (rowCount == 4) {
                 new MyDialog("Số lượng sách mượn đã đạt tối đa!!!", MyDialog.ERROR_DIALOG);
@@ -645,15 +650,19 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
             }
             for (int i = 0; i < rowCount; i++) {
                 String maSach = String.valueOf(dtmSachMuon.getValueAt(i, 0));
-                String tenSach = String.valueOf(dtmSachMuon.getValueAt(i, 1));
-                String thanhTien = String.valueOf(dtmSachMuon.getValueAt(i, 2));
+                String maPhanSach = String.valueOf(dtmSachMuon.getValueAt(i, 1));
+                String tenSach = String.valueOf(dtmSachMuon.getValueAt(i, 2));
+                String thanhTien = String.valueOf(dtmSachMuon.getValueAt(i, 3));
             }
-
-            String maSach = txtMaSach.getText();
+            String[] parts = txtMaSach.getText().split("\\|");
+            String part1 = parts[0].trim();
+            String part2 = parts[1].trim();
+            String maSach = part1;
+            String maPhanSach = part2;
             String tenSach = txtTenSach.getText();
             String thanhTien = txtThanhTien.getText();
 
-            btnThemSachAction(maSach, tenSach, thanhTien);
+            btnThemSachAction(maSach,maPhanSach, tenSach, thanhTien);
 
             ctPhieuMuonBUS.chonSachMuon(maSach);
             timSachGUI = new DlgTimSach();
@@ -672,11 +681,12 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         int rowCount = dtmSachMuon.getRowCount();
         for (int i = 0; i < rowCount; i++) {
             String maSach = (String) dtmSachMuon.getValueAt(i, 0);
-            String tenSach = (String) dtmSachMuon.getValueAt(i, 1);
-            String thanhTien = (String) dtmSachMuon.getValueAt(i, 2);
+            String maPhanSach = (String) dtmSachMuon.getValueAt(i, 1);
+            String tenSach = (String) dtmSachMuon.getValueAt(i, 2);
+            String thanhTien = (String) dtmSachMuon.getValueAt(i, 3);
 
             // Gọi phương thức để xử lý chi tiết phiếu mượn với từng hàng dữ liệu từ bảng
-            boolean flag = ctPhieuMuonBUS.themCTPhieuMuon(ma, maSach, thanhTien);
+            boolean flag = ctPhieuMuonBUS.themCTPhieuMuon(ma, maSach, maPhanSach, thanhTien);
         }
     }
 
@@ -735,8 +745,9 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         long tien = 0;
         for (int i = 0; i < rowCount; i++) {
             String maSach = (String) dtmSachMuon.getValueAt(i, 0);
-            String tenSach = (String) dtmSachMuon.getValueAt(i, 1);
-            String thanhTien = (String) dtmSachMuon.getValueAt(i, 2);
+            String maPhanSach = (String) dtmSachMuon.getValueAt(i, 1);
+            String tenSach = (String) dtmSachMuon.getValueAt(i, 2);
+            String thanhTien = (String) dtmSachMuon.getValueAt(i, 3);
             tien = tien + Long.parseLong(thanhTien.replace(",",""));
         }
         txtTongTien.setText(String.valueOf(tien));
@@ -767,6 +778,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
             vec.add(tblSachMuon.getValueAt(i,0));
             vec.add(tblSachMuon.getValueAt(i,1));
             vec.add(tblSachMuon.getValueAt(i,2));
+            vec.add(tblSachMuon.getValueAt(i,3));
             dsPhieuMuon.add(vec);
         }
         int maPM = Integer.parseInt(txtMaPhieuMuon.getText());

@@ -26,7 +26,7 @@ public class ThongKeDAO {
     private int getTongSoLuongSach(){
         try{
             Statement st = MyConnect.conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM sach");
+            ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM phansach");
             while (rs.next()){
                 return rs.getInt(1);
             }

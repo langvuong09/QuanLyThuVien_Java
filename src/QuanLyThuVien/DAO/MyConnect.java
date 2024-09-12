@@ -37,9 +37,9 @@ public class MyConnect {
 
     private void docFileText() {
         // Xử lý đọc file để lấy ra 4 tham số
-        severName = "";
-        dbName = "";
-        userName = "";
+        severName = "localhost";
+        dbName = "quanlythuvien";
+        userName = "root";
         password = "";
 
         try {

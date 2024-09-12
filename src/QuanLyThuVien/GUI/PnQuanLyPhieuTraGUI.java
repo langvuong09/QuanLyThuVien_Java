@@ -195,7 +195,8 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
 
         dtmSachTra = new DefaultTableModel();
         dtmSachTra.addColumn("Mã");
-        dtmSachTra.addColumn("Tên sách");
+        dtmSachTra.addColumn("PS");
+        dtmSachTra.addColumn("Tên");
         dtmSachTra.addColumn("TT");
         tblSachTra = new MyTable(dtmSachTra);
 
@@ -203,8 +204,9 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
 
         TableColumnModel columnModelSachTra = tblSachTra.getColumnModel();
         columnModelSachTra.getColumn(0).setPreferredWidth(30);
-        columnModelSachTra.getColumn(1).setPreferredWidth(140);
-        columnModelSachTra.getColumn(2).setPreferredWidth(50);
+        columnModelSachTra.getColumn(1).setPreferredWidth(30);
+        columnModelSachTra.getColumn(2).setPreferredWidth(110);
+        columnModelSachTra.getColumn(3).setPreferredWidth(50);
 
         JScrollPane srclblSachTra = new JScrollPane(tblSachTra);
         srclblSachTra.setPreferredSize(new Dimension(200, 200));
@@ -471,6 +473,7 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         for(CTPhieuTra ctpt : listCTPhieuTra){
             Vector vec = new Vector<>();
             vec.add(ctpt.getMaSach());
+            vec.add(ctpt.getMaPhanSach());
             vec.add(sachBUS.getTenSach(ctpt.getMaSach()));
             vec.add("Đã trả");
             dtmSachTra.addRow(vec);
@@ -485,6 +488,7 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
             int count = 0;
             Vector vec = new Vector<>();
             vec.add(ctpm.getMaSach());
+            vec.add(ctpm.getMaPhanSach());
             vec.add(sachBUS.getTenSach(ctpm.getMaSach()));
             for(CTPhieuTra ctpt : ctPhieuTraBUS.luaChon(txtMaPhieuMuon.getText())){
                 if(ctpt.getMaSach() == ctpm.getMaSach()){
@@ -552,6 +556,7 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
                 CTPhieuTra ctpt = new CTPhieuTra();
                 ctpt.setMaPhieuTra(Integer.parseInt(txtMaPhieuTra.getText()));
                 ctpt.setMaSach(Integer.parseInt(dtmSachTra.getValueAt(row,0)+""));
+                ctpt.setMaPhanSach(Integer.parseInt(dtmSachTra.getValueAt(row,1)+""));
                 danhSachctpt.add(ctpt);
             }
         }
@@ -561,7 +566,8 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
         for(CTPhieuTra ctpt : danhSachctpt){
             String maPT = String.valueOf(ctpt.getMaPhieuTra());
             String maSach = String.valueOf(ctpt.getMaSach());
-            boolean flag = ctPhieuTraBUS.themCTPhieuTra(maPT, maSach);
+            String maPhanSach = String.valueOf(ctpt.getMaPhanSach());
+            boolean flag = ctPhieuTraBUS.themCTPhieuTra(maPT, maSach, maPhanSach);
         }
     }
 
@@ -581,7 +587,7 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
             return;
         }
         else {
-            if(!ctPhieuTraBUS.xacDinhCTPT(dtmSachTra.getValueAt(row, 0) + "", txtMaPhieuMuon.getText())) {
+            if(!ctPhieuTraBUS.xacDinhCTPT(dtmSachTra.getValueAt(row, 0) + "", dtmSachTra.getValueAt(row, 1) + "", txtMaPhieuMuon.getText())) {
                 if ((dtmSachTra.getValueAt(row, 2) + "").equals("Mượn")) {
                     new MyDialog("Sách chưa được trả!!!", MyDialog.ERROR_DIALOG);
                     return;
@@ -711,12 +717,14 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
             Vector vec = new Vector();
             vec.add(tblSachTra.getValueAt(i,0));
             vec.add(tblSachTra.getValueAt(i,1));
+            vec.add(tblSachTra.getValueAt(i,2));
             dspt.add(vec);
         }
         for(CTPhieuMuon ctPhieuMuon : ctPhieuMuonBUS.getListCTPhieuMuonTheoMaPM(txtMaPhieuMuon.getText())){
             Vector vect = new Vector<>();
             vect.add(ctPhieuMuon.getMaPhieuMuon());
             vect.add(ctPhieuMuon.getMaSach());
+            vect.add(ctPhieuMuon.getMaPhanSach());
             dsctpm.add(vect);
         }
 

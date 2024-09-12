@@ -42,15 +42,17 @@ public class CTPhieuMuonBUS {
         return dsctpm;
     }
 
-    public boolean themCTPhieuMuon(String maPhieuMuon, String maSach, String thanhTien){
+    public boolean themCTPhieuMuon(String maPhieuMuon, String maSach,String maPhanSach, String thanhTien){
         try {
             int maPM = Integer.parseInt(maPhieuMuon);
             int maS = Integer.parseInt(maSach);
+            int maPS = Integer.parseInt(maPhanSach);
             thanhTien = thanhTien.replace(",", "");
 
             CTPhieuMuon ctpm = new CTPhieuMuon();
             ctpm.setMaPhieuMuon(maPM);
             ctpm.setMaSach(maS);
+            ctpm.setMaPhanSach(maPS);
             long tienMuon = Long.parseLong(thanhTien);
             ctpm.setGiaTien(tienMuon);
 

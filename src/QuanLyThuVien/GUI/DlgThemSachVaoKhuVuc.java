@@ -1,6 +1,5 @@
 package QuanLyThuVien.GUI;
 
-import MyCustom.MyDialog;
 import QuanLyThuVien.BUS.*;
 import QuanLyThuVien.DAO.MyConnect;
 import QuanLyThuVien.DTO.*;
@@ -17,17 +16,17 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import java.text.DecimalFormat;
 
-public class DlgTimSach extends  JDialog {
+public class DlgThemSachVaoKhuVuc extends  JDialog {
     private SachBUS sachBUS = new SachBUS();
     private LoaiBUS loaiBUS = new LoaiBUS();
     private TacGiaBUS tacGiaBUS = new TacGiaBUS();
-    private PhanSachBUS phanSachBUS = new PhanSachBUS();
-    public static PhanSach sachTimDuoc = null;
+    private KhuVucBUS khuVucBUS = new KhuVucBUS();
+    public static Sach sachThem= null;
 
-    public DlgTimSach() {
+    public DlgThemSachVaoKhuVuc() {
         addControls();
         addEvents();
-
+        loadDataLenTable();
         this.setSize(800, 500);
         this.setModal(true);
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -56,10 +55,13 @@ public class DlgTimSach extends  JDialog {
         JPanel pnTable = new JPanel();
         pnTable.setLayout(new BorderLayout());
         dtmSach = new DefaultTableModel();
-        dtmSach.addColumn("Mã sách");
-        dtmSach.addColumn("Mã phân sách");
+        dtmSach.addColumn("Mã");
+        dtmSach.addColumn("Loại");
+        dtmSach.addColumn("Tác giả");
         dtmSach.addColumn("Tên sách");
-        dtmSach.addColumn("Trạng thái");
+        dtmSach.addColumn("Giá");
+        dtmSach.addColumn("Hình ảnh");
+        dtmSach.addColumn("SL");
         tblSach = new MyTable(dtmSach);
         JScrollPane scrSach = new JScrollPane(tblSach);
         pnTable.add(scrSach, BorderLayout.CENTER);
@@ -104,52 +106,85 @@ public class DlgTimSach extends  JDialog {
     private void xuLyChonSach() {
         int row = tblSach.getSelectedRow();
         if (row > -1) {
-            int maS = Integer.parseInt(tblSach.getValueAt(row, 0) + "");
-            int maPS = Integer.parseInt(tblSach.getValueAt(row,1)+"");
-            String tenSach = tblSach.getValueAt(row,2)+"";
-            String trangThai = tblSach.getValueAt(row,3) + "";
-            sachTimDuoc = new PhanSach(maPS,maS,trangThai);
+            int ma = Integer.parseInt(tblSach.getValueAt(row, 0) + "");
+            String loai = String.valueOf(tblSach.getValueAt(row, 1));
+            int maLoai = loaiBUS.getMaLoai(loai);
+            String tacGia = String.valueOf(tblSach.getValueAt(row, 2));
+            int maTacGia = tacGiaBUS.getMaTacGia(tacGia);
+            String ten = tblSach.getValueAt(row, 3) + "";
+            String giaMuon = tblSach.getValueAt(row, 4).toString().replace(",", "");
+            long gia = Long.parseLong(giaMuon);
+            String hinhAnh = tblSach.getValueAt(row,5) + "";
+            String soLuong = tblSach.getValueAt(row,6)+"";
+            int sl = Integer.parseInt(soLuong);
+
+            sachThem = new Sach(ma, maLoai, maTacGia, ten, gia, hinhAnh,sl);
+
         }
         this.dispose();
     }
 
+    public boolean kiemTraSachTrenKe(int ma){
+        for(CTKeSach ctks : khuVucBUS.listCTKeSach){
+            if(ma == ctks.getMaSach()){
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void loadDataLenTable() {
         dtmSach.setRowCount(0);
-        ArrayList<PhanSach> dsps = phanSachBUS.getListPhanSach();
-        if (dsps != null) {
-            for (PhanSach ps : dsps) {
-                Vector vec = new Vector();
-                vec.add(ps.getMaSach());
-                vec.add(ps.getMaPhanSach());
-                vec.add(sachBUS.getTenSach(ps.getMaSach()));
-                vec.add(ps.getTrangThai());
-                dtmSach.addRow(vec);
+        ArrayList<Sach> dss = sachBUS.getListSach();
+        if (dss != null) {
+            for (Sach s : dss) {
+                if(kiemTraSachTrenKe(s.getMaSach())) {
+                    Vector vec = new Vector();
+                    vec.add(s.getMaSach());
+                    String tenLoai = loaiBUS.getTenLoai(s.getMaLoaiSach());
+                    vec.add(tenLoai);
+                    String tenTacGia = tacGiaBUS.getTenTacGia(s.getMaTacGia());
+                    vec.add(tenTacGia);
+                    vec.add(s.getTenSach());
+                    DecimalFormat formatter = new DecimalFormat("###,###");
+                    String giaSach = formatter.format(s.getGiaSach());
+                    vec.add(giaSach);
+                    vec.add(s.getHinhAnh());
+                    vec.add(s.getSoLuong());
+                    dtmSach.addRow(vec);
+                }
             }
         }
     }
 
-    public void loadDataLenTable(String tuKhoa) {
+    public void isKiemTraKhuVuc(int ma){
+
+    }
+
+    public void loadDataLenTable(String ma) {
         dtmSach.setRowCount(0);
-        if(tuKhoa.equals("")){
-            new MyDialog("chưa nhập thông tin tìm kiếm!!!", MyDialog.ERROR_DIALOG);
-            return;
-        }
-        int maS = sachBUS.getMaSach(tuKhoa);
-        ArrayList<PhanSach> dsps = phanSachBUS.getListTheoMa(maS);
-        if (dsps != null) {
-            for (PhanSach ps : dsps) {
+        ArrayList<Sach> dss = sachBUS.getListSach();
+        if (dss != null) {
+            for (Sach s : dss) {
                 Vector vec = new Vector();
-                vec.add(ps.getMaSach());
-                vec.add(ps.getMaPhanSach());
-                vec.add(sachBUS.getTenSach(ps.getMaSach()));
-                vec.add(ps.getTrangThai());
+                vec.add(s.getMaSach());
+                String tenLoai = loaiBUS.getTenLoai(s.getMaLoaiSach());
+                vec.add(tenLoai);
+                String tenTacGia = tacGiaBUS.getTenTacGia(s.getMaTacGia());
+                vec.add(tenTacGia);
+                vec.add(s.getTenSach());
+                DecimalFormat formatter = new DecimalFormat("###,###");
+                String giaSach = formatter.format(s.getGiaSach());
+                vec.add(giaSach);
+                vec.add(s.getGiaSach());
+                vec.add(s.getHinhAnh());
                 dtmSach.addRow(vec);
             }
         }
     }
 
     private void search() {
-        String tuKhoa = txtTuKhoa.getText().trim().toLowerCase();
+        String tuKhoa = txtTuKhoa.getText().trim();
         loadDataLenTable(tuKhoa); // Gọi phương thức tìm kiếm khi có sự thay đổi trong ô nhập liệu
     }
 }

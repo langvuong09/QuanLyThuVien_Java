@@ -35,6 +35,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
     private DocGiaBUS docGiaBUS = new DocGiaBUS();
     private NhanVienBUS nhanVienBUS = new NhanVienBUS();
     private DangNhapGUI dangNhapGUI = new DangNhapGUI();
+    private PhanSachBUS phanSachBUS = new PhanSachBUS();
 
 
     public PnQuanLyPhieuPhatGUI(){
@@ -48,7 +49,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
 
     MyTable tblPhieuPhat;
     DefaultTableModel dtmPhieuPhat;
-    JTextField txtMaPhieuPhat, txtMaPhieuTra, txtMaSach, txtTenSach, txtDocGia, txtThanhTien, txtNgayTraMuon, txtTimKiem;
+    JTextField txtMaPhieuPhat, txtMaPhieuTra, txtMaSach, txtMaPhanSach, txtDocGia, txtThanhTien, txtNgayTraMuon, txtTimKiem;
     JComboBox<String> cmbLyDo, txtMin, txtMax;
     JButton btnThem, btnXoa, btnSua, btnInThe, btnReset, btnXuatExcel, btnNhapExcel, btnTimKiem, btnTimKiemKhoang, btnPhieuTra, btnSachPhat;
 
@@ -87,7 +88,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         txtMaPhieuTra = new JTextField(x);
         txtMaSach = new JTextField(x);
         txtDocGia = new JTextField(x);
-        txtTenSach = new JTextField(x);
+        txtMaPhanSach = new JTextField(x);
         cmbLyDo = new JComboBox<String>();
         txtThanhTien = new JTextField(x);
         txtNgayTraMuon = new JTextField(x);
@@ -121,12 +122,12 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         lblMaSach.setBounds(20,120,150,25);
         txtMaSach.setBounds(160,120,220,25);
 
-        JLabel lblTenSach = new JLabel("Tên sách:");
-        lblTenSach.setFont(font);
-        txtTenSach.setFont(font);
-        txtTenSach.setEditable(false);
-        lblTenSach.setBounds(20,170,150,25);
-        txtTenSach.setBounds(160,170,220,25);
+        JLabel lblMaPhanSach = new JLabel("Mã phân sách:");
+        lblMaPhanSach.setFont(font);
+        txtMaPhanSach.setFont(font);
+        txtMaPhanSach.setEditable(false);
+        lblMaPhanSach.setBounds(20,170,150,25);
+        txtMaPhanSach.setBounds(160,170,220,25);
 
         JLabel lblLyDo = new JLabel("Lý do:");
         lblLyDo.setFont(font);
@@ -216,8 +217,8 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         pnThongTinPhieuPhat.add(txtMaPhieuTra);
         pnThongTinPhieuPhat.add(lblMaSach);
         pnThongTinPhieuPhat.add(txtMaSach);
-        pnThongTinPhieuPhat.add(lblTenSach);
-        pnThongTinPhieuPhat.add(txtTenSach);
+        pnThongTinPhieuPhat.add(lblMaPhanSach);
+        pnThongTinPhieuPhat.add(txtMaPhanSach);
         pnThongTinPhieuPhat.add(lblLyDo);
         pnThongTinPhieuPhat.add(cmbLyDo);
         pnThongTinPhieuPhat.add(lblThanhTien);
@@ -309,7 +310,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
                 txtMaPhieuPhat.setText("");
                 txtMaPhieuTra.setText("");
                 txtMaSach.setText("");
-                txtTenSach.setText("");
+                txtMaPhanSach.setText("");
                 cmbLyDo.setSelectedIndex(0);
                 txtThanhTien.setText("");
                 txtNgayTraMuon.setText("");
@@ -338,7 +339,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
                 txtMaPhieuPhat.setText("");
                 txtMaPhieuTra.setText("");
                 txtMaSach.setText("");
-                txtTenSach.setText("");
+                txtMaPhanSach.setText("");
                 cmbLyDo.setSelectedIndex(0);
                 txtThanhTien.setText("");
                 txtNgayTraMuon.setText("");
@@ -352,7 +353,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
                 txtMaPhieuPhat.setText("");
                 txtMaPhieuTra.setText("");
                 txtMaSach.setText("");
-                txtTenSach.setText("");
+                txtMaPhanSach.setText("");
                 cmbLyDo.setSelectedIndex(0);
                 txtThanhTien.setText("");
                 txtNgayTraMuon.setText("");
@@ -366,7 +367,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
                 txtMaPhieuPhat.setText("");
                 txtMaPhieuTra.setText("");
                 txtMaSach.setText("");
-                txtTenSach.setText("");
+                txtMaPhanSach.setText("");
                 cmbLyDo.setSelectedIndex(0);
                 txtThanhTien.setText("");
                 txtNgayTraMuon.setText("");
@@ -494,11 +495,12 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
                     break;
                 }
             }
+            String maPS = String.valueOf(ppBUS.getPhieuPhatTheoMa(Integer.parseInt(maPhieuPhat)).getMaPhanSach());
 
             txtMaPhieuPhat.setText(maPhieuPhat);
             txtMaPhieuTra.setText(maPhieuTra);
             txtMaSach.setText(String.valueOf(sachBUS.getMaSach(tenSach)));
-            txtTenSach.setText(tenSach);
+            txtMaPhanSach.setText(maPS);
             txtDocGia.setText(docGia);
             cmbLyDo.setSelectedIndex(index);
             txtThanhTien.setText(thanhTien.replace(",",""));
@@ -519,10 +521,11 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         }
         lyDoTong = lyDo + lyDo1;
         boolean flag = ppBUS.themPhieuPhat(txtMaPhieuPhat.getText(),
-                            txtMaPhieuTra.getText(),txtMaSach.getText(),
+                            txtMaPhieuTra.getText(),txtMaSach.getText(),txtMaPhanSach.getText(),
                             txtDocGia.getText(), String.valueOf(dangNhapGUI.maTaiKhoan()),lyDoTong,
                             txtThanhTien.getText());
         ppBUS.docListPhieuPhat();
+        boolean flag1 = phanSachBUS.themPhanSach(txtMaPhanSach.getText(),txtMaSach.getText(),cmbLyDo.getSelectedItem()+"");
         loadDataLenBangPhieuPhat();
     }
 
@@ -530,6 +533,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         MyDialog dlg = new MyDialog("Bạn có chắc chắn muốn xoá?", MyDialog.WARNING_DIALOG);
         if(dlg.OK_OPTION == dlg.getAction()) {
             boolean flag = ppBUS.xoaPhieuPhat(txtMaPhieuPhat.getText());
+            boolean flag1 = phanSachBUS.xoaPhanSach(txtMaPhanSach.getText(),txtMaSach.getText());
             loadDataLenBangPhieuPhat();
         }
     }
@@ -548,9 +552,10 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         }
         lyDoTong = lyDo + lyDo1;
         boolean flag = ppBUS.suaPhieuPhat(txtMaPhieuPhat.getText(),
-                txtMaPhieuTra.getText(),txtMaSach.getText(),
+                txtMaPhieuTra.getText(),txtMaSach.getText(),txtMaPhanSach.getText(),
                 txtDocGia.getText(), String.valueOf(dangNhapGUI.maTaiKhoan()),lyDoTong,
                 txtThanhTien.getText());
+        boolean flag1 = phanSachBUS.suaPhanSach(txtMaPhanSach.getText(),txtMaSach.getText(),cmbLyDo.getSelectedItem()+"");
         ppBUS.docListPhieuPhat();
         loadDataLenBangPhieuPhat();
     }
@@ -577,8 +582,9 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
             String nhanVien = String.valueOf(tblPhieuPhat.getValueAt(i,4));
             String lyDo = String.valueOf(tblPhieuPhat.getValueAt(i,5));
             String thanhTien = String.valueOf(tblPhieuPhat.getValueAt(i,6));
+            String maPS = String.valueOf(ppBUS.getPhieuPhatTheoMa(Integer.parseInt(maPT)).getMaPhanSach());
 
-            ppBUS.nhapPhieuPhatExcel(maPT,tenSach,docGia,nhanVien,lyDo,thanhTien);
+            ppBUS.nhapPhieuPhatExcel(maPT,tenSach,maPS,docGia,nhanVien,lyDo,thanhTien);
         }
     }
 
@@ -605,6 +611,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         vec.add(tblPhieuPhat.getValueAt(row, 0));
         vec.add(tblPhieuPhat.getValueAt(row, 1));
         vec.add(sachBUS.getMaSach(String.valueOf(tblPhieuPhat.getValueAt(row, 2))));
+        vec.add(String.valueOf(ppBUS.getPhieuPhatTheoMa(Integer.parseInt(tblPhieuPhat.getValueAt(row, 0)+"")).getMaPhanSach()));
         vec.add(tblPhieuPhat.getValueAt(row, 2));
         vec.add(tblPhieuPhat.getValueAt(row, 3));
         vec.add(tblPhieuPhat.getValueAt(row, 4));
@@ -632,6 +639,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
             vec.add(pp.getMaPhieuPhat());
             vec.add(pp.getMaPhieuTra());
             vec.add(sachBUS.getTenSach(pp.getMaSach()));
+            vec.add(String.valueOf(ppBUS.getPhieuPhatTheoMa(pp.getMaPhieuPhat()).getMaPhanSach()));
             vec.add(docGiaBUS.getTenDocGia(pp.getMaDocGia()));
             vec.add(nhanVienBUS.getTenNhanVien(pp.getMaNhanVien()));
             vec.add(pp.getLyDo());
@@ -672,7 +680,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         timSachPhatGUI.setVisible(true);
         if(timSachPhatGUI.ctPhieuTraTimDuoc != null){
             txtMaSach.setText(String.valueOf(timSachPhatGUI.ctPhieuTraTimDuoc.getMaSach()));
-            txtTenSach.setText(String.valueOf(sachBUS.getTenSach(timSachPhatGUI.ctPhieuTraTimDuoc.getMaSach())));
+            txtMaPhanSach.setText(String.valueOf(timSachPhatGUI.ctPhieuTraTimDuoc.getMaPhanSach()));
         }
     }
 

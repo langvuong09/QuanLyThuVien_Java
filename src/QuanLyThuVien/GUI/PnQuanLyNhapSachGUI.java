@@ -33,12 +33,12 @@ public class PnQuanLyNhapSachGUI extends JPanel {
     private SachBUS sachBUS = new SachBUS();
     private NXBBUS nxbBUS = new NXBBUS();
     private NhanVienBUS nhanVienBUS = new NhanVienBUS();
+    private PhanSachBUS phanSachBUS = new PhanSachBUS();
 
     public PnQuanLyNhapSachGUI(){
         changLNF("Windows");
         addConTrolsNhapSach();
         addEventsNhapSach();
-//        addEventsLichSu();
     }
 
     final Color colorPanel = new Color(247, 247, 247);
@@ -687,6 +687,16 @@ public class PnQuanLyNhapSachGUI extends JPanel {
         XuatPhieuNhapGUI xuatPhieuNhap = new XuatPhieuNhapGUI(tenNxb, nhanVienBUS.getTenNhanVien(dangNhapGUI.maTaiKhoan()), dsct);
         xuatPhieuNhap.setVisible(true);
         if (xuatPhieuNhap.getCheckNhap()) {
+            for (int i = 0; i<row;i++){
+                int maSach = Integer.parseInt(tblNhapSach.getValueAt(i, 0) + "");
+                int soLuong = Integer.parseInt(tblNhapSach.getValueAt(i, 3) + "");
+                int countPS = phanSachBUS.maPhanSachLonNhat(maSach);
+                for (int j = 1;j <= soLuong;j++){
+                    String maPS = String.valueOf(countPS+j);
+                    String maS = String.valueOf(maSach);
+                    boolean flag = phanSachBUS.themPhanSach(maPS,maS,"tốt");
+                }
+            }
             dtmNhapSach.setRowCount(0);
             sachBUS.docDanhSach();
             loadDataLenTableSach();

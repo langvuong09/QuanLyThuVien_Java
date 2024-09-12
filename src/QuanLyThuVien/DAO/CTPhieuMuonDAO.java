@@ -23,7 +23,8 @@ public class CTPhieuMuonDAO {
                 CTPhieuMuon ctpm = new CTPhieuMuon();
                 ctpm.setMaPhieuMuon(rs.getInt(1));
                 ctpm.setMaSach(rs.getInt(2));
-                ctpm.setGiaTien(rs.getLong(3));
+                ctpm.setMaPhanSach(rs.getInt(3));
+                ctpm.setGiaTien(rs.getLong(4));
                 dsctpm.add(ctpm);
             }
             return dsctpm;
@@ -42,6 +43,7 @@ public class CTPhieuMuonDAO {
                 CTPhieuMuon ctpm = new CTPhieuMuon();
                 ctpm.setMaPhieuMuon(rs.getInt(1));
                 ctpm.setMaSach(rs.getInt(2));
+                ctpm.setMaPhanSach(rs.getInt(3));
                 ctpm.setGiaTien(rs.getInt(3));
                 dsctpm.add(ctpm);
             }
@@ -53,11 +55,12 @@ public class CTPhieuMuonDAO {
 
     public boolean themCTPhieuMuon(CTPhieuMuon ctpm){
         try{
-            String sql = "INSERT INTO ctphieumuon VALUES(?,?,?)";
+            String sql = "INSERT INTO ctphieumuon VALUES(?,?,?,?)";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             pre.setInt(1,ctpm.getMaPhieuMuon());
             pre.setInt(2,ctpm.getMaSach());
-            pre.setLong(3,ctpm.getGiaTien());
+            pre.setInt(3,ctpm.getMaPhanSach());
+            pre.setLong(4,ctpm.getGiaTien());
             return pre.executeUpdate() > 0;
         }catch (Exception e){
         }

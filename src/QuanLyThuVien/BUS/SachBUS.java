@@ -1,11 +1,5 @@
 package QuanLyThuVien.BUS;
 
-import QuanLyThuVien.DTO.Loai;
-import QuanLyThuVien.DAO.LoaiDAO;
-import QuanLyThuVien.DTO.NXB;
-import QuanLyThuVien.DAO.NXBDAO;
-import QuanLyThuVien.DTO.TacGia;
-import QuanLyThuVien.DAO.TacGiaDAO;
 import QuanLyThuVien.DTO.Sach;
 import QuanLyThuVien.DAO.SachDAO;
 import MyCustom.MyDialog;
@@ -76,7 +70,7 @@ public class SachBUS {
 
     public int getMaSach(String ten){
         for(Sach s : listSach){
-            if(s.getTenSach() == ten){
+            if(s.getTenSach().toLowerCase().contains(ten.trim().toLowerCase())){
                 return s.getMaSach();
             }
         }
@@ -132,7 +126,7 @@ public class SachBUS {
         return false;
     }
 
-    public boolean themSach(String loai, String tacGia, String tenSach, String gia, String hinhAnh, String soLuong){
+    public boolean themSach(String loai, String tacGia, String tenSach, String gia, String hinhAnh){
         if(tenSach.trim().equals("")){
             new MyDialog("Không được để trống tên sách!!!", MyDialog.ERROR_DIALOG);
             return false;
@@ -149,17 +143,13 @@ public class SachBUS {
             new MyDialog("Chưa chọn loại sách!!!", MyDialog.ERROR_DIALOG);
             return false;
         }
-        if(soLuong.trim().equals("")){
-            new MyDialog("Chưa có số lượng sách!!!", MyDialog.ERROR_DIALOG);
-            return false;
-        }
         String[] maLoai = loai.split(" ");
         String[] maTG = tacGia.split(" ");
         try{
             int mLoai = Integer.parseInt(maLoai[0]);
             int maTacGia = Integer.parseInt(maTG[0]);
             long giaSach = Long.parseLong(gia.replace(",",""));
-            int sl = Integer.parseInt(soLuong);
+            int sl = 0;
 
             Sach sach = new Sach();
             sach.setMaLoaiSach(mLoai);
@@ -177,7 +167,7 @@ public class SachBUS {
                 return false;
             }
         }catch (Exception e){
-            new MyDialog("Nhập số hợp lệ cho giá sách và số lượng!", MyDialog.ERROR_DIALOG);
+            new MyDialog("Nhập số hợp lệ cho giá sách!", MyDialog.ERROR_DIALOG);
         }
         return false;
     }
@@ -212,10 +202,6 @@ public class SachBUS {
         }
         if(loai.equals("0 - Chọn loại")){
             new MyDialog("Chưa chọn loại sách!!!", MyDialog.ERROR_DIALOG);
-            return false;
-        }
-        if(soLuong.trim().equals("")){
-            new MyDialog("Chưa có số lượng sách!!!", MyDialog.ERROR_DIALOG);
             return false;
         }
         String[] maLoai = loai.split(" ");
