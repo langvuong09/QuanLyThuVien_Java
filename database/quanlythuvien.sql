@@ -3,7 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
+<<<<<<< HEAD
 -- Thời gian đã tạo: Th9 26, 2024 lúc 04:15 PM
+=======
+-- Thời gian đã tạo: Th9 12, 2024 lúc 11:47 AM
+>>>>>>> 424717e0ab46d646e76f4419ef9bde7eb928cbdc
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -38,6 +42,7 @@ CREATE TABLE `ctphieumuon` (
 -- Đang đổ dữ liệu cho bảng `ctphieumuon`
 --
 
+<<<<<<< HEAD
 INSERT INTO `ctphieumuon` (`MaPhieuMuon`, `MaSach`, `MaPhanSach`, `ThanhTien`) VALUES
 (1, 6, 1, 10000),
 (2, 7, 2, 21000),
@@ -59,6 +64,28 @@ INSERT INTO `ctphieumuon` (`MaPhieuMuon`, `MaSach`, `MaPhanSach`, `ThanhTien`) V
 (10, 3, 4, 5200),
 (10, 4, 2, 8500),
 (11, 1, 1, 1500);
+=======
+INSERT INTO `ctphieumuon` (`MaPhieuMuon`, `MaSach`, `ThanhTien`) VALUES
+(1, 6, 10000),
+(2, 7, 21000),
+(2, 1, 1500),
+(2, 2, 1500),
+(3, 4, 8500),
+(3, 5, 1500),
+(4, 9, 8000),
+(4, 11, 8100),
+(5, 10, 7900),
+(5, 8, 11800),
+(6, 14, 20000),
+(7, 13, 18000),
+(7, 16, 11500),
+(7, 17, 11000),
+(7, 18, 10000),
+(8, 11, 8100),
+(8, 8, 11800),
+(10, 3, 5200),
+(10, 4, 8500);
+>>>>>>> 424717e0ab46d646e76f4419ef9bde7eb928cbdc
 
 -- --------------------------------------------------------
 
@@ -107,6 +134,7 @@ CREATE TABLE `ctphieutra` (
 -- Đang đổ dữ liệu cho bảng `ctphieutra`
 --
 
+<<<<<<< HEAD
 INSERT INTO `ctphieutra` (`MaPhieuTra`, `MaSach`, `MaPhanSach`) VALUES
 (1, 9, 1),
 (1, 11, 1),
@@ -121,6 +149,22 @@ INSERT INTO `ctphieutra` (`MaPhieuTra`, `MaSach`, `MaPhanSach`) VALUES
 (7, 3, 4),
 (7, 4, 2),
 (10, 10, 1);
+=======
+INSERT INTO `ctphieutra` (`MaPhieuTra`, `MaSach`) VALUES
+(1, 9),
+(1, 11),
+(2, 1),
+(2, 2),
+(3, 4),
+(4, 13),
+(4, 16),
+(5, 14),
+(6, 11),
+(6, 8),
+(7, 3),
+(7, 4),
+(10, 10);
+>>>>>>> 424717e0ab46d646e76f4419ef9bde7eb928cbdc
 
 -- --------------------------------------------------------
 
@@ -153,6 +197,7 @@ INSERT INTO `docgia` (`MaDocGia`, `Ho`, `Ten`, `GioiTinh`, `SDT`, `Gmail`, `Quye
 (13, 'dcs', 'qưdsc', 'Nam', '1234567890', 'wsadfcxz@gmail.com', 0),
 (14, 'ewds', 'ewfdc', 'Nam', '43512345678', 'cuong@gmail.com', 0),
 (15, 'Cali khat', 'nuoc', 'Nam', '0945675183', 'manhnvl@gmail.com', 1);
+<<<<<<< HEAD
 
 -- --------------------------------------------------------
 
@@ -194,6 +239,8 @@ INSERT INTO `khuvuc` (`Khu`) VALUES
 (1),
 (2),
 (3);
+=======
+>>>>>>> 424717e0ab46d646e76f4419ef9bde7eb928cbdc
 
 -- --------------------------------------------------------
 
@@ -525,8 +572,12 @@ INSERT INTO `phieumuon` (`MaPhieuMuon`, `MaDocGia`, `MaNhanVien`, `NgayMuon`, `N
 (6, 4, 4, '2024-05-15', '2024-06-04', 20000),
 (7, 5, 1, '2024-05-19', '2024-06-08', 50500),
 (8, 6, 1, '2024-05-19', '2024-06-08', 19900),
+<<<<<<< HEAD
 (10, 2, 1, '2024-05-19', '2024-06-08', 13700),
 (11, 1, 1, '2024-09-26', '2024-10-16', 1500);
+=======
+(10, 2, 1, '2024-05-19', '2024-06-08', 13700);
+>>>>>>> 424717e0ab46d646e76f4419ef9bde7eb928cbdc
 
 -- --------------------------------------------------------
 
@@ -630,7 +681,11 @@ CREATE TABLE `sach` (
 --
 
 INSERT INTO `sach` (`MaSach`, `MaLoai`, `MaTacGia`, `TenSach`, `GiaSach`, `HinhAnh`, `SoLuong`) VALUES
+<<<<<<< HEAD
 (1, 1, 1, 'Trạng Quỳnh tập 1', 15000, 'trangQuynh1.png', 9),
+=======
+(1, 1, 1, 'Trạng Quỳnh tập 1', 15000, 'trangQuynh1.png', 10),
+>>>>>>> 424717e0ab46d646e76f4419ef9bde7eb928cbdc
 (2, 1, 1, 'Trạng Quỳnh tập 2', 15000, 'trangQuynh2.png', 10),
 (3, 3, 2, 'Nhật ký trong tù', 52000, 'nhatKiTrongTu.png', 11),
 (4, 1, 3, 'Tôi là Bêtô', 85000, 'toiLaBeTo.png', 7),
@@ -650,6 +705,7 @@ INSERT INTO `sach` (`MaSach`, `MaLoai`, `MaTacGia`, `TenSach`, `GiaSach`, `HinhA
 (18, 1, 11, 'Sherlock Holmes quyển 3', 100000, 'SherlockHolmes3.png', 9),
 (19, 1, 3, 'Kính vạn hoa', 130000, 'kinhVanHoa.png', 10),
 (20, 2, 12, 'Kẻ khôn đi lối khác', 170000, 'keKhonDiLoiKhac.png', 10);
+<<<<<<< HEAD
 
 -- --------------------------------------------------------
 
@@ -681,6 +737,8 @@ INSERT INTO `sachquanly` (`MaSach`, `MaKe`) VALUES
 (15, 4),
 (18, 5),
 (20, 5);
+=======
+>>>>>>> 424717e0ab46d646e76f4419ef9bde7eb928cbdc
 
 -- --------------------------------------------------------
 
