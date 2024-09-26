@@ -46,7 +46,7 @@ public class PnQuanLyNhapSachGUI extends JPanel {
     CardLayout cardNhapSachGroup = new CardLayout();
     JPanel pnCardTabNhapSach;
     DefaultTableModel dtmSach, dtmNhapSach, dtmPhieuNhap, dtmCTPhieuNhap;
-    JTextField txtSoLuong, txtTimKiem;
+    JTextField txtSoLuong, txtTimKiem, txtIDMin;
     JDateChooser dateBD, dateKT;
     JComboBox<String> cmbNXB;
     JButton btnChon, btnXoa, btnXacNhan, btnTimKiem, btnReset, btnReset1;
@@ -122,6 +122,7 @@ public class PnQuanLyNhapSachGUI extends JPanel {
         int x =15;
         txtSoLuong = new JTextField(x);
         txtTimKiem = new JTextField(x);
+        txtIDMin = new JTextField(x);
         cmbNXB = new JComboBox<String>();
 
         //=================Table sách==============
@@ -163,6 +164,8 @@ public class PnQuanLyNhapSachGUI extends JPanel {
 
         dtmNhapSach = new DefaultTableModel();
         dtmNhapSach.addColumn("Mã");
+        dtmNhapSach.addColumn("ID min");
+        dtmNhapSach.addColumn("ID max");
         dtmNhapSach.addColumn("Tên sách");
         dtmNhapSach.addColumn("Giá");
         dtmNhapSach.addColumn("SL");
@@ -170,14 +173,18 @@ public class PnQuanLyNhapSachGUI extends JPanel {
         tblNhapSach = new MyTable(dtmNhapSach);
 
         tblNhapSach.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-        tblNhapSach.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+        tblNhapSach.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        tblNhapSach.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        tblNhapSach.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
 
         TableColumnModel columnModelNhapSach = tblNhapSach.getColumnModel();
         columnModelNhapSach.getColumn(0).setPreferredWidth(50);
-        columnModelNhapSach.getColumn(1).setPreferredWidth(300);
-        columnModelNhapSach.getColumn(2).setPreferredWidth(150);
-        columnModelNhapSach.getColumn(3).setPreferredWidth(110);
+        columnModelNhapSach.getColumn(1).setPreferredWidth(60);
+        columnModelNhapSach.getColumn(2).setPreferredWidth(60);
+        columnModelNhapSach.getColumn(3).setPreferredWidth(220);
         columnModelNhapSach.getColumn(4).setPreferredWidth(150);
+        columnModelNhapSach.getColumn(5).setPreferredWidth(80);
+        columnModelNhapSach.getColumn(6).setPreferredWidth(130);
 
         JScrollPane srcTblNhapSach = new JScrollPane(tblNhapSach);
         srcTblNhapSach.setPreferredSize(new Dimension(800,180));
@@ -205,17 +212,25 @@ public class PnQuanLyNhapSachGUI extends JPanel {
         JLabel lblSoLuong = new JLabel("Số lượng nhập:");
         lblSoLuong.setFont(font);
         txtSoLuong.setFont(font);
-        lblSoLuong.setBounds(70,90,150,25);
-        txtSoLuong.setBounds(20,120,200,25);
+        lblSoLuong.setBounds(70,80,150,25);
+        txtSoLuong.setBounds(20,110,200,25);
+
+        JLabel lblMaPhanSach = new JLabel("Mã phân sách min:");
+        lblMaPhanSach.setFont(font);
+        txtIDMin.setFont(font);
+        lblMaPhanSach.setBounds(20,150,170,25);
+        txtIDMin.setBounds(170,150,50,25);
 
         btnChon = new JButton("Chọn");
         btnChon.setFont(font);
-        btnChon.setBounds(65,170,110,40);
+        btnChon.setBounds(65,190,110,40);
 
         pnThongTinNhapSach.add(lblTimKiem);
         pnThongTinNhapSach.add(txtTimKiem);
         pnThongTinNhapSach.add(lblSoLuong);
         pnThongTinNhapSach.add(txtSoLuong);
+        pnThongTinNhapSach.add(lblMaPhanSach);
+        pnThongTinNhapSach.add(txtIDMin);
         pnThongTinNhapSach.add(btnChon);
 
         //=================Thông tin phiếu nhập==============
@@ -327,7 +342,7 @@ public class PnQuanLyNhapSachGUI extends JPanel {
         pnTableLichSu.add(pnTimKiem);
 
         //=================Table chi tiết phiếu nhập==============
-        //<editor-fold defaultstate="collapsed" desc="Bảng phiếu mượn">
+        //<editor-fold defaultstate="collapsed" desc="Bảng chi tiết phiếu nhập">
         JPanel pnCTPhieuNhap = new JPanel();
 
         JPanel pnTieuDePN = new JPanel();
@@ -337,6 +352,8 @@ public class PnQuanLyNhapSachGUI extends JPanel {
 
         dtmCTPhieuNhap = new DefaultTableModel();
         dtmCTPhieuNhap.addColumn("Mã");
+        dtmCTPhieuNhap.addColumn("Mã PS Min");
+        dtmCTPhieuNhap.addColumn("Mã PS Max");
         dtmCTPhieuNhap.addColumn("Tên sách");
         dtmCTPhieuNhap.addColumn("Giá");
         dtmCTPhieuNhap.addColumn("SL");
@@ -344,14 +361,18 @@ public class PnQuanLyNhapSachGUI extends JPanel {
         tblCTPhieuNhap = new MyTable(dtmCTPhieuNhap);
 
         tblCTPhieuNhap.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-        tblCTPhieuNhap.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+        tblCTPhieuNhap.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        tblCTPhieuNhap.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        tblCTPhieuNhap.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
 
         TableColumnModel columnModelCTPN = tblCTPhieuNhap.getColumnModel();
         columnModelCTPN.getColumn(0).setPreferredWidth(50);
-        columnModelCTPN.getColumn(1).setPreferredWidth(300);
-        columnModelCTPN.getColumn(2).setPreferredWidth(150);
-        columnModelCTPN.getColumn(3).setPreferredWidth(110);
-        columnModelCTPN.getColumn(4).setPreferredWidth(150);
+        columnModelCTPN.getColumn(1).setPreferredWidth(110);
+        columnModelCTPN.getColumn(2).setPreferredWidth(110);
+        columnModelCTPN.getColumn(3).setPreferredWidth(250);
+        columnModelCTPN.getColumn(4).setPreferredWidth(120);
+        columnModelCTPN.getColumn(5).setPreferredWidth(100);
+        columnModelCTPN.getColumn(6).setPreferredWidth(120);
 
         JScrollPane srcTblCTPN = new JScrollPane(tblCTPhieuNhap);
         srcTblCTPN.setPreferredSize(new Dimension(800,180));
@@ -584,6 +605,8 @@ public class PnQuanLyNhapSachGUI extends JPanel {
             for (CTPhieuNhap ct : dsct) {
                 Vector vec = new Vector();
                 vec.add(ct.getMaSach());
+                vec.add(ct.getMaMin());
+                vec.add(ct.getMaMax());
                 vec.add(sachBUS.getTenSach(ct.getMaSach()));
                 vec.add(dcf.format(ct.getGia()));
                 vec.add(dcf.format(ct.getSoLuong()));
@@ -600,6 +623,8 @@ public class PnQuanLyNhapSachGUI extends JPanel {
             for (CTPhieuNhap ct : dsct) {
                 Vector vec = new Vector();
                 vec.add(ct.getMaSach());
+                vec.add(dcf.format(ct.getMaMin()));
+                vec.add(dcf.format(ct.getMaMax()));
                 vec.add(sachBUS.getTenSach(ct.getMaSach()));
                 vec.add(dcf.format(ct.getGia()));
                 vec.add(dcf.format(ct.getSoLuong()));
@@ -613,23 +638,35 @@ public class PnQuanLyNhapSachGUI extends JPanel {
         int soLuong = 0;
         try {
             soLuong = Integer.parseInt(txtSoLuong.getText());
+
         } catch (Exception e) {
             new MyDialog("Phải có số lượng!", MyDialog.ERROR_DIALOG);
             return;
         }
+        if(txtIDMin.getText().equals("")){
+            new MyDialog("Chưa nhập mã phân sách tối thiểu!", MyDialog.ERROR_DIALOG);
+            return;
+        }
+        int idMin = Integer.parseInt(txtIDMin.getText());
 
         int row = tblSach.getSelectedRow();
         if (row > -1) {
             String maSach= tblSach.getValueAt(row, 0) + "";
+            if(idMin <= phanSachBUS.maPhanSachLonNhat(Integer.parseInt(tblSach.getValueAt(row, 0)+""))){
+                new MyDialog("Mã lớn nhất hiện tại là "+ phanSachBUS.maPhanSachLonNhat(Integer.parseInt(tblSach.getValueAt(row, 0)+"")) +"!", MyDialog.ERROR_DIALOG);
+                return;
+            }
             for (int i = 0; i < tblNhapSach.getRowCount(); i++) {
                 if (maSach.equals(tblNhapSach.getValueAt(i, 0))) {
                     long gia = Long.parseLong(tblNhapSach.getValueAt(i, 2) + "");
                     int soLuongCu = Integer.parseInt(tblNhapSach.getValueAt(i, 3) + "");
                     soLuong += soLuongCu;
                     long thanhTien = soLuong * gia;
-                    tblNhapSach.setValueAt(soLuong, i, 3);
-                    tblNhapSach.setValueAt(gia, i, 2);
-                    tblNhapSach.setValueAt(thanhTien, i, 4);
+                    tblNhapSach.setValueAt(idMin,i,2);
+                    tblNhapSach.setValueAt(idMin+soLuong-1,i,3);
+                    tblNhapSach.setValueAt(soLuong, i, 5);
+                    tblNhapSach.setValueAt(gia, i, 4);
+                    tblNhapSach.setValueAt(thanhTien, i, 6);
                     return;
                 }
             }
@@ -638,6 +675,8 @@ public class PnQuanLyNhapSachGUI extends JPanel {
             long thanhTien = soLuong * gia;
             Vector vec = new Vector();
             vec.add(maSach);
+            vec.add(idMin);
+            vec.add(soLuong+idMin-1);
             vec.add(tenSach);
             vec.add(gia);
             vec.add(soLuong);
@@ -678,10 +717,12 @@ public class PnQuanLyNhapSachGUI extends JPanel {
         ArrayList<CTPhieuNhap> dsct = new ArrayList<>();
         for (int i = 0; i < row; i++) {
             int maSach = Integer.parseInt(tblNhapSach.getValueAt(i, 0) + "");
-            int gia = Integer.parseInt(tblNhapSach.getValueAt(i, 2) + "");
-            int soLuong = Integer.parseInt(tblNhapSach.getValueAt(i, 3) + "");
-            int thanhTien = Integer.parseInt(tblNhapSach.getValueAt(i, 4) + "");
-            CTPhieuNhap ctpn = new CTPhieuNhap(0, maSach, gia, soLuong, thanhTien);
+            int maMin = Integer.parseInt(tblNhapSach.getValueAt(i, 1) + "");
+            int maMax = Integer.parseInt(tblNhapSach.getValueAt(i, 2) + "");
+            int gia = Integer.parseInt(tblNhapSach.getValueAt(i, 4) + "");
+            int soLuong = Integer.parseInt(tblNhapSach.getValueAt(i, 5) + "");
+            int thanhTien = Integer.parseInt(tblNhapSach.getValueAt(i, 6) + "");
+            CTPhieuNhap ctpn = new CTPhieuNhap(0, maSach,maMin,maMax, gia, soLuong, thanhTien);
             dsct.add(ctpn);
         }
         XuatPhieuNhapGUI xuatPhieuNhap = new XuatPhieuNhapGUI(tenNxb, nhanVienBUS.getTenNhanVien(dangNhapGUI.maTaiKhoan()), dsct);
@@ -689,12 +730,13 @@ public class PnQuanLyNhapSachGUI extends JPanel {
         if (xuatPhieuNhap.getCheckNhap()) {
             for (int i = 0; i<row;i++){
                 int maSach = Integer.parseInt(tblNhapSach.getValueAt(i, 0) + "");
-                int soLuong = Integer.parseInt(tblNhapSach.getValueAt(i, 3) + "");
-                int countPS = phanSachBUS.maPhanSachLonNhat(maSach);
-                for (int j = 1;j <= soLuong;j++){
-                    String maPS = String.valueOf(countPS+j);
+                int soLuong = Integer.parseInt(tblNhapSach.getValueAt(i, 5) + "");
+                int iDMin = Integer.parseInt(tblNhapSach.getValueAt(i,1)+"");
+                int iDMax = Integer.parseInt(tblNhapSach.getValueAt(i,2)+"");
+                for (int maPS=iDMin;maPS <= iDMax;maPS++){
                     String maS = String.valueOf(maSach);
-                    boolean flag = phanSachBUS.themPhanSach(maPS,maS,"tốt");
+                    String maPhanSach = String.valueOf(maPS);
+                    boolean flag = phanSachBUS.themPhanSach(maPhanSach,maS,"tốt");
                 }
             }
             dtmNhapSach.setRowCount(0);

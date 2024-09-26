@@ -18,9 +18,11 @@ public class CTPhieuNhapDAO {
                 CTPhieuNhap ctpn = new CTPhieuNhap();
                 ctpn.setMaPhieuNhap(rs.getInt(1));
                 ctpn.setMaSach(rs.getInt(2));
-                ctpn.setGia(rs.getLong(3));
-                ctpn.setSoLuong(rs.getInt(4));
-                ctpn.setThanhTien(rs.getLong(5));
+                ctpn.setMaMin(rs.getInt(3));
+                ctpn.setMaMax(rs.getInt(4));
+                ctpn.setGia(rs.getLong(5));
+                ctpn.setSoLuong(rs.getInt(6));
+                ctpn.setThanhTien(rs.getLong(7));
                 dsctpn.add(ctpn);
             }
             return dsctpn;
@@ -39,9 +41,11 @@ public class CTPhieuNhapDAO {
                 CTPhieuNhap ctpn = new CTPhieuNhap();
                 ctpn.setMaPhieuNhap(rs.getInt(1));
                 ctpn.setMaSach(rs.getInt(2));
-                ctpn.setGia(rs.getLong(3));
-                ctpn.setSoLuong(rs.getInt(4));
-                ctpn.setThanhTien(rs.getLong(5));
+                ctpn.setMaMin(rs.getInt(3));
+                ctpn.setMaMax(rs.getInt(4));
+                ctpn.setGia(rs.getLong(5));
+                ctpn.setSoLuong(rs.getInt(6));
+                ctpn.setThanhTien(rs.getLong(7));
                 dsctpn.add(ctpn);
             }
             return dsctpn;
@@ -58,13 +62,15 @@ public class CTPhieuNhapDAO {
             preS.setInt(2,ctpn.getMaSach());
             preS.executeUpdate();
 
-            String sql = "INSERT INTO ctphieunhap VALUES(?,?,?,?,?)";
+            String sql = "INSERT INTO ctphieunhap VALUES(?,?,?,?,?,?,?)";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             pre.setInt(1,ctpn.getMaPhieuNhap());
             pre.setInt(2,ctpn.getMaSach());
-            pre.setLong(3,ctpn.getGia());
-            pre.setInt(4,ctpn.getSoLuong());
-            pre.setLong(5,ctpn.getThanhTien());
+            pre.setInt(3,ctpn.getMaSach());
+            pre.setInt(4,ctpn.getMaSach());
+            pre.setLong(5,ctpn.getGia());
+            pre.setInt(6,ctpn.getSoLuong());
+            pre.setLong(7,ctpn.getThanhTien());
             return pre.executeUpdate() > 0;
         }catch (SQLException e){
         }
@@ -83,13 +89,15 @@ public class CTPhieuNhapDAO {
 
     public boolean suaCTPhieuNhap(int maPN,CTPhieuNhap ctpn){
         try{
-            String sql = "UPDATE ctphieunhap SET MaSach=?, SoLuong=?, Gia=?, ThanhTien=? WHERE MaPhieuNhap=?";
+            String sql = "UPDATE ctphieunhap SET MaSach=?,MaMin=?, MaMax=?, SoLuong=?, Gia=?, ThanhTien=? WHERE MaPhieuNhap=?";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             pre.setInt(1,ctpn.getMaSach());
-            pre.setLong(2,ctpn.getGia());
-            pre.setInt(3,ctpn.getSoLuong());
-            pre.setLong(4,ctpn.getThanhTien());
-            pre.setInt(5,ctpn.getMaPhieuNhap());
+            pre.setInt(2,ctpn.getMaMin());
+            pre.setInt(3,ctpn.getMaMax());
+            pre.setLong(4,ctpn.getGia());
+            pre.setInt(5,ctpn.getSoLuong());
+            pre.setLong(6,ctpn.getThanhTien());
+            pre.setInt(7,ctpn.getMaPhieuNhap());
             return pre.executeUpdate() > 0;
         }catch (SQLException e){
         }
