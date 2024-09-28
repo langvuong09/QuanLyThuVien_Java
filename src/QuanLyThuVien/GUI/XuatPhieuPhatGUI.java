@@ -42,20 +42,20 @@ public class XuatPhieuPhatGUI extends JDialog{
 //        customEvents();
     }
 
-    private ArrayList<Vector> dsPhieuPhat;
+    private ArrayList<Vector> dsCTPhieuPhat;
     private int maPP;
     private String nhanVien, docGia;
     private String ngayMuon, ngayTraThuc;
     private long thanhTien;
 
-    public XuatPhieuPhatGUI(ArrayList<Vector> dsPhieuPhat,int maPP, Object docGia, Object nhanVien,String ngayTraThuc, long thanhTien) {
+    public XuatPhieuPhatGUI(ArrayList<Vector> dsCTPhieuPhat,int maPP, Object docGia, Object nhanVien,String ngayTraThuc, long thanhTien) {
         this();
         this.maPP = maPP;
         this.docGia = (String) docGia;
         this.nhanVien = (String) nhanVien;
         this.ngayMuon = ngayMuon;
         this.ngayTraThuc = ngayTraThuc;
-        this.dsPhieuPhat = dsPhieuPhat;
+        this.dsCTPhieuPhat = dsCTPhieuPhat;
         this.thanhTien = thanhTien;
         xuLyHienThiPhieuPhat();
     }
@@ -99,15 +99,19 @@ public class XuatPhieuPhatGUI extends JDialog{
         hd += "<div style='text-align:center'>";
         hd += "<table style='max-width:100%; margin: auto;'>";
         hd += "<tr style='font-family: Tahoma; font-size: 14px;'>"
-                + "<th>Mã Sách</th>"
-                + "<th>Tên Sách</th>"
-                + "<th>Lý do"
+                + "<th>Mã sách</th>"
+                + "<th>Mã phân sách</th>"
+                + "<th>Tên sách</th>"
+                + "<th>Lý do</th>"
+                + "<th>Tiền phạt</th>"
                 + "</tr>";
-        for (Vector vec : dsPhieuPhat) {
+        for (Vector vec : dsCTPhieuPhat) {
             hd += "<tr>";
+            hd += "<td style='text-align:center;'>" + vec.get(0) + "</td>";
+            hd += "<td style='text-align:center;'>" + vec.get(1) + "</td>";
             hd += "<td style='text-align:center;'>" + vec.get(2) + "</td>";
             hd += "<td style='text-align:center;'>" + vec.get(3) + "</td>";
-            hd += "<td style='text-align:center;'>" + vec.get(6) + "</td>";
+            hd += "<td style='text-align:center;'>" + vec.get(4) + "</td>";
             hd += "</tr>";
         }
         hd += "<tr>";

@@ -2,6 +2,7 @@ package QuanLyThuVien.GUI;
 
 import QuanLyThuVien.BUS.*;
 import QuanLyThuVien.DTO.PhieuPhat;
+import QuanLyThuVien.DTO.CTPhieuPhat;
 
 import static Main.Main.changLNF;
 
@@ -36,7 +37,8 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
     private NhanVienBUS nhanVienBUS = new NhanVienBUS();
     private DangNhapGUI dangNhapGUI = new DangNhapGUI();
     private PhanSachBUS phanSachBUS = new PhanSachBUS();
-
+    private PhieuPhatBUS ppBUS = new PhieuPhatBUS();
+    private CTPhieuPhatBUS ctPhieuPhatBUS = new CTPhieuPhatBUS();
 
     public PnQuanLyPhieuPhatGUI(){
         changLNF("Windows");
@@ -44,7 +46,6 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         addEventsPhieuPhat();
     }
 
-    PhieuPhatBUS ppBUS = new PhieuPhatBUS();
     final Color colorPanel = new Color(247, 247, 247);
 
     MyTable tblCTPhieuPhat, tblPhieuPhat, tblXemCTPhieuPhat;
@@ -52,9 +53,9 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
     CardLayout cardPhieuPhatGroup = new CardLayout();
     JPanel pnCardTabPhieuPhat;
     JLabel lblTabbedPhieuPhat, lblTabbedQuanLyPhieu;
-    JTextField txtMaPhieuPhat, txtMaPhieuTra, txtMaSach, txtMaPhanSach, txtDocGia, txtThanhTien, txtNgayTraMuon, txtTimKiem;
+    JTextField txtMaPhieuPhat, txtMaPhieuTra, txtMaSach, txtMaPhanSach, txtDocGia, txtThanhTien, txtNgayTraMuon, txtTimKiemDG;
     JComboBox<String> cmbLyDo;
-    JButton btnThem, btnXoa, btnInThe, btnReset, btnXuatExcel, btnNhapExcel, btnTimKiem, btnChon, btnPhieuTra, btnSachPhat;
+    JButton btnThem, btnXoa, btnInThe, btnReset, btnXuatExcel, btnNhapExcel, btnTimKiem, btnChon, btnPhieuTra, btnSachPhat, btnTimDG;
     final ImageIcon tabbedSelected = new ImageIcon("image/Manager-GUI/tabbed-btn--selected.png");
     final ImageIcon tabbedDefault = new ImageIcon("image/Manager-GUI/tabbed-btn.png");
 
@@ -135,7 +136,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         cmbLyDo = new JComboBox<String>();
         txtThanhTien = new JTextField(x);
         txtNgayTraMuon = new JTextField(x);
-        txtTimKiem = new JTextField(x);
+        txtTimKiemDG = new JTextField(x);
 
         //=================Thông tin phiếu phạt==============
 
@@ -205,12 +206,6 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         lblNoiDungPhat.setBorder(border);
         lblNoiDungPhat.setBounds(500,100,250,120);
 
-        JLabel lblTimKiem = new JLabel("Tìm đọc giả:");
-        lblTimKiem.setFont(font);
-        txtTimKiem.setFont(font);
-        lblTimKiem.setBounds(420,245,200,25);
-        txtTimKiem.setBounds(530,245,200,25);
-
         dtmCTPhieuPhat = new DefaultTableModel();
         dtmCTPhieuPhat.addColumn("Mã sách");
         dtmCTPhieuPhat.addColumn("Mã phân sách");
@@ -250,8 +245,6 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         pnThongTinPhieuPhat.add(lblDocGia);
         pnThongTinPhieuPhat.add(txtDocGia);
         pnThongTinPhieuPhat.add(lblNoiDungPhat);
-        pnThongTinPhieuPhat.add(lblTimKiem);
-        pnThongTinPhieuPhat.add(txtTimKiem);
 
         pnTablePhieuPhat.add(pnThongTinPhieuPhat);
 
@@ -260,10 +253,6 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
 
         btnThem = new JButton("Thêm phiếu");
         btnXoa = new JButton("Xoá CT sách");
-        btnTimKiem = new JButton();
-        btnInThe = new JButton("In thẻ");
-        btnXuatExcel = new JButton("Xuất");
-        btnNhapExcel = new JButton("Nhập");
         btnPhieuTra = new JButton("...");
         btnSachPhat = new JButton("...");
         btnChon = new JButton("Chọn");
@@ -271,43 +260,25 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         Font fontButton = new Font("Tahoma", Font.PLAIN, 16);
         btnThem.setFont(fontButton);
         btnXoa.setFont(fontButton);
-        btnTimKiem.setFont(fontButton);
-        btnInThe.setFont(fontButton);
-        btnXuatExcel.setFont(fontButton);
-        btnNhapExcel.setFont(fontButton);
         btnPhieuTra.setFont(fontButton);
         btnSachPhat.setFont(fontButton);
         btnChon.setFont(fontButton);
 
         btnThem.setIcon(new ImageIcon("image/add-icon.png"));
         btnXoa.setIcon(new ImageIcon("image/delete-icon.png"));
-        btnTimKiem.setIcon(new ImageIcon("image/Search-icon.png"));
-        btnInThe.setIcon(new ImageIcon("image/card-icon.png"));
-        btnXuatExcel.setIcon(new ImageIcon("image/excel-icon.png"));
-        btnNhapExcel.setIcon(new ImageIcon("image/excel-icon.png"));
         btnChon.setIcon(new ImageIcon());
 
-        btnInThe.setBounds(55,310,110,40);
         btnThem.setBounds(170,310,170,40);
         btnXoa.setBounds(345,310,165,40);
-        btnXuatExcel.setBounds(515,310,110,40);
-        btnNhapExcel.setBounds(630,310,110,40);
-        btnTimKiem.setBounds(740,245,50,30);
         btnPhieuTra.setBounds(390,55,30,25);
         btnSachPhat.setBounds(390,100,30,25);
         btnChon.setBounds(200,180,120,30);
 
-        pnThongTinPhieuPhat.add(btnInThe);
         pnThongTinPhieuPhat.add(btnThem);
         pnThongTinPhieuPhat.add(btnXoa);
-        pnThongTinPhieuPhat.add(btnTimKiem);
-        pnThongTinPhieuPhat.add(btnXuatExcel);
-        pnThongTinPhieuPhat.add(btnNhapExcel);
         pnThongTinPhieuPhat.add(btnPhieuTra);
         pnThongTinPhieuPhat.add(btnSachPhat);
         pnThongTinPhieuPhat.add(btnChon);
-
-//        loadDataLenBangPhieuPhat();
 
         pnTablePhieuPhat.add(pnThongTinPhieuPhat);
 
@@ -320,9 +291,11 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         JPanel pnTableQuanLy = new TransparentPanel();
         pnTableQuanLy.setLayout(new BorderLayout());
 
+
         JPanel pnTitleQuanLy = new TransparentPanel();
         JLabel lblTitleQuanLy = new JLabel("Danh sách phiếu phạt");
         lblTitleQuanLy.setFont(new Font("Arial", Font.BOLD,28));
+        pnTitleQuanLy.add(btnReset);
         pnTitleQuanLy.add(lblTitleQuanLy);
         pnTableQuanLy.add(pnTitleQuanLy,BorderLayout.NORTH);
 
@@ -335,6 +308,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         dtmPhieuPhat.addColumn("Mã PP");
         dtmPhieuPhat.addColumn("Mã PT");
         dtmPhieuPhat.addColumn("Đọc giả");
+        dtmPhieuPhat.addColumn("Nhân viên");
         dtmPhieuPhat.addColumn("Thành tiền");
         tblPhieuPhat = new MyTable(dtmPhieuPhat);
 
@@ -344,12 +318,13 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         TableColumnModel columnModelQuanLy = tblPhieuPhat.getColumnModel();
         columnModelQuanLy.getColumn(0).setPreferredWidth(50);
         columnModelQuanLy.getColumn(1).setPreferredWidth(50);
-        columnModelQuanLy.getColumn(2).setPreferredWidth(50);
-        columnModelQuanLy.getColumn(3).setPreferredWidth(50);
+        columnModelQuanLy.getColumn(2).setPreferredWidth(150);
+        columnModelQuanLy.getColumn(3).setPreferredWidth(150);
+        columnModelQuanLy.getColumn(4).setPreferredWidth(50);
 
         JScrollPane scrTblQuanLy = new JScrollPane(tblPhieuPhat);
         scrTblQuanLy.setPreferredSize(new Dimension(900,500));
-        scrTblQuanLy.setBounds(0,0,818,200);
+        scrTblQuanLy.setBounds(0,95,800,220);
         //</editor-fold>
         pnQuanLy.add(scrTblQuanLy, BorderLayout.CENTER);
 
@@ -371,16 +346,57 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         TableColumnModel columnModelXemCT = tblXemCTPhieuPhat.getColumnModel();
         columnModelXemCT.getColumn(0).setPreferredWidth(50);
         columnModelXemCT.getColumn(1).setPreferredWidth(50);
-        columnModelXemCT.getColumn(2).setPreferredWidth(50);
-        columnModelXemCT.getColumn(3).setPreferredWidth(50);
-        columnModelXemCT.getColumn(4).setPreferredWidth(50);
+        columnModelXemCT.getColumn(2).setPreferredWidth(100);
+        columnModelXemCT.getColumn(3).setPreferredWidth(150);
+        columnModelXemCT.getColumn(4).setPreferredWidth(150);
         columnModelXemCT.getColumn(5).setPreferredWidth(50);
 
         JScrollPane scrTblXemCT = new JScrollPane(tblXemCTPhieuPhat);
         scrTblXemCT.setPreferredSize(new Dimension(900,500));
-        scrTblXemCT.setBounds(0,300,818,200);
+        scrTblXemCT.setBounds(0,370,800,200);
         //</editor-fold>
         pnQuanLy.add(scrTblXemCT, BorderLayout.CENTER);
+
+        //=======================================================
+
+        JLabel lblPhieuPhat = new JLabel("Phiếu phạt");
+        JLabel lblCTPhieuPhat = new JLabel("Chi tiết phiếu phạt");
+        lblPhieuPhat.setFont(new Font("Arial", Font.BOLD, 22));
+        lblCTPhieuPhat.setFont(new Font("Arial", Font.BOLD, 22));
+        lblPhieuPhat.setBounds(335,65,200,22);
+        lblCTPhieuPhat.setBounds(290,340,200,22);
+
+        JLabel lblTimKiemDG = new JLabel("Tìm đọc giả theo tên:");
+        txtTimKiemDG.setFont(font);
+        lblTimKiemDG.setFont(font);
+        lblTimKiemDG.setBounds(5,20,200,25);
+        txtTimKiemDG.setBounds(165,20,180,26);
+
+        btnTimDG = new JButton("Tìm");
+        btnInThe = new JButton("In thẻ");
+        btnXuatExcel = new JButton("Xuất");
+        btnNhapExcel = new JButton("Nhập");
+        btnTimDG.setFont(fontButton);
+        btnInThe.setFont(fontButton);
+        btnXuatExcel.setFont(fontButton);
+        btnNhapExcel.setFont(fontButton);
+        btnTimDG.setIcon(new ImageIcon("image/Search-icon.png"));
+        btnInThe.setIcon(new ImageIcon("image/card-icon.png"));
+        btnXuatExcel.setIcon(new ImageIcon("image/excel-icon.png"));
+        btnNhapExcel.setIcon(new ImageIcon("image/excel-icon.png"));
+        btnTimDG.setBounds(350,15,100,40);
+        btnInThe.setBounds(455,15,110,40);
+        btnXuatExcel.setBounds(570,15,110,40);
+        btnNhapExcel.setBounds(685,15,110,40);
+
+        pnQuanLy.add(lblPhieuPhat);
+        pnQuanLy.add(lblCTPhieuPhat);
+        pnQuanLy.add(lblTimKiemDG);
+        pnQuanLy.add(txtTimKiemDG);
+        pnQuanLy.add(btnTimDG);
+        pnQuanLy.add(btnInThe);
+        pnQuanLy.add(btnXuatExcel);
+        pnQuanLy.add(btnNhapExcel);
 
         pnTableQuanLy.add(pnQuanLy);
 
@@ -389,6 +405,9 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         pnCardTabPhieuPhat = new JPanel(cardPhieuPhatGroup);
         pnCardTabPhieuPhat.add(pnTablePhieuPhat,"1");
         pnCardTabPhieuPhat.add(pnTableQuanLy,"2");
+
+        loadDataLenBangPhieuPhat();
+        loadDataLenBangCTPhieuPhat();
 
         this.add(pnCardTabPhieuPhat);
     }
@@ -453,7 +472,8 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         btnReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                loadDataLenBangPhieuPhat();
+                loadDataLenBangPhieuPhat();
+                loadDataLenBangCTPhieuPhat();
                 txtMaPhieuPhat.setText("");
                 txtMaPhieuTra.setText("");
                 txtMaSach.setText("");
@@ -462,25 +482,25 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
                 txtThanhTien.setText("");
                 txtNgayTraMuon.setText("");
                 txtDocGia.setText("");
-                txtTimKiem.setText("");
+                dtmCTPhieuPhat.setRowCount(0);
             }
         });
         tblPhieuPhat.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-//                xuLyClickTblPhieuPhat();
+                xuLyClickTblPhieuPhatTheoMa();
             }
         });
         btnInThe.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                xuLyXuatPhieuPhat();
+                xuLyXuatPhieuPhat();
             }
         });
         btnThem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                xuLyThemPhieuPhat();
+                xuLyThemPhieuPhat();
                 txtMaPhieuPhat.setText("");
                 txtMaPhieuTra.setText("");
                 txtMaSach.setText("");
@@ -489,93 +509,157 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
                 txtThanhTien.setText("");
                 txtNgayTraMuon.setText("");
                 txtDocGia.setText("");
+                dtmCTPhieuPhat.setRowCount(0);
             }
         });
         btnXoa.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                xuLyXoaPhieuPhat();
-                txtMaPhieuPhat.setText("");
-                txtMaPhieuTra.setText("");
-                txtMaSach.setText("");
-                txtMaPhanSach.setText("");
-                cmbLyDo.setSelectedIndex(0);
-                txtThanhTien.setText("");
-                txtNgayTraMuon.setText("");
-                txtDocGia.setText("");
-            }
-        });
-        btnTimKiem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-//                xuLyTImKiem();
+                xuLyXoaCTPhieuPhat();
             }
         });
         btnXuatExcel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                xuLyXuatFileExcel();
+                xuLyXuatFileExcel();
             }
         });
         btnNhapExcel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                xuLyNhapFileExcel();
+                xuLyNhapFileExcel();
             }
         });
         btnPhieuTra.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                xuLyTimPhieuTra();
-//                xuLyThemMa();
+                xuLyTimPhieuTra();
+                xuLyThemMa();
             }
         });
         btnSachPhat.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                timSachPhatGUI = new DlgTimSachPhat();
-//                if(!txtMaPhieuTra.getText().equals(""))
-//                    timSachPhatGUI.loadDataLenTable(txtMaPhieuTra.getText());
-//                xuLyTimSachPhat();
-//                xuLyTinhToan();
+                timSachPhatGUI = new DlgTimSachPhat();
+                if(!txtMaPhieuTra.getText().equals(""))
+                    timSachPhatGUI.loadDataLenTable(txtMaPhieuTra.getText());
+                xuLyTimSachPhat();
+                xuLyTinhToan();
             }
         });
         cmbLyDo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                xuLyTinhToan();
+                xuLyTinhToan();
             }
         });
-        txtNgayTraMuon.addActionListener(new ActionListener() {
+        txtNgayTraMuon.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                xuLyTinhToan();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                xuLyTinhToan();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                xuLyTinhToan();
+            }
+        });
+        btnChon.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                xuLyTinhToan();
+                xuLyThemVaoTable();
             }
         });
-
+        btnTimDG.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                xuLyTimKiem();
+            }
+        });
     }
 
-//    public void loadDataLenBangPhieuPhat(){
-//        ppBUS.docListPhieuPhat();
-//        dtmPhieuPhat.setRowCount(0);
-//
-//        ArrayList<PhieuPhat> dspp = ppBUS.getListPhieuPhat();
-//
-//        DecimalFormat dcf = new DecimalFormat("###,###");
-//
-//        for(PhieuPhat pp : dspp){
-//            Vector vec = new Vector();
-//            vec.add(pp.getMaPhieuPhat());
-//            vec.add(pp.getMaPhieuTra());
-//            vec.add(sachBUS.getTenSach(pp.getMaSach()));
-//            vec.add(docGiaBUS.getTenDocGia(pp.getMaDocGia()));
-//            vec.add(nhanVienBUS.getTenNhanVien(pp.getMaNhanVien()));
-//            vec.add(pp.getLyDo());
-//            vec.add(dcf.format(pp.getThanhTien()));
-//            dtmPhieuPhat.addRow(vec);
-//        }
-//    }
-//
+    public void loadDataLenBangPhieuPhat(){
+        ppBUS.docListPhieuPhat();
+        dtmPhieuPhat.setRowCount(0);
+
+        ArrayList<PhieuPhat> dspp = ppBUS.getListPhieuPhat();
+
+        DecimalFormat dcf = new DecimalFormat("###,###");
+
+        for(PhieuPhat pp : dspp){
+            Vector vec = new Vector();
+            vec.add(pp.getMaPhieuPhat());
+            vec.add(pp.getMaPhieuTra());
+            vec.add(docGiaBUS.getTenDocGia(pp.getMaDocGia()));
+            vec.add(nhanVienBUS.getTenNhanVien(pp.getMaNhanVien()));
+            vec.add(dcf.format(pp.getThanhTien()));
+            dtmPhieuPhat.addRow(vec);
+        }
+    }
+
+    public void loadDataLenBangCTPhieuPhat(){
+        ctPhieuPhatBUS.docDanhSach();
+        dtmXemCTPhieuPhat.setRowCount(0);
+
+        ArrayList<CTPhieuPhat> dsctpp = ctPhieuPhatBUS.getListCTPhieuPhat();
+
+        DecimalFormat dcf = new DecimalFormat("###,###");
+
+        for(CTPhieuPhat ctpp : dsctpp){
+            Vector vec = new Vector();
+            vec.add(ctpp.getMaPhieuPhat());
+            vec.add(ctpp.getMaSach());
+            vec.add(ctpp.getMaPhanSach());
+            vec.add(sachBUS.getTenSach(ctpp.getMaSach()));
+            vec.add(ctpp.getLyDo());
+            vec.add(dcf.format(ctpp.getTienPhat()));
+            dtmXemCTPhieuPhat.addRow(vec);
+        }
+    }
+
+    private void xuLyThemVaoTable(){
+        if(txtMaSach.getText().equals("")){
+            new MyDialog("Chưa chọn sách để phạt!", MyDialog.ERROR_DIALOG);
+            return;
+        }
+        if(txtMaPhieuTra.getText().equals("")){
+            new MyDialog("Chưa chọn phiếu trả!", MyDialog.ERROR_DIALOG);
+            return;
+        }
+
+        int maS = Integer.parseInt(txtMaSach.getText());
+        int maPS = Integer.parseInt(txtMaPhanSach.getText());
+        long tienPhat = Long.parseLong(txtThanhTien.getText());
+        String lyDo="", lyDo1="", lyDoTong;
+
+        if(!cmbLyDo.getSelectedItem().equals("Trả muộn")){
+            lyDo = String.valueOf(cmbLyDo.getSelectedItem());
+            if (txtNgayTraMuon.getText().trim().equals("") || Integer.parseInt(txtNgayTraMuon.getText()) == 0) {
+                lyDo1 = " ";
+            } else {
+                lyDo1 = " + " + "Trả muộn" + " " + txtNgayTraMuon.getText() + " ngày";
+            }
+        } else {
+            lyDo = String.valueOf(cmbLyDo.getSelectedItem()) + " " + txtNgayTraMuon.getText() + " ngày";
+        }
+        lyDoTong = lyDo + lyDo1;
+        String tenS = sachBUS.getTenSach(maS);
+        Vector vec = new Vector<>();
+        vec.add(maS);
+        vec.add(maPS);
+        vec.add(tenS);
+        vec.add(lyDoTong);
+        vec.add(tienPhat);
+        dtmCTPhieuPhat.addRow(vec);
+    }
+
+
+    //
 //    public void loadDataLenBangPhieuPhat(ArrayList<PhieuPhat> dspp){
 //        ppBUS.docListPhieuPhat();
 //
@@ -594,75 +678,60 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
 //        }
 //    }
 //
-//    public void xuLyClickTblPhieuPhat(){
-//        int row = tblPhieuPhat.getSelectedRow();
-//        if(row > -1){
-//            String maPhieuPhat = tblPhieuPhat.getValueAt(row,0)+"";
-//            String maPhieuTra = tblPhieuPhat.getValueAt(row,1)+"";
-//            String tenSach = tblPhieuPhat.getValueAt(row,2)+"";
-//            String docGia = tblPhieuPhat.getValueAt(row,3)+"";
-//            String nhanVien = tblPhieuPhat.getValueAt(row,4)+"";
-//            String lyDo = tblPhieuPhat.getValueAt(row,5)+"";
-//            String thanhTien = tblPhieuPhat.getValueAt(row,6)+"";
-//
-//            String[] tachChuoi1 = lyDo.split("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)");
-//            String lyDoDau = tachChuoi1[0].trim();
-//            if (tachChuoi1.length >= 2) {
-//                String soNgay = tachChuoi1[1].trim();
-//                txtNgayTraMuon.setText(soNgay);
-//            }
-//            String[] tachChuoi = lyDoDau.split("\\+");
-//            String lyDoDau1 = tachChuoi[0].trim();
-//            int index = -1;
-//            for(int i=0;i<cmbLyDo.getItemCount();i++){
-//                if(cmbLyDo.getItemAt(i).equals(lyDoDau1)){
-//                    index = i;
-//                    break;
-//                }
-//            }
-//            String maPS = String.valueOf(ppBUS.getPhieuPhatTheoMa(Integer.parseInt(maPhieuPhat)).getMaPhanSach());
-//
-//            txtMaPhieuPhat.setText(maPhieuPhat);
-//            txtMaPhieuTra.setText(maPhieuTra);
-//            txtMaSach.setText(String.valueOf(sachBUS.getMaSach(tenSach)));
-//            txtMaPhanSach.setText(maPS);
-//            txtDocGia.setText(docGia);
-//            cmbLyDo.setSelectedIndex(index);
-//            txtThanhTien.setText(thanhTien.replace(",",""));
-//        }
-//    }
-//
-//    private void xuLyThemPhieuPhat(){
-//        String lyDo="",lyDo1="",lyDoTong;
-//        if(!cmbLyDo.getSelectedItem().equals("Trả muộn")){
-//            lyDo = String.valueOf(cmbLyDo.getSelectedItem());
-//            if (txtNgayTraMuon.getText().trim().equals("") || Integer.parseInt(txtNgayTraMuon.getText()) == 0) {
-//                lyDo1 = " ";
-//            } else {
-//                lyDo1 = " + " + "Trả muộn" + " " + txtNgayTraMuon.getText() + " ngày";
-//            }
-//        }else {
-//            lyDo = String.valueOf(cmbLyDo.getSelectedItem())+ " " + txtNgayTraMuon.getText() + " ngày";
-//        }
-//        lyDoTong = lyDo + lyDo1;
-//        boolean flag = ppBUS.themPhieuPhat(txtMaPhieuPhat.getText(),
-//                            txtMaPhieuTra.getText(),txtMaSach.getText(),txtMaPhanSach.getText(),
-//                            txtDocGia.getText(), String.valueOf(dangNhapGUI.maTaiKhoan()),lyDoTong,
-//                            txtThanhTien.getText());
-//        ppBUS.docListPhieuPhat();
-//        boolean flag1 = phanSachBUS.themPhanSach(txtMaPhanSach.getText(),txtMaSach.getText(),cmbLyDo.getSelectedItem()+"");
-//        loadDataLenBangPhieuPhat();
-//    }
-//
-//    private void xuLyXoaPhieuPhat(){
-//        MyDialog dlg = new MyDialog("Bạn có chắc chắn muốn xoá?", MyDialog.WARNING_DIALOG);
-//        if(dlg.OK_OPTION == dlg.getAction()) {
-//            boolean flag = ppBUS.xoaPhieuPhat(txtMaPhieuPhat.getText());
-//            boolean flag1 = phanSachBUS.xoaPhanSach(txtMaPhanSach.getText(),txtMaSach.getText());
-//            loadDataLenBangPhieuPhat();
-//        }
-//    }
-//
+    public void xuLyClickTblPhieuPhatTheoMa(){
+        int row = tblPhieuPhat.getSelectedRow();
+        dtmXemCTPhieuPhat.setRowCount(0);
+        if(row > -1){
+            String maPhieuPhat = tblPhieuPhat.getValueAt(row,0)+"";
+            int maPP = Integer.parseInt(maPhieuPhat);
+            ArrayList<CTPhieuPhat> dsctpp = ctPhieuPhatBUS.getListPhieuPhatTheoMa(maPP);
+            for(CTPhieuPhat ctpp : dsctpp){
+                Vector vec = new Vector<>();
+                vec.add(ctpp.getMaPhieuPhat());
+                vec.add(ctpp.getMaSach());
+                vec.add(ctpp.getMaPhanSach());
+                vec.add(sachBUS.getTenSach(ctpp.getMaSach()));
+                vec.add(ctpp.getLyDo());
+                vec.add(ctpp.getTienPhat());
+                dtmXemCTPhieuPhat.addRow(vec);
+            }
+        }
+    }
+
+    private void xuLyThemPhieuPhat(){
+
+        boolean flag = ppBUS.themPhieuPhat(txtMaPhieuPhat.getText(), txtMaPhieuTra.getText(),
+                            txtDocGia.getText(),String.valueOf(dangNhapGUI.maTaiKhoan()), txtThanhTien.getText());
+        int maPP = Integer.parseInt(txtMaPhieuPhat.getText());
+        if(flag) {
+            int count = tblCTPhieuPhat.getRowCount();
+            for (int i = 0; i < count; i++) {
+                int maS = Integer.parseInt(tblCTPhieuPhat.getValueAt(i,0)+"");
+                int maPS = Integer.parseInt(tblCTPhieuPhat.getValueAt(i,1)+"");
+                String lyDo = String.valueOf(tblCTPhieuPhat.getValueAt(i,3)+"");
+                long tienPhat = Long.parseLong(tblCTPhieuPhat.getValueAt(i,4)+"");
+                boolean flag1 = ctPhieuPhatBUS.themCTPhieuPhat(maPP,maS,maPS,lyDo,tienPhat);
+                if(lyDo.contains("+")) {
+                    String[] lyDoTong = lyDo.split("//+");
+                    String lyDo1 = lyDoTong[0];
+                    boolean flag2 = phanSachBUS.suaPhanSach(String.valueOf(maPS), String.valueOf(maS), lyDo1);
+                }
+            }
+        }
+        ppBUS.docListPhieuPhat();
+        loadDataLenBangPhieuPhat();
+        loadDataLenBangCTPhieuPhat();
+    }
+
+    private void xuLyXoaCTPhieuPhat(){
+        int row = tblCTPhieuPhat.getSelectedRow();
+        if(row > -1){
+            dtmCTPhieuPhat.removeRow(row);
+        }else {
+            new MyDialog("Hãy chọn sách để xóa!!!", MyDialog.ERROR_DIALOG);
+        }
+    }
+
 //    private void xuLySuaPhieuPhat(){
 //        String lyDo="",lyDo1="",lyDoTong;
 //        if(!cmbLyDo.getSelectedItem().equals("Trả muộn")){
@@ -685,172 +754,149 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
 //        loadDataLenBangPhieuPhat();
 //    }
 //
-//    private void xuLyXuatFileExcel(){
-//        XuLyFileExcel xuatFile = new XuLyFileExcel();
-//        xuatFile.xuatExcel(tblPhieuPhat);
-//    }
-//
-//    private void xuLyNhapFileExcel(){
-//        MyDialog dlg = new MyDialog("Dữ liệu cũ sẽ bị xoá, tiếp tục?", MyDialog.WARNING_DIALOG);
-//        if(dlg.getAction() != MyDialog.OK_OPTION){
-//            return;
-//        }
-//
-//        XuLyFileExcel nhapFile = new XuLyFileExcel();
-//        nhapFile.nhapExcel(tblPhieuPhat);
-//
-//        int row = tblPhieuPhat.getRowCount();
-//        for(int i=0;i<row;i++){
-//            String maPT = String.valueOf(tblPhieuPhat.getValueAt(i,1));
-//            String tenSach = String.valueOf(tblPhieuPhat.getValueAt(i,2));
-//            String docGia = String.valueOf(tblPhieuPhat.getValueAt(i,3));
-//            String nhanVien = String.valueOf(tblPhieuPhat.getValueAt(i,4));
-//            String lyDo = String.valueOf(tblPhieuPhat.getValueAt(i,5));
-//            String thanhTien = String.valueOf(tblPhieuPhat.getValueAt(i,6));
-//            String maPS = String.valueOf(ppBUS.getPhieuPhatTheoMa(Integer.parseInt(maPT)).getMaPhanSach());
-//
-//            ppBUS.nhapPhieuPhatExcel(maPT,tenSach,maPS,docGia,nhanVien,lyDo,thanhTien);
-//        }
-//    }
-//
-//    private void xuLyXuatPhieuPhat(){
-//        ArrayList<Vector> dspp = new ArrayList<>();
-//        int row = tblPhieuPhat.getSelectedRow();
-//        int count = 0;
-//        if(txtMaPhieuPhat.getText().equals("")){
-//            new MyDialog("Chưa chọn phiếu phạt để in phiếu!!!", MyDialog.ERROR_DIALOG);
-//            return;
-//        }
-//        for (int i=0;i<row;i++){
-//            if(txtMaPhieuPhat.getText().equals(tblPhieuPhat.getValueAt(i,0))){
-//                count = 1;
-//                break;
-//            }
-//        }
-//        if(count != 0){
-//            new MyDialog("Phiếu phạt chưa được tạo!!!",MyDialog.ERROR_DIALOG);
-//            return;
-//        }
-//        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-//        Vector vec = new Vector();
-//        vec.add(tblPhieuPhat.getValueAt(row, 0));
-//        vec.add(tblPhieuPhat.getValueAt(row, 1));
-//        vec.add(sachBUS.getMaSach(String.valueOf(tblPhieuPhat.getValueAt(row, 2))));
-//        vec.add(String.valueOf(ppBUS.getPhieuPhatTheoMa(Integer.parseInt(tblPhieuPhat.getValueAt(row, 0)+"")).getMaPhanSach()));
-//        vec.add(tblPhieuPhat.getValueAt(row, 2));
-//        vec.add(tblPhieuPhat.getValueAt(row, 3));
-//        vec.add(tblPhieuPhat.getValueAt(row, 4));
-//        vec.add(tblPhieuPhat.getValueAt(row, 5));
-//        vec.add(tblPhieuPhat.getValueAt(row, 6));
-//        dspp.add(vec);
-//        int maPP = Integer.parseInt(txtMaPhieuPhat.getText());
-//        long tien = Long.parseLong(txtThanhTien.getText());
-//        XuatPhieuPhatGUI phieuPhatGUI = new XuatPhieuPhatGUI(dspp,maPP,txtDocGia.getText(),
-//                nhanVienBUS.getTenNhanVien(dangNhapGUI.maTaiKhoan()),
-//                String.valueOf(sdf.format(ptBUS.getPhieuTra(txtMaPhieuTra.getText()).getNgayTraThuc())),
-//                Long.parseLong(txtThanhTien.getText()));
-//        phieuPhatGUI.setVisible(true);
-//    }
-//
-//    private void xuLyTImKiem(){
-//        String docGia = txtTimKiem.getText();
-//        dtmPhieuPhat.setRowCount(0);
-//        ArrayList<PhieuPhat> dspp = null;
-//        dspp = ppBUS.getListPhieuPhatTheoDocGia(docGia);
-//
-//        DecimalFormat dcf = new DecimalFormat("###,###");
-//        for(PhieuPhat pp : dspp){
-//            Vector vec = new Vector<>();
-//            vec.add(pp.getMaPhieuPhat());
-//            vec.add(pp.getMaPhieuTra());
-//            vec.add(sachBUS.getTenSach(pp.getMaSach()));
-//            vec.add(String.valueOf(ppBUS.getPhieuPhatTheoMa(pp.getMaPhieuPhat()).getMaPhanSach()));
-//            vec.add(docGiaBUS.getTenDocGia(pp.getMaDocGia()));
-//            vec.add(nhanVienBUS.getTenNhanVien(pp.getMaNhanVien()));
-//            vec.add(pp.getLyDo());
-//            vec.add(dcf.format(pp.getThanhTien()));
-//            dtmPhieuPhat.addRow(vec);
-//        }
-//        MyDialog dlg = new MyDialog("Số kết quả tìm được: " + dspp.size(), MyDialog.INFO_DIALOG);
-//    }
-//
-//    private void xuLyTimKiemKhoang(){
-//        dtmPhieuPhat.setRowCount(0);
-//        String min = String.valueOf(txtMin.getSelectedItem());
-//        String max = String.valueOf(txtMax.getSelectedItem());
-//        ArrayList<PhieuPhat> dspp = ppBUS.timKiemTheoKhoang(min,max);
-//        if(dspp == null){
-//            return;
-//        }
-//        loadDataLenBangPhieuPhat(dspp);
-//        MyDialog dlg = new MyDialog("Số kết quả tìm được: " + dspp.size(), MyDialog.INFO_DIALOG);
-//    }
-//
-//    private void xuLyTimPhieuTra(){
-//        timPhieuTraGUI = new DlgTimPhieuTra();
-//        timPhieuTraGUI.setVisible(true);
-//        if(timPhieuTraGUI.phieuTraTimDuoc != null){
-//            txtMaPhieuTra.setText(String.valueOf(timPhieuTraGUI.phieuTraTimDuoc.getMaPhieuTra()));
-//            txtDocGia.setText(docGiaBUS.getTenDocGia(timPhieuTraGUI.phieuTraTimDuoc.getMaDocGia()));
-//        }
-//    }
-//
-//    private void xuLyTimSachPhat(){
-//        if(txtMaPhieuTra.getText().equals("")){
-//            new MyDialog("Chưa chọn mã phiếu trả!!!", MyDialog.ERROR_DIALOG);
-//            return;
-//        }
-//        timSachPhatGUI.xuLyChonCTPhieuTra();
-//        timSachPhatGUI.setMaPt(txtMaPhieuTra.getText());
-//        timSachPhatGUI.setVisible(true);
-//        if(timSachPhatGUI.ctPhieuTraTimDuoc != null){
-//            txtMaSach.setText(String.valueOf(timSachPhatGUI.ctPhieuTraTimDuoc.getMaSach()));
-//            txtMaPhanSach.setText(String.valueOf(timSachPhatGUI.ctPhieuTraTimDuoc.getMaPhanSach()));
-//        }
-//    }
-//
-//    private void xuLyTinhToan(){
-//        long traMuon = 0;
-//        long giaSach = 0;
-//        if(sachBUS.getSach(String.valueOf(txtMaSach.getText())) != null){
-//            giaSach = sachBUS.getSach(String.valueOf(txtMaSach.getText())).getGiaSach();
-//        }
-//        long phat = 0;
-//        long tongTienPhat = 0;
-//        if(txtNgayTraMuon.getText().trim().equals("") || txtNgayTraMuon.getText().trim().equals("0")) {
-//            traMuon = 0;
-//        }else {
-//            try{
-//                if(Long.parseLong(txtNgayTraMuon.getText()) % 10 != 0) {
-//                    traMuon = Long.parseLong(txtNgayTraMuon.getText()) / 10 + 1;
-//                }else {
-//                    traMuon = Long.parseLong(txtNgayTraMuon.getText()) / 10;
-//                }
-//            }catch (Exception e){
-//                new MyDialog("Hãy nhập giá trị nguyên phù hợp!!!", MyDialog.ERROR_DIALOG);
-//                return;
-//            }
-//        }
-////        "Trả muộn", "Rách sách", "Ướt sách", "Mất sách", "Mất trang"
-////        Trả muộn: 10% giá sách/10 ngày<br>Rách sách: 25% giá sách<br>Ướt, mất sách: 100% giá sách<br>Mất trang: 50% giá sách
-//        if(cmbLyDo.getSelectedItem().equals("Rách sách")){
-//            phat = (giaSach * 25)/100;
-//        }else if(cmbLyDo.getSelectedItem().equals("Ướt sách") || cmbLyDo.getSelectedItem().equals("Mất sách")){
-//            phat = giaSach;
-//        }else if (cmbLyDo.getSelectedItem().equals("Mất trang")){
-//            phat = (giaSach * 50)/100;
-//        }else {
-//            phat = 0;
-//        }
-//
-//        tongTienPhat = ((giaSach * traMuon)/10) + phat;
-//        txtThanhTien.setText(String.valueOf(tongTienPhat));
-//    }
-//
-//    private void xuLyThemMa(){
-//        if(txtMaPhieuTra.getText() != ""){
-//            int maPP = ppBUS.getMaPhieuPhatMoiNhat()+1;
-//            txtMaPhieuPhat.setText(String.valueOf(maPP));
-//        }
-//    }
+    private void xuLyXuatFileExcel(){
+        XuLyFileExcel xuatFile = new XuLyFileExcel();
+        xuatFile.xuatExcel(tblPhieuPhat);
+    }
+
+    private void xuLyNhapFileExcel(){
+        loadDataLenBangCTPhieuPhat();
+        MyDialog dlg = new MyDialog("Dữ liệu cũ sẽ bị xoá, tiếp tục?", MyDialog.WARNING_DIALOG);
+        if(dlg.getAction() != MyDialog.OK_OPTION){
+            return;
+        }
+
+        XuLyFileExcel nhapFile = new XuLyFileExcel();
+        nhapFile.nhapExcel(tblPhieuPhat);
+
+        int row = tblPhieuPhat.getRowCount();
+        for(int i=0;i<row;i++){
+            String maPT = String.valueOf(tblPhieuPhat.getValueAt(i,1));
+            String docGia = String.valueOf(tblPhieuPhat.getValueAt(i,3));
+            String nhanVien = String.valueOf(tblPhieuPhat.getValueAt(i,4));
+            String thanhTien = String.valueOf(tblPhieuPhat.getValueAt(i,6));
+
+            ppBUS.nhapPhieuPhatExcel(maPT,docGia,nhanVien,thanhTien);
+        }
+    }
+
+    private void xuLyXuatPhieuPhat(){
+        ArrayList<Vector> dsctpp = new ArrayList<>();
+        int row = tblPhieuPhat.getSelectedRow();
+        int count = 0;
+        if(row <= -1){
+            new MyDialog("Chưa chọn phiếu phạt để in phiếu!!!", MyDialog.ERROR_DIALOG);
+            return;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+        int maPP = Integer.parseInt(tblPhieuPhat.getValueAt(row,0)+"");
+        String maPT = tblPhieuPhat.getValueAt(row,1)+"";
+        long tongTien = Long.parseLong((tblPhieuPhat.getValueAt(row,4)+"").replace(",",""));
+        String tenDG = tblPhieuPhat.getValueAt(row,2)+"";
+        int rowCT = tblXemCTPhieuPhat.getRowCount();
+        for(int i=0;i<rowCT;i++){
+            Vector vec = new Vector();
+            vec.add(tblXemCTPhieuPhat.getValueAt(i,1));
+            vec.add(tblXemCTPhieuPhat.getValueAt(i,2));
+            vec.add(tblXemCTPhieuPhat.getValueAt(i,3));
+            vec.add(tblXemCTPhieuPhat.getValueAt(i,4));
+            vec.add(tblXemCTPhieuPhat.getValueAt(i,5));
+            dsctpp.add(vec);
+        }
+
+        XuatPhieuPhatGUI phieuPhatGUI = new XuatPhieuPhatGUI(dsctpp,maPP,tenDG,
+                nhanVienBUS.getTenNhanVien(dangNhapGUI.maTaiKhoan()),
+                String.valueOf(sdf.format(ptBUS.getPhieuTra(maPT).getNgayTraThuc())),
+                tongTien);
+        phieuPhatGUI.setVisible(true);
+    }
+
+    private void xuLyTimKiem(){
+        String docGia = txtTimKiemDG.getText();
+        dtmPhieuPhat.setRowCount(0);
+        ArrayList<PhieuPhat> dspp = null;
+        dspp = ppBUS.getListPhieuPhatTheoDocGia(docGia);
+
+        DecimalFormat dcf = new DecimalFormat("###,###");
+        for(PhieuPhat pp : dspp){
+            Vector vec = new Vector<>();
+            vec.add(pp.getMaPhieuPhat());
+            vec.add(pp.getMaPhieuTra());
+            vec.add(docGiaBUS.getTenDocGia(pp.getMaDocGia()));
+            vec.add(nhanVienBUS.getTenNhanVien(pp.getMaNhanVien()));
+            vec.add(dcf.format(pp.getThanhTien()));
+            dtmPhieuPhat.addRow(vec);
+        }
+        MyDialog dlg = new MyDialog("Số kết quả tìm được: " + dspp.size(), MyDialog.INFO_DIALOG);
+    }
+
+
+    private void xuLyTimPhieuTra(){
+        timPhieuTraGUI = new DlgTimPhieuTra();
+        timPhieuTraGUI.setVisible(true);
+        if(timPhieuTraGUI.phieuTraTimDuoc != null){
+            txtMaPhieuTra.setText(String.valueOf(timPhieuTraGUI.phieuTraTimDuoc.getMaPhieuTra()));
+            txtDocGia.setText(docGiaBUS.getTenDocGia(timPhieuTraGUI.phieuTraTimDuoc.getMaDocGia()));
+        }
+    }
+
+    private void xuLyTimSachPhat(){
+        if(txtMaPhieuTra.getText().equals("")){
+            new MyDialog("Chưa chọn mã phiếu trả!!!", MyDialog.ERROR_DIALOG);
+            return;
+        }
+        timSachPhatGUI.xuLyChonCTPhieuTra();
+        timSachPhatGUI.setMaPt(txtMaPhieuTra.getText());
+        timSachPhatGUI.setVisible(true);
+        if(timSachPhatGUI.ctPhieuTraTimDuoc != null){
+            txtMaSach.setText(String.valueOf(timSachPhatGUI.ctPhieuTraTimDuoc.getMaSach()));
+            txtMaPhanSach.setText(String.valueOf(timSachPhatGUI.ctPhieuTraTimDuoc.getMaPhanSach()));
+        }
+    }
+
+    private void xuLyTinhToan(){
+        long traMuon = 0;
+        long giaSach = 0;
+        if(sachBUS.getSach(String.valueOf(txtMaSach.getText())) != null){
+            giaSach = sachBUS.getSach(String.valueOf(txtMaSach.getText())).getGiaSach();
+        }
+        long phat = 0;
+        long tongTienPhat = 0;
+        if(txtNgayTraMuon.getText().trim().equals("") || txtNgayTraMuon.getText().trim().equals("0")) {
+            traMuon = 0;
+        }else {
+            try{
+                if(Long.parseLong(txtNgayTraMuon.getText()) % 10 != 0) {
+                    traMuon = Long.parseLong(txtNgayTraMuon.getText()) / 10 + 1;
+                }else {
+                    traMuon = Long.parseLong(txtNgayTraMuon.getText()) / 10;
+                }
+            }catch (Exception e){
+                new MyDialog("Hãy nhập giá trị nguyên phù hợp!!!", MyDialog.ERROR_DIALOG);
+                return;
+            }
+        }
+//        "Trả muộn", "Rách sách", "Ướt sách", "Mất sách", "Mất trang"
+//        Trả muộn: 10% giá sách/10 ngày<br>Rách sách: 25% giá sách<br>Ướt, mất sách: 100% giá sách<br>Mất trang: 50% giá sách
+        if(cmbLyDo.getSelectedItem().equals("Rách sách")){
+            phat = (giaSach * 25)/100;
+        }else if(cmbLyDo.getSelectedItem().equals("Ướt sách") || cmbLyDo.getSelectedItem().equals("Mất sách")){
+            phat = giaSach;
+        }else if (cmbLyDo.getSelectedItem().equals("Mất trang")){
+            phat = (giaSach * 50)/100;
+        }else {
+            phat = 0;
+        }
+
+        tongTienPhat = ((giaSach * traMuon)/10) + phat;
+        txtThanhTien.setText(String.valueOf(tongTienPhat));
+    }
+
+    private void xuLyThemMa(){
+        if(txtMaPhieuTra.getText() != ""){
+            int maPP = ppBUS.getMaPhieuPhatMoiNhat()+1;
+            txtMaPhieuPhat.setText(String.valueOf(maPP));
+        }
+    }
 }
