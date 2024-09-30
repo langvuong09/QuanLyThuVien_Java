@@ -4,7 +4,7 @@ public class Sach {
 
     private int maSach;
     private int maLoaiSach;
-    private int maTacGia;
+    private String tacGia;
     private String tenSach;
     private long giaSach;
     private String hinhAnh;
@@ -13,10 +13,10 @@ public class Sach {
     public Sach(){
     }
 
-    public Sach(int maSach,int maLoaiSach,int maTacGia,String tenSach,long giaSach,String hinhAnh,int soLuong){
+    public Sach(int maSach,int maLoaiSach,String tacGia,String tenSach,long giaSach,String hinhAnh,int soLuong){
         this.maSach = maSach;
         this.maLoaiSach = maLoaiSach;
-        this.maTacGia = maTacGia;
+        this.tacGia = tacGia;
         this.tenSach = tenSach;
         this.giaSach = giaSach;
         this.hinhAnh = hinhAnh;
@@ -39,12 +39,12 @@ public class Sach {
         this.maLoaiSach = maLoaiSach;
     }
 
-    public int getMaTacGia() {
-        return maTacGia;
+    public String getTacGia() {
+        return tacGia;
     }
 
-    public void setMaTacGia(int maTacGia) {
-        this.maTacGia = maTacGia;
+    public void setTacGia(String tacGia) {
+        this.tacGia = tacGia;
     }
 
     public String getTenSach() {

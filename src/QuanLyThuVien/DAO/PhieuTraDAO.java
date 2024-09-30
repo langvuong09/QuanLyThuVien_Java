@@ -126,6 +126,38 @@ public class PhieuTraDAO {
         return false;
     }
 
+    public int sachTrongPhieuMuon(int maPM){
+        try {
+            String sql = "SELECT \n" +
+                    "    (SELECT COUNT(*) \n" +
+                    "     FROM ctphieumuon ctpm \n" +
+                    "     WHERE ctpm.MaPhieuMuon = " + maPM + ") AS TongSoSachMuon,\n" +
+                    "     \n" +
+                    "    (SELECT COUNT(*) \n" +
+                    "     FROM ctphieutra ctpt \n" +
+                    "     JOIN phieutra pt ON ctpt.MaPhieuTra = pt.MaPhieuTra\n" +
+                    "     WHERE pt.MaPhieuMuon = " + maPM + ") AS TongSoSachTra,\n" +
+                    "\n" +
+                    "    ( (SELECT COUNT(*) \n" +
+                    "       FROM ctphieumuon ctpm \n" +
+                    "       WHERE ctpm.MaPhieuMuon = " + maPM + ") \n" +
+                    "     - \n" +
+                    "     (SELECT COUNT(*) \n" +
+                    "      FROM ctphieutra ctpt \n" +
+                    "      JOIN phieutra pt ON ctpt.MaPhieuTra = pt.MaPhieuTra\n" +
+                    "      WHERE pt.MaPhieuMuon = " + maPM + ") ) AS SoSachChuaTra;\n";
+            Statement st = MyConnect.conn.createStatement();
+            ResultSet rs = st.executeQuery(sql);
+            if(rs.next()){
+                return rs.getInt(3);
+            }else {
+                return -1;
+            }
+        }catch (SQLException e){
+            return -1;
+        }
+    }
+
     public ArrayList<PhieuTra> timKiemTheoKhoang(Date min, Date max){
         try{
             String sql = "SELECT * FROM phieutra, phieumuon WHERE phieutra.MaPhieuMuon = phieumuon.MaPhieuMuon" +

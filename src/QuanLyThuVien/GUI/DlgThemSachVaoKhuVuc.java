@@ -110,7 +110,7 @@ public class DlgThemSachVaoKhuVuc extends  JDialog {
             String loai = String.valueOf(tblSach.getValueAt(row, 1));
             int maLoai = loaiBUS.getMaLoai(loai);
             String tacGia = String.valueOf(tblSach.getValueAt(row, 2));
-            int maTacGia = tacGiaBUS.getMaTacGia(tacGia);
+//            int maTacGia = tacGiaBUS.getMaTacGia(tacGia);
             String ten = tblSach.getValueAt(row, 3) + "";
             String giaMuon = tblSach.getValueAt(row, 4).toString().replace(",", "");
             long gia = Long.parseLong(giaMuon);
@@ -118,7 +118,7 @@ public class DlgThemSachVaoKhuVuc extends  JDialog {
             String soLuong = tblSach.getValueAt(row,6)+"";
             int sl = Integer.parseInt(soLuong);
 
-            sachThem = new Sach(ma, maLoai, maTacGia, ten, gia, hinhAnh,sl);
+            sachThem = new Sach(ma, maLoai, tacGia, ten, gia, hinhAnh,sl);
 
         }
         this.dispose();
@@ -143,7 +143,8 @@ public class DlgThemSachVaoKhuVuc extends  JDialog {
                     vec.add(s.getMaSach());
                     String tenLoai = loaiBUS.getTenLoai(s.getMaLoaiSach());
                     vec.add(tenLoai);
-                    String tenTacGia = tacGiaBUS.getTenTacGia(s.getMaTacGia());
+//                    String tenTacGia = tacGiaBUS.getTenTacGia(s.getMaTacGia());
+                    String tenTacGia = s.getTacGia();
                     vec.add(tenTacGia);
                     vec.add(s.getTenSach());
                     DecimalFormat formatter = new DecimalFormat("###,###");
@@ -170,7 +171,8 @@ public class DlgThemSachVaoKhuVuc extends  JDialog {
                 vec.add(s.getMaSach());
                 String tenLoai = loaiBUS.getTenLoai(s.getMaLoaiSach());
                 vec.add(tenLoai);
-                String tenTacGia = tacGiaBUS.getTenTacGia(s.getMaTacGia());
+//                String tenTacGia = tacGiaBUS.getTenTacGia(s.getMaTacGia());
+                String tenTacGia = s.getTacGia();
                 vec.add(tenTacGia);
                 vec.add(s.getTenSach());
                 DecimalFormat formatter = new DecimalFormat("###,###");

@@ -106,14 +106,14 @@ public class SachBUS {
         try{
             String[] mLoai = loai.split(" ");
             int maLoai = Integer.parseInt(mLoai[0].trim());
-            String[] maTG = tacGia.split(" ");
-            int maTacGia = Integer.parseInt(maTG[0].trim());
+//            String[] maTG = tacGia.split(" ");
+//            int maTacGia = Integer.parseInt(maTG[0].trim());
             long giaSach = Long.parseLong(gia.replace(",",""));
             int sl = Integer.parseInt(soLuong);
 
             Sach sach = new Sach();
             sach.setMaLoaiSach(maLoai);
-            sach.setMaTacGia(maTacGia);
+            sach.setTacGia(tacGia);
             sach.setTenSach(tenSach);
             sach.setGiaSach(giaSach);
             sach.setHinhAnh(hinhAnh);
@@ -131,8 +131,8 @@ public class SachBUS {
             new MyDialog("Không được để trống tên sách!!!", MyDialog.ERROR_DIALOG);
             return false;
         }
-        if(tacGia.trim().equals("0 - Chọn tác giả")){
-            new MyDialog("Chưa chọn tác giả!!!", MyDialog.ERROR_DIALOG);
+        if(tacGia.trim().equals("")){
+            new MyDialog("Chưa nhập tác giả!!!", MyDialog.ERROR_DIALOG);
             return false;
         }
         if(gia.trim().equals("")){
@@ -144,16 +144,16 @@ public class SachBUS {
             return false;
         }
         String[] maLoai = loai.split(" ");
-        String[] maTG = tacGia.split(" ");
+//        String[] maTG = tacGia.split(" ");
         try{
             int mLoai = Integer.parseInt(maLoai[0]);
-            int maTacGia = Integer.parseInt(maTG[0]);
+//            int maTacGia = Integer.parseInt(maTG[0]);
             long giaSach = Long.parseLong(gia.replace(",",""));
             int sl = 0;
 
             Sach sach = new Sach();
             sach.setMaLoaiSach(mLoai);
-            sach.setMaTacGia(maTacGia);
+            sach.setTacGia(tacGia);
             sach.setTenSach(tenSach);
             sach.setGiaSach(giaSach);
             sach.setHinhAnh(hinhAnh);
@@ -192,8 +192,8 @@ public class SachBUS {
             new MyDialog("Không được để trống tên sách!!!", MyDialog.ERROR_DIALOG);
             return false;
         }
-        if(tacGia.trim().equals("0 - Chọn tác giả")){
-            new MyDialog("Chưa chọn tác giả!!!", MyDialog.ERROR_DIALOG);
+        if(tacGia.trim().equals("")){
+            new MyDialog("Chưa nhập tác giả!!!", MyDialog.ERROR_DIALOG);
             return false;
         }
         if(gia.trim().equals("")){
@@ -209,14 +209,14 @@ public class SachBUS {
         try{
             int maSach = Integer.parseInt(ma);
             int mLoai = Integer.parseInt(maLoai[0]);
-            int maTacGia = Integer.parseInt(maTG[0]);
+//            int maTacGia = Integer.parseInt(maTG[0]);
             long giaSach = Long.parseLong(gia.replace(",",""));
             int sl = Integer.parseInt(soLuong);
 
             Sach sach = new Sach();
             sach.setMaSach(maSach);
             sach.setMaLoaiSach(mLoai);
-            sach.setMaTacGia(maTacGia);
+            sach.setTacGia(tacGia);
             sach.setTenSach(tenSach);
             sach.setGiaSach(giaSach);
             sach.setHinhAnh(hinhAnh);

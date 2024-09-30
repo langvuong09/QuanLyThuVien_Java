@@ -499,15 +499,19 @@ public class PnQuanLyKhuVucGUI extends JPanel {
 
 
     private void xuLyThemSach(){
+        int row = tblKe.getSelectedRow();
+        if(row <= -1){
+            new MyDialog("Chưa chọn kệ để thêm sách!", MyDialog.ERROR_DIALOG);
+            return;
+        }else
         themSachVaoKe.loadDataLenTable();
         themSachVaoKe.setVisible(true);
-        int row = tblKe.getSelectedRow();
         dtmSach.setRowCount(0);
         if (row > -1) {
             String maKe = tblKe.getValueAt(row, 0) + "";
             int ke = Integer.parseInt(maKe);
             if (themSachVaoKe.sachThem==null){
-                new MyDialog("Thêm sách thất bại!", MyDialog.ERROR_DIALOG);
+//                new MyDialog("Thêm sách thất bại!", MyDialog.ERROR_DIALOG);
                 return;
             }
             int maSach = themSachVaoKe.sachThem.getMaSach();
@@ -520,8 +524,6 @@ public class PnQuanLyKhuVucGUI extends JPanel {
             } else {
                 new MyDialog("Thêm sách thất bại!", MyDialog.ERROR_DIALOG);
             }
-        }else {
-            new MyDialog("Chưa chọn kệ để thêm sách!", MyDialog.ERROR_DIALOG);
         }
     }
 

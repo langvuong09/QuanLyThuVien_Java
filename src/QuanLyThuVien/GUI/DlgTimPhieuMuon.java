@@ -1,7 +1,9 @@
 package QuanLyThuVien.GUI;
 
+import MyCustom.MyDialog;
 import QuanLyThuVien.BUS.DocGiaBUS;
 import QuanLyThuVien.BUS.NhanVienBUS;
+import QuanLyThuVien.BUS.PhieuTraBUS;
 import QuanLyThuVien.DTO.PhieuMuon;
 import QuanLyThuVien.BUS.PhieuMuonBUS;
 import MyCustom.MyTable;
@@ -18,9 +20,11 @@ import javax.swing.table.DefaultTableModel;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.text.ParseException;
+import javax.swing.table.DefaultTableCellRenderer;
 
 public class DlgTimPhieuMuon extends JDialog{
     private PhieuMuonBUS phieuMuonBUS = new PhieuMuonBUS();
+    private PhieuTraBUS phieuTraBUS = new PhieuTraBUS();
     private DocGiaBUS docGiaBUS = new DocGiaBUS();
     private NhanVienBUS nhanVienBUS = new NhanVienBUS();
     private DlgTimSachMuon sachMuonGUI = new DlgTimSachMuon();
@@ -44,6 +48,8 @@ public class DlgTimPhieuMuon extends JDialog{
     private void addControls() {
         Container conn = getContentPane();
         conn.setLayout(new BorderLayout());
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
         Font font = new Font("Tahoma", Font.PLAIN, 16);
         JPanel pnTop = new JPanel();
@@ -64,7 +70,15 @@ public class DlgTimPhieuMuon extends JDialog{
         dtmTimPhieuMuon.addColumn("Ngày mượn");
         dtmTimPhieuMuon.addColumn("Hạn trả");
         dtmTimPhieuMuon.addColumn("Tổng tiền");
+        dtmTimPhieuMuon.addColumn("Trạng thái");
         tblTimPhieuMuon = new MyTable(dtmTimPhieuMuon);
+
+        tblTimPhieuMuon.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        tblTimPhieuMuon.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
+        tblTimPhieuMuon.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
+        tblTimPhieuMuon.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
+        tblTimPhieuMuon.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
+
         JScrollPane srcPhieuMuon = new JScrollPane(tblTimPhieuMuon);
         pnTable.add(srcPhieuMuon, BorderLayout.CENTER);
         conn.add(pnTable, BorderLayout.CENTER);
@@ -107,30 +121,35 @@ public class DlgTimPhieuMuon extends JDialog{
 
     private void xuLyChonPhieuMuon() {
         int row = tblTimPhieuMuon.getSelectedRow();
-        if (row > -1) {
-            try {
-                int ma = Integer.parseInt(tblTimPhieuMuon.getValueAt(row, 0) + "");
-                String docGia = tblTimPhieuMuon.getValueAt(row, 1) + "";
-                int maDocGia = docGiaBUS.getMaDocGia(docGia);
-                String nhanVien = tblTimPhieuMuon.getValueAt(row, 2) + "";
-                int maNhanVien = nhanVienBUS.getMaNhanVien(nhanVien);
-                String ngayMuon = tblTimPhieuMuon.getValueAt(row, 3) + "";
-                String hanTra = tblTimPhieuMuon.getValueAt(row, 4) + ""; // Sửa index thành 4
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                Date ngayM = null;
-                Date hanT = null;
-                if (!ngayMuon.isEmpty() && !hanTra.isEmpty()) { // Kiểm tra chuỗi không rỗng trước khi chuyển đổi
-                    ngayM = sdf.parse(ngayMuon);
-                    hanT = sdf.parse(hanTra);
+        if(!(tblTimPhieuMuon.getValueAt(row, 6) + "").equals("0")) {
+            if (row > -1) {
+                try {
+                    int ma = Integer.parseInt(tblTimPhieuMuon.getValueAt(row, 0) + "");
+                    String docGia = tblTimPhieuMuon.getValueAt(row, 1) + "";
+                    int maDocGia = docGiaBUS.getMaDocGia(docGia);
+                    String nhanVien = tblTimPhieuMuon.getValueAt(row, 2) + "";
+                    int maNhanVien = nhanVienBUS.getMaNhanVien(nhanVien);
+                    String ngayMuon = tblTimPhieuMuon.getValueAt(row, 3) + "";
+                    String hanTra = tblTimPhieuMuon.getValueAt(row, 4) + ""; // Sửa index thành 4
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                    Date ngayM = null;
+                    Date hanT = null;
+                    if (!ngayMuon.isEmpty() && !hanTra.isEmpty()) { // Kiểm tra chuỗi không rỗng trước khi chuyển đổi
+                        ngayM = sdf.parse(ngayMuon);
+                        hanT = sdf.parse(hanTra);
+                    }
+                    long tongTien = Long.parseLong(tblTimPhieuMuon.getValueAt(row, 5) + ""); // Sửa index thành 5
+
+                    phieuMuonTimDuoc = new PhieuMuon(ma, maDocGia, maNhanVien, ngayM, hanT, tongTien);
+
+                    this.dispose();
+                } catch (NumberFormatException | ParseException ex) {
+                    ex.printStackTrace();
                 }
-                long tongTien = Long.parseLong(tblTimPhieuMuon.getValueAt(row, 5) + ""); // Sửa index thành 5
-
-                phieuMuonTimDuoc = new PhieuMuon(ma, maDocGia, maNhanVien, ngayM, hanT, tongTien);
-
-                this.dispose();
-            } catch (NumberFormatException | ParseException ex) {
-                ex.printStackTrace();
             }
+        }else {
+            new MyDialog("Sách đã được trả hết!!!", MyDialog.ERROR_DIALOG);
+            return;
         }
     }
 
@@ -148,6 +167,7 @@ public class DlgTimPhieuMuon extends JDialog{
                 vec.add(sdf.format(pm.getNgayMuon())); // Định dạng ngày mượn
                 vec.add(sdf.format(pm.getNgayTra())); // Định dạng hạn trả
                 vec.add(pm.getTongTien());
+                vec.add(phieuTraBUS.sachTrongPhieuMuon(pm.getMaPhieuMuon()));
                 dtmTimPhieuMuon.addRow(vec);
             }
         }
@@ -166,6 +186,7 @@ public class DlgTimPhieuMuon extends JDialog{
                 vec.add(sdf.format(pm.getNgayMuon())); // Định dạng ngày mượn
                 vec.add(sdf.format(pm.getNgayTra())); // Định dạng hạn trả
                 vec.add(pm.getTongTien());
+                vec.add(phieuTraBUS.sachTrongPhieuMuon(pm.getMaPhieuMuon()));
                 dtmTimPhieuMuon.addRow(vec);
             }
         }

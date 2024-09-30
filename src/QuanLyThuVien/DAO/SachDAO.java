@@ -21,7 +21,7 @@ public class SachDAO {
                 Sach s = new Sach();
                 s.setMaSach(rs.getInt(1));
                 s.setMaLoaiSach(rs.getInt(2));
-                s.setMaTacGia(rs.getInt(3));
+                s.setTacGia(rs.getString(3));
                 s.setTenSach(rs.getString(4));
                 s.setGiaSach(rs.getLong(5));
                 s.setHinhAnh(rs.getString(6));
@@ -44,7 +44,7 @@ public class SachDAO {
                 s = new Sach();
                 s.setMaSach(rs.getInt(1));
                 s.setMaLoaiSach(rs.getInt(2));
-                s.setMaTacGia(rs.getInt(3));
+                s.setTacGia(rs.getString(3));
                 s.setTenSach(rs.getString(4));
                 s.setGiaSach(rs.getLong(5));
                 s.setHinhAnh(rs.getString(6));
@@ -63,7 +63,7 @@ public class SachDAO {
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             pre.setInt(1,s.getMaSach());
             pre.setInt(2,s.getMaLoaiSach());
-            pre.setInt(3,s.getMaTacGia());
+            pre.setString(3,s.getTacGia());
             pre.setString(4,s.getTenSach());
             pre.setLong(5,s.getGiaSach());
             pre.setString(6,s.getHinhAnh());
@@ -89,10 +89,10 @@ public class SachDAO {
     public boolean suaSach(Sach s){
         boolean result = false;
         try{
-            String sql = "UPDATE sach SET MaLoai=?, MaTacGia=?, TenSach=?, GiaSach=?, HinhAnh=?, SoLuong=? WHERE MaSach=?";
+            String sql = "UPDATE sach SET MaLoai=?, TacGia=?, TenSach=?, GiaSach=?, HinhAnh=?, SoLuong=? WHERE MaSach=?";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             pre.setInt(1,s.getMaLoaiSach());
-            pre.setInt(2,s.getMaTacGia());
+            pre.setString(2,s.getTacGia());
             pre.setString(3,s.getTenSach());
             pre.setLong(4,s.getGiaSach());
             pre.setString(5,s.getHinhAnh());
@@ -145,13 +145,13 @@ public class SachDAO {
     public boolean nhapSachTuExcel(Sach s){
         try{
             String sql = "DELETE * FROM sach; "+
-                    "INSERT INTO sach(MaSach,MaLoai,MaTacGia,TenSach,GiaSach,HinhAnh,SoLuong"+
+                    "INSERT INTO sach(MaSach,MaLoai,TacGia,TenSach,GiaSach,HinhAnh,SoLuong"+
                     "VALUES (?,?,?,?,?,?,?)";
 
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             pre.setInt(1,s.getMaSach());
             pre.setInt(2,s.getMaLoaiSach());
-            pre.setInt(3,s.getMaTacGia());
+            pre.setString(3,s.getTacGia());
             pre.setString(4,s.getTenSach());
             pre.setLong(5,s.getGiaSach());
             pre.setString(6,s.getHinhAnh());

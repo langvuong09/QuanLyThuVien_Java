@@ -179,4 +179,12 @@ public class PhieuTraBUS {
         }
         return null;
     }
+
+    public int sachTrongPhieuMuon(int maPM){
+        try{
+            return ptDAO.sachTrongPhieuMuon(maPM);
+        }catch (Exception e){
+            return -1;
+        }
+    }
 }
