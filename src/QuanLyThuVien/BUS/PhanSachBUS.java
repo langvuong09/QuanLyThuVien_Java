@@ -79,7 +79,7 @@ public class PhanSachBUS {
 
     public boolean suaPhanSach(String maPS, String maS, String trangThai){
         try {
-            if (!trangThai.equals("Trả muộn")) {
+            if (!trangThai.contains("Trả muộn")) {
                 int maPhanSach = Integer.parseInt(maPS);
                 int maSach = Integer.parseInt(maS);
 
@@ -89,10 +89,8 @@ public class PhanSachBUS {
                 ps.setTrangThai(trangThai);
 
                 if (phanSachDAO.suaPhanSach(ps)) {
-                    new MyDialog("Sửa thành công!", MyDialog.SUCCESS_DIALOG);
                     return true;
                 } else {
-                    new MyDialog("Sửa thất bại!", MyDialog.ERROR_DIALOG);
                     return false;
                 }
             }

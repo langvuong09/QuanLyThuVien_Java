@@ -32,9 +32,12 @@ public class CTPhieuTraDAO {
     public ArrayList<CTPhieuTra> getListCTPhieuTraTheoMaPM(int maPM){
         ArrayList<CTPhieuTra> dsctpt = new ArrayList<>();
         try{
-            String sql = "SELECT ctphieutra.MaPhieuTra, ctphieutra.MaSach FROM ctphieutra,phieutra,phieumuon,ctphieumuon" +
-                    " WHERE ctphieutra.MaPhieuTra=phieutra.MaPhieuTra AND phieutra.MaPhieuMuon="+maPM+
-                    " AND ctphieutra.MaSach=ctphieumuon.MaSach";
+            String sql = "SELECT DISTINCT ctphieutra.MaPhieuTra, ctphieutra.MaSach, ctphieutra.MaPhanSach \n" +
+                    "FROM ctphieutra\n" +
+                    "JOIN phieutra ON ctphieutra.MaPhieuTra = phieutra.MaPhieuTra\n" +
+                    "JOIN phieumuon ON phieutra.MaPhieuMuon = phieumuon.MaPhieuMuon\n" +
+                    "JOIN ctphieumuon ON ctphieutra.MaSach = ctphieumuon.MaSach\n" +
+                    "WHERE phieutra.MaPhieuMuon = "+ maPM;
             Statement st = MyConnect.conn.createStatement();
             ResultSet rs = st.executeQuery(sql);
             while (rs.next()) {
@@ -52,7 +55,7 @@ public class CTPhieuTraDAO {
 
     public boolean themCTPhieuTra(CTPhieuTra ctpt){
         try{
-            String sql = "INSERT INTO ctphieutra VALUES(?,?)";
+            String sql = "INSERT INTO ctphieutra VALUES(?,?,?)";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             pre.setInt(1,ctpt.getMaPhieuTra());
             pre.setInt(2,ctpt.getMaSach());

@@ -150,7 +150,6 @@ public class SachBUS {
 //            int maTacGia = Integer.parseInt(maTG[0]);
             long giaSach = Long.parseLong(gia.replace(",",""));
             int sl = 0;
-
             Sach sach = new Sach();
             sach.setMaLoaiSach(mLoai);
             sach.setTacGia(tacGia);

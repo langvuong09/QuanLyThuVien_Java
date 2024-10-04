@@ -444,6 +444,7 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
 
     private void loadDataLenBangPhieuTra() {
         ptBUS.docListPhieuTra();
+        ctPhieuTraBUS.docListCTPhieuTra();
         dtmPhieuTra.setRowCount(0);
 
         ArrayList<PhieuTra> dspt = ptBUS.getListPhieuTra();
@@ -547,12 +548,12 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
             new MyDialog("Hãy chọn sách trả!!!", MyDialog.ERROR_DIALOG);
             return;
         }else {
-            String tt = dtmSachTra.getValueAt(row,2)+"";
+            String tt = dtmSachTra.getValueAt(row,3)+"";
             if(tt.equals("Đã trả")){
                 new MyDialog("Sách đã được trả!!!", MyDialog.ERROR_DIALOG);
                 return;
             }else {
-                dtmSachTra.setValueAt("Đã trả",row,2);
+                dtmSachTra.setValueAt("Đã trả",row,3);
                 CTPhieuTra ctpt = new CTPhieuTra();
                 ctpt.setMaPhieuTra(Integer.parseInt(txtMaPhieuTra.getText()));
                 ctpt.setMaSach(Integer.parseInt(dtmSachTra.getValueAt(row,0)+""));
@@ -592,7 +593,7 @@ public class PnQuanLyPhieuTraGUI extends JPanel{
                     new MyDialog("Sách chưa được trả!!!", MyDialog.ERROR_DIALOG);
                     return;
                 } else {
-                    dtmSachTra.setValueAt("Mượn", row, 2);
+                    dtmSachTra.setValueAt("Mượn", row, 3);
 
                     int maPT = Integer.parseInt(txtMaPhieuTra.getText());
                     int maS = Integer.parseInt(dtmSachTra.getValueAt(row, 0) + "");

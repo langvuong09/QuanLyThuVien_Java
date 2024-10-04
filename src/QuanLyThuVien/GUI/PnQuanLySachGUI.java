@@ -287,9 +287,9 @@ public class PnQuanLySachGUI extends JPanel {
 
 
         JScrollPane scrTblSach = new JScrollPane(tblSach);
-        scrTblSach.setPreferredSize(new Dimension(900, 230));
+        scrTblSach.setPreferredSize(new Dimension(900, 200));
 
-        scrTblSach.setBounds(0, 360, 820, 235);
+        scrTblSach.setBounds(0, 360, 820, 205);
         //</editor-fold>
         pnThongTinSach.add(scrTblSach, BorderLayout.CENTER);
 

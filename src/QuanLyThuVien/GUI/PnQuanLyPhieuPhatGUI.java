@@ -55,7 +55,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
     JLabel lblTabbedPhieuPhat, lblTabbedQuanLyPhieu;
     JTextField txtMaPhieuPhat, txtMaPhieuTra, txtMaSach, txtMaPhanSach, txtDocGia, txtThanhTien, txtNgayTraMuon, txtTimKiemDG;
     JComboBox<String> cmbLyDo;
-    JButton btnThem, btnXoa, btnInThe, btnReset, btnXuatExcel, btnNhapExcel, btnTimKiem, btnChon, btnPhieuTra, btnSachPhat, btnTimDG;
+    JButton btnThem, btnXoa, btnInThe, btnReset, btnReset1, btnXuatExcel, btnNhapExcel, btnTimKiem, btnChon, btnPhieuTra, btnSachPhat, btnTimDG;
     final ImageIcon tabbedSelected = new ImageIcon("image/Manager-GUI/tabbed-btn--selected.png");
     final ImageIcon tabbedDefault = new ImageIcon("image/Manager-GUI/tabbed-btn.png");
 
@@ -295,8 +295,11 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         JPanel pnTitleQuanLy = new TransparentPanel();
         JLabel lblTitleQuanLy = new JLabel("Danh sách phiếu phạt");
         lblTitleQuanLy.setFont(new Font("Arial", Font.BOLD,28));
-        pnTitleQuanLy.add(btnReset);
+        btnReset1 = new JButton(new ImageIcon("image/Refresh-icon.png"));
+        btnReset1.setFocusPainted(false);
+        btnReset1.setPreferredSize(new Dimension(40, 40));
         pnTitleQuanLy.add(lblTitleQuanLy);
+        pnTitleQuanLy.add(btnReset1);
         pnTableQuanLy.add(pnTitleQuanLy,BorderLayout.NORTH);
 
         JPanel pnQuanLy = new TransparentPanel();
@@ -485,6 +488,13 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
                 dtmCTPhieuPhat.setRowCount(0);
             }
         });
+        btnReset1.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                loadDataLenBangPhieuPhat();
+                loadDataLenBangCTPhieuPhat();
+            }
+        });
         tblPhieuPhat.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -501,15 +511,6 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 xuLyThemPhieuPhat();
-                txtMaPhieuPhat.setText("");
-                txtMaPhieuTra.setText("");
-                txtMaSach.setText("");
-                txtMaPhanSach.setText("");
-                cmbLyDo.setSelectedIndex(0);
-                txtThanhTien.setText("");
-                txtNgayTraMuon.setText("");
-                txtDocGia.setText("");
-                dtmCTPhieuPhat.setRowCount(0);
             }
         });
         btnXoa.addActionListener(new ActionListener() {
@@ -631,6 +632,10 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
             new MyDialog("Chưa chọn phiếu trả!", MyDialog.ERROR_DIALOG);
             return;
         }
+        if(txtThanhTien.getText().equals("0")){
+            new MyDialog("Chưa có hình thức phạt!!!", MyDialog.ERROR_DIALOG);
+            return;
+        }
 
         int maS = Integer.parseInt(txtMaSach.getText());
         int maPS = Integer.parseInt(txtMaPhanSach.getText());
@@ -684,6 +689,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         if(row > -1){
             String maPhieuPhat = tblPhieuPhat.getValueAt(row,0)+"";
             int maPP = Integer.parseInt(maPhieuPhat);
+            DecimalFormat dcf = new DecimalFormat("###,###");
             ArrayList<CTPhieuPhat> dsctpp = ctPhieuPhatBUS.getListPhieuPhatTheoMa(maPP);
             for(CTPhieuPhat ctpp : dsctpp){
                 Vector vec = new Vector<>();
@@ -692,32 +698,42 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
                 vec.add(ctpp.getMaPhanSach());
                 vec.add(sachBUS.getTenSach(ctpp.getMaSach()));
                 vec.add(ctpp.getLyDo());
-                vec.add(ctpp.getTienPhat());
+                vec.add(dcf.format(ctpp.getTienPhat()));
                 dtmXemCTPhieuPhat.addRow(vec);
             }
         }
     }
 
     private void xuLyThemPhieuPhat(){
-
+        int count = tblCTPhieuPhat.getRowCount();
+        if(count == 0){
+            new MyDialog("Chưa có sách để phạt!!!", MyDialog.ERROR_DIALOG);
+            return;
+        }
         boolean flag = ppBUS.themPhieuPhat(txtMaPhieuPhat.getText(), txtMaPhieuTra.getText(),
                             txtDocGia.getText(),String.valueOf(dangNhapGUI.maTaiKhoan()), txtThanhTien.getText());
         int maPP = Integer.parseInt(txtMaPhieuPhat.getText());
         if(flag) {
-            int count = tblCTPhieuPhat.getRowCount();
             for (int i = 0; i < count; i++) {
                 int maS = Integer.parseInt(tblCTPhieuPhat.getValueAt(i,0)+"");
                 int maPS = Integer.parseInt(tblCTPhieuPhat.getValueAt(i,1)+"");
                 String lyDo = String.valueOf(tblCTPhieuPhat.getValueAt(i,3)+"");
                 long tienPhat = Long.parseLong(tblCTPhieuPhat.getValueAt(i,4)+"");
                 boolean flag1 = ctPhieuPhatBUS.themCTPhieuPhat(maPP,maS,maPS,lyDo,tienPhat);
-                if(lyDo.contains("+")) {
-                    String[] lyDoTong = lyDo.split("//+");
-                    String lyDo1 = lyDoTong[0];
-                    boolean flag2 = phanSachBUS.suaPhanSach(String.valueOf(maPS), String.valueOf(maS), lyDo1);
-                }
+                String[] lyDoTong = lyDo.split("\\+");
+                String lyDo1 = lyDoTong[0].trim();
+                boolean flag2 = phanSachBUS.suaPhanSach(String.valueOf(maPS), String.valueOf(maS), lyDo1);
             }
         }
+        txtMaPhieuPhat.setText("");
+        txtMaPhieuTra.setText("");
+        txtMaSach.setText("");
+        txtMaPhanSach.setText("");
+        cmbLyDo.setSelectedIndex(0);
+        txtThanhTien.setText("");
+        txtNgayTraMuon.setText("");
+        txtDocGia.setText("");
+        dtmCTPhieuPhat.setRowCount(0);
         ppBUS.docListPhieuPhat();
         loadDataLenBangPhieuPhat();
         loadDataLenBangCTPhieuPhat();
