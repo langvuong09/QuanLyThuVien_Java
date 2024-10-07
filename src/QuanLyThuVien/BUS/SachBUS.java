@@ -102,7 +102,7 @@ public class SachBUS {
         sachDAO.chonSach(ma);
     }
 
-    public boolean nhapSachExcel(String loai, String tacGia, String tenSach, String gia, String hinhAnh, String soLuong){
+    public boolean nhapSachExcel(String loai, String nxb, String tacGia, String tenSach, String gia, String hinhAnh, String soLuong){
         try{
             String[] mLoai = loai.split(" ");
             int maLoai = Integer.parseInt(mLoai[0].trim());
@@ -110,9 +110,11 @@ public class SachBUS {
 //            int maTacGia = Integer.parseInt(maTG[0].trim());
             long giaSach = Long.parseLong(gia.replace(",",""));
             int sl = Integer.parseInt(soLuong);
+            int maNXB = nxbBUS.getMaNXB(nxb);
 
             Sach sach = new Sach();
             sach.setMaLoaiSach(maLoai);
+            sach.setMaNXB(maNXB);
             sach.setTacGia(tacGia);
             sach.setTenSach(tenSach);
             sach.setGiaSach(giaSach);
@@ -126,7 +128,7 @@ public class SachBUS {
         return false;
     }
 
-    public boolean themSach(String loai, String tacGia, String tenSach, String gia, String hinhAnh){
+    public boolean themSach(String loai, String nxb, String tacGia, String tenSach, String gia, String hinhAnh){
         if(tenSach.trim().equals("")){
             new MyDialog("Không được để trống tên sách!!!", MyDialog.ERROR_DIALOG);
             return false;
@@ -143,15 +145,21 @@ public class SachBUS {
             new MyDialog("Chưa chọn loại sách!!!", MyDialog.ERROR_DIALOG);
             return false;
         }
+        if(nxb.equals("Chọn nxb")){
+            new MyDialog("Chưa chọn nxb!!!", MyDialog.ERROR_DIALOG);
+            return false;
+        }
         String[] maLoai = loai.split(" ");
 //        String[] maTG = tacGia.split(" ");
         try{
             int mLoai = Integer.parseInt(maLoai[0]);
 //            int maTacGia = Integer.parseInt(maTG[0]);
             long giaSach = Long.parseLong(gia.replace(",",""));
+            int maNXB = nxbBUS.getMaNXB(nxb);
             int sl = 0;
             Sach sach = new Sach();
             sach.setMaLoaiSach(mLoai);
+            sach.setMaNXB(maNXB);
             sach.setTacGia(tacGia);
             sach.setTenSach(tenSach);
             sach.setGiaSach(giaSach);
@@ -186,7 +194,7 @@ public class SachBUS {
         }
     }
 
-    public boolean suaSach(String ma,String loai, String tacGia, String tenSach, String gia, String hinhAnh, String soLuong){
+    public boolean suaSach(String ma,String loai, String nxb, String tacGia, String tenSach, String gia, String hinhAnh, String soLuong){
         if(tenSach.trim().equals("")){
             new MyDialog("Không được để trống tên sách!!!", MyDialog.ERROR_DIALOG);
             return false;
@@ -203,6 +211,10 @@ public class SachBUS {
             new MyDialog("Chưa chọn loại sách!!!", MyDialog.ERROR_DIALOG);
             return false;
         }
+        if(nxb.equals("Chọn nxb")){
+            new MyDialog("Chưa chọn nxb!!!", MyDialog.ERROR_DIALOG);
+            return false;
+        }
         String[] maLoai = loai.split(" ");
         String[] maTG = tacGia.split(" ");
         try{
@@ -211,10 +223,12 @@ public class SachBUS {
 //            int maTacGia = Integer.parseInt(maTG[0]);
             long giaSach = Long.parseLong(gia.replace(",",""));
             int sl = Integer.parseInt(soLuong);
+            int maNXB = nxbBUS.getMaNXB(nxb);
 
             Sach sach = new Sach();
             sach.setMaSach(maSach);
             sach.setMaLoaiSach(mLoai);
+            sach.setMaNXB(maNXB);
             sach.setTacGia(tacGia);
             sach.setTenSach(tenSach);
             sach.setGiaSach(giaSach);

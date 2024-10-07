@@ -49,7 +49,7 @@ public class PnQuanLySachGUI extends JPanel {
     JLabel lblHinhAnh,lblTabbedSach,lblTabbedPhanSach;
     File fileAnhSach;
     JButton btnThem, btnXoa, btnSua, btnReset, btnXuatExcel, btnNhapExcel, btnTim, btnDocGia, btnChonAnh, btnTimPhanSach;
-    JComboBox<String> cmbLoai;
+    JComboBox<String> cmbLoai, cmbNXB;
     final ImageIcon tabbedSelected = new ImageIcon("image/Manager-GUI/tabbed-btn--selected.png");
     final ImageIcon tabbedDefault = new ImageIcon("image/Manager-GUI/tabbed-btn.png");
 
@@ -125,6 +125,7 @@ public class PnQuanLySachGUI extends JPanel {
         DefaultListModel<String> listModel = new DefaultListModel<>();
         txtIDSach = new JTextField(x);
         cmbLoai = new JComboBox<String>();
+        cmbNXB = new JComboBox<String>();
         txtTenSach = new JTextField(x);
         txtTacGia = new JTextField();
         txtGia = new JTextField(y);
@@ -144,21 +145,28 @@ public class PnQuanLySachGUI extends JPanel {
         lblIDSach.setFont(font);
         txtIDSach.setFont(font);
         txtIDSach.setEditable(false);
-        lblIDSach.setBounds(20, 50, 140, 25);
-        txtIDSach.setBounds(120, 50, 200, 25);
+        lblIDSach.setBounds(20, 0, 140, 25);
+        txtIDSach.setBounds(120, 0, 200, 25);
 
         JLabel lblTenSach = new JLabel("Tên sách:");
         lblTenSach.setFont(font);
         txtTenSach.setFont(font);
-        lblTenSach.setBounds(20, 100, 140, 25);
-        txtTenSach.setBounds(120, 100, 200, 25);
+        lblTenSach.setBounds(20, 50, 140, 25);
+        txtTenSach.setBounds(120, 50, 200, 25);
 
         JLabel lblLoaiSach = new JLabel("Loại sách:");
         lblLoaiSach.setFont(font);
         cmbLoai.setFont(font);
         cmbLoai.setPreferredSize(txtIDSach.getPreferredSize());
-        lblLoaiSach.setBounds(20, 150, 140, 25);
-        cmbLoai.setBounds(120,150,200,25);
+        lblLoaiSach.setBounds(20, 100, 140, 25);
+        cmbLoai.setBounds(120,100,200,25);
+
+        JLabel lblNXB = new JLabel("Nhà xuất bản:");
+        lblNXB.setFont(font);
+        cmbNXB.setFont(font);
+        cmbNXB.setPreferredSize(txtIDSach.getPreferredSize());
+        lblNXB.setBounds(15, 150, 140, 25);
+        cmbNXB.setBounds(120,150,200,25);
 
         JLabel lblTacGia = new JLabel("Tác giả:");
         lblTacGia.setFont(font);
@@ -178,6 +186,8 @@ public class PnQuanLySachGUI extends JPanel {
         pnThongTinSach.add(txtTenSach);
         pnThongTinSach.add(lblLoaiSach);
         pnThongTinSach.add(cmbLoai);
+        pnThongTinSach.add(lblNXB);
+        pnThongTinSach.add(cmbNXB);
         pnThongTinSach.add(lblTacGia);
         pnThongTinSach.add(txtTacGia);
         pnThongTinSach.add(lblGia);
@@ -264,6 +274,7 @@ public class PnQuanLySachGUI extends JPanel {
         dtmSach = new DefaultTableModel();
         dtmSach.addColumn("Mã");
         dtmSach.addColumn("Loại sách");
+        dtmSach.addColumn("NXB");
         dtmSach.addColumn("Tác giả");
         dtmSach.addColumn("Tên sách");
         dtmSach.addColumn("Giá");
@@ -274,16 +285,17 @@ public class PnQuanLySachGUI extends JPanel {
 
 
         tblSach.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-        tblSach.getColumnModel().getColumn(6).setCellRenderer(centerRenderer);
+        tblSach.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
 
         TableColumnModel columnModelSach = tblSach.getColumnModel();
         columnModelSach.getColumn(0).setPreferredWidth(60);
-        columnModelSach.getColumn(1).setPreferredWidth(160);
-        columnModelSach.getColumn(2).setPreferredWidth(150);
-        columnModelSach.getColumn(3).setPreferredWidth(230);
-        columnModelSach.getColumn(4).setPreferredWidth(140);
+        columnModelSach.getColumn(1).setPreferredWidth(120);
+        columnModelSach.getColumn(2).setPreferredWidth(160);
+        columnModelSach.getColumn(3).setPreferredWidth(130);
+        columnModelSach.getColumn(4).setPreferredWidth(240);
         columnModelSach.getColumn(5).setPreferredWidth(120);
-        columnModelSach.getColumn(6).setPreferredWidth(80);
+        columnModelSach.getColumn(6).setPreferredWidth(100);
+        columnModelSach.getColumn(7).setPreferredWidth(50);
 
 
         JScrollPane scrTblSach = new JScrollPane(tblSach);
@@ -382,6 +394,7 @@ public class PnQuanLySachGUI extends JPanel {
 
         this.add(pnCardTabNhanVien);
         loadDataLoai();
+        loadDataNXB();
 //        loadDataTG();
         loadDataLenTableSach();
         loadDataLenTablePhanSach();
@@ -450,6 +463,7 @@ public class PnQuanLySachGUI extends JPanel {
                 txtIDSach.setText("");
                 txtTenSach.setText("");
                 cmbLoai.setSelectedIndex(0);
+                cmbNXB.setSelectedIndex(0);
                 txtTacGia.setText("");
                 lblHinhAnh.setIcon(null);
                 txtGia.setText("");
@@ -472,6 +486,7 @@ public class PnQuanLySachGUI extends JPanel {
                 txtIDSach.setText("");
                 txtTenSach.setText("");
                 cmbLoai.setSelectedIndex(0);
+                cmbNXB.setSelectedIndex(0);
                 txtTacGia.setText("");
                 lblHinhAnh.setIcon(null);
                 txtGia.setText("");
@@ -486,6 +501,7 @@ public class PnQuanLySachGUI extends JPanel {
                 txtIDSach.setText("");
                 txtTenSach.setText("");
                 cmbLoai.setSelectedIndex(0);
+                cmbNXB.setSelectedIndex(0);
                 txtTacGia.setText("");
                 lblHinhAnh.setIcon(null);
                 txtGia.setText("");
@@ -500,6 +516,7 @@ public class PnQuanLySachGUI extends JPanel {
                 txtIDSach.setText("");
                 txtTenSach.setText("");
                 cmbLoai.setSelectedIndex(0);
+                cmbNXB.setSelectedIndex(0);
                 txtTacGia.setText("");
                 lblHinhAnh.setIcon(null);
                 txtGia.setText("");
@@ -537,6 +554,12 @@ public class PnQuanLySachGUI extends JPanel {
                 xuLyThemLoai();
             }
         });
+        cmbNXB.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                xuLyThemNXB();
+            }
+        });
 //        cmbTacGia.addActionListener(new ActionListener() {
 //            @Override
 //            public void actionPerformed(ActionEvent e) {
@@ -560,6 +583,15 @@ public class PnQuanLySachGUI extends JPanel {
         }
     }
 
+    private void xuLyThemNXB(){
+        int x = cmbNXB.getSelectedIndex();
+        if(x == cmbNXB.getItemCount() - 1){
+            DlgNXB nxbGUI = new DlgNXB();
+            nxbGUI.setVisible(true);
+            loadDataNXB();
+        }
+    }
+
     private void loadDataLoai(){
         cmbLoai.removeAllItems();
 
@@ -569,6 +601,17 @@ public class PnQuanLySachGUI extends JPanel {
             cmbLoai.addItem(l.getMaLoai() +" - "+l.getTenLoai());
         }
         cmbLoai.addItem("Khác...");
+    }
+
+    private void loadDataNXB(){
+        cmbNXB.removeAllItems();
+
+        ArrayList<NXB> dsnxb = nxbBUS.getListNXB();
+        cmbNXB.addItem("Chọn nxb");
+        for (NXB nxb : dsnxb){
+            cmbNXB.addItem(nxb.getTenNXB());
+        }
+        cmbNXB.addItem("Khác...");
     }
 
 //    private void xuLyThemTG(){
@@ -601,6 +644,7 @@ public class PnQuanLySachGUI extends JPanel {
             Vector vec = new Vector<>();
             vec.add(s.getMaSach());
             vec.add(loaiBUS.getTenLoai(s.getMaLoaiSach()));
+            vec.add(nxbBUS.getTenNXB(s.getMaNXB()));
             vec.add(s.getTacGia());
             vec.add(s.getTenSach());
             vec.add(s.getGiaSach());
@@ -682,20 +726,27 @@ public class PnQuanLySachGUI extends JPanel {
         int row = tblSach.getSelectedRow();
         if(row > -1){
             String maSach = tblSach.getValueAt(row,0)+"";
-            String giaSach = tblSach.getValueAt(row,4)+"";
+            String giaSach = tblSach.getValueAt(row,5)+"";
             String loai = tblSach.getValueAt(row,1)+"";
-            String tacGia = tblSach.getValueAt(row,2)+"";
-            String anh = tblSach.getValueAt(row,5)+"";
+            String nxb = tblSach.getValueAt(row,2)+"";
+            String tacGia = tblSach.getValueAt(row,3)+"";
+            String anh = tblSach.getValueAt(row,6)+"";
             txtIDSach.setText(maSach);
             txtTacGia.setText(tacGia);
-            txtTenSach.setText(tblSach.getValueAt(row,3)+"");
+            txtTenSach.setText(tblSach.getValueAt(row,4)+"");
             txtGia.setText(giaSach);
-            txtSoLuong.setText(tblSach.getValueAt(row,6)+"");
+            txtSoLuong.setText(tblSach.getValueAt(row,7)+"");
 
-            int l=-1,nxb=-1,tg=-1;
+            int l=-1,mnxb=-1;
             for (int i = 0; i < cmbLoai.getItemCount(); i++) {
                 if (cmbLoai.getItemAt(i).contains(loai)) {
                     l = i;
+                    break;
+                }
+            }
+            for (int i = 0; i < cmbNXB.getItemCount(); i++) {
+                if (cmbNXB.getItemAt(i).contains(nxb)) {
+                    mnxb = i;
                     break;
                 }
             }
@@ -707,6 +758,7 @@ public class PnQuanLySachGUI extends JPanel {
 //            }
 
             cmbLoai.setSelectedIndex(l);
+            cmbNXB.setSelectedIndex(mnxb);
 //            cmbTacGia.setSelectedIndex(tg);
             loadAnh("image/Sach/"+ anh);
         }
@@ -729,20 +781,22 @@ public class PnQuanLySachGUI extends JPanel {
         int row = tblSach.getRowCount();
         for(int i=0;i<row;i++){
             String loai = tblSach.getValueAt(i,1)+"";
-            String tacGia = tblSach.getValueAt(i,2)+"";
-            String tenSach = tblSach.getValueAt(i,3)+"";
-            String gia = tblSach.getValueAt(i,4)+"";
-            String ghiChu = tblSach.getValueAt(i,5)+"";
-            String soLuong = tblSach.getValueAt(i,6)+"";
+            String nxb = tblSach.getValueAt(i,2)+"";
+            String tacGia = tblSach.getValueAt(i,3)+"";
+            String tenSach = tblSach.getValueAt(i,4)+"";
+            String gia = tblSach.getValueAt(i,5)+"";
+            String ghiChu = tblSach.getValueAt(i,6)+"";
+            String soLuong = tblSach.getValueAt(i,7)+"";
 
-            sachBUS.nhapSachExcel(loai,tacGia,tenSach,gia,ghiChu,soLuong);
+            sachBUS.nhapSachExcel(loai,nxb,tacGia,tenSach,gia,ghiChu,soLuong);
         }
     }
 
     private void xuLyThemSach(){
         String anh =fileAnhSach.getName();
         String loaiSach = (String) cmbLoai.getSelectedItem();
-        boolean flag = sachBUS.themSach(loaiSach,txtTacGia.getText(),txtTenSach.getText(),txtGia.getText(),anh);
+        String nxb = (String) cmbNXB.getSelectedItem();
+        boolean flag = sachBUS.themSach(loaiSach,nxb,txtTacGia.getText(),txtTenSach.getText(),txtGia.getText(),anh);
         loadDataLenTableSach();
         luuFileAnh();
     }
@@ -755,8 +809,9 @@ public class PnQuanLySachGUI extends JPanel {
     private void xuLySuaSach(){
         String anh = fileAnhSach.getName();
         String loaiSach = (String) cmbLoai.getSelectedItem();
+        String nxb = (String) cmbNXB.getSelectedItem();
         String maSach = txtIDSach.getText();
-        boolean flag = sachBUS.suaSach(maSach,loaiSach, txtTacGia.getText(),txtTenSach.getText(),txtGia.getText(),anh,txtSoLuong.getText());
+        boolean flag = sachBUS.suaSach(maSach,loaiSach,nxb, txtTacGia.getText(),txtTenSach.getText(),txtGia.getText(),anh,txtSoLuong.getText());
         loadDataLenTableSach();
         luuFileAnh();
     }
@@ -769,6 +824,7 @@ public class PnQuanLySachGUI extends JPanel {
             Vector vec = new Vector<>();
             vec.add(s.getMaSach());
             vec.add(loaiBUS.getTenLoai(s.getMaLoaiSach()));
+            vec.add(nxbBUS.getTenNXB(s.getMaNXB()));
             vec.add(s.getTenSach());
             vec.add(s.getGiaSach());
             vec.add(s.getHinhAnh());

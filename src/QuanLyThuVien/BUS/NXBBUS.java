@@ -35,7 +35,7 @@ public class NXBBUS {
 
     public int getMaNXB(String ten){
         for(NXB nxb : listNXB){
-            if(nxb.getTenNXB() == ten){
+            if(nxb.getTenNXB().contains(ten)){
                 return nxb.getMaNXB();
             }
         }

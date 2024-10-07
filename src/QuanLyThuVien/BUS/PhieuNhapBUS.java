@@ -36,13 +36,11 @@ public class PhieuNhapBUS {
 
     public boolean themPhieuNhap(String nxb, String nhanVien, long tongTien){
         try {
-            int maNXB = Integer.parseInt(nxb);
-            System.out.println(maNXB);
+            int maNXB = nxbBUS.getMaNXB(nxb);
 
             int maNhanVien = Integer.parseInt(nhanVien);
 
             PhieuNhap pn = new PhieuNhap();
-            pn.setMaPhieuNhap(getMaPhieuNhapMoiNhat() + 1);
             pn.setMaNXB(maNXB);
             pn.setMaNhanVien(maNhanVien);
             pn.setTongTien(tongTien);

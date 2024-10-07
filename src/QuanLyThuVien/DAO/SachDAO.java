@@ -21,11 +21,12 @@ public class SachDAO {
                 Sach s = new Sach();
                 s.setMaSach(rs.getInt(1));
                 s.setMaLoaiSach(rs.getInt(2));
-                s.setTacGia(rs.getString(3));
-                s.setTenSach(rs.getString(4));
-                s.setGiaSach(rs.getLong(5));
-                s.setHinhAnh(rs.getString(6));
-                s.setSoLuong(rs.getInt(7));
+                s.setMaNXB(rs.getInt(3));
+                s.setTacGia(rs.getString(4));
+                s.setTenSach(rs.getString(5));
+                s.setGiaSach(rs.getLong(6));
+                s.setHinhAnh(rs.getString(7));
+                s.setSoLuong(rs.getInt(8));
                 dss.add(s);
             }
             return dss;
@@ -44,11 +45,12 @@ public class SachDAO {
                 s = new Sach();
                 s.setMaSach(rs.getInt(1));
                 s.setMaLoaiSach(rs.getInt(2));
-                s.setTacGia(rs.getString(3));
-                s.setTenSach(rs.getString(4));
-                s.setGiaSach(rs.getLong(5));
-                s.setHinhAnh(rs.getString(6));
-                s.setSoLuong(rs.getInt(7));
+                s.setMaNXB(rs.getInt(3));
+                s.setTacGia(rs.getString(4));
+                s.setTenSach(rs.getString(5));
+                s.setGiaSach(rs.getLong(6));
+                s.setHinhAnh(rs.getString(7));
+                s.setSoLuong(rs.getInt(8));
             }
         }catch (SQLException e){
             return null;
@@ -59,15 +61,16 @@ public class SachDAO {
     public boolean themSach(Sach s){
         boolean result = false;
         try{
-            String sql = "INSERT INTO sach VALUES(?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO sach VALUES(?,?,?,?,?,?,?,?)";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             pre.setInt(1,s.getMaSach());
             pre.setInt(2,s.getMaLoaiSach());
-            pre.setString(3,s.getTacGia());
-            pre.setString(4,s.getTenSach());
-            pre.setLong(5,s.getGiaSach());
-            pre.setString(6,s.getHinhAnh());
-            pre.setInt(7,s.getSoLuong());
+            pre.setInt(3,s.getMaNXB());
+            pre.setString(4,s.getTacGia());
+            pre.setString(5,s.getTenSach());
+            pre.setLong(6,s.getGiaSach());
+            pre.setString(7,s.getHinhAnh());
+            pre.setInt(8,s.getSoLuong());
             result = pre.executeUpdate() > 0;
         }catch (SQLException e){
             return false;
@@ -89,15 +92,16 @@ public class SachDAO {
     public boolean suaSach(Sach s){
         boolean result = false;
         try{
-            String sql = "UPDATE sach SET MaLoai=?, TacGia=?, TenSach=?, GiaSach=?, HinhAnh=?, SoLuong=? WHERE MaSach=?";
+            String sql = "UPDATE sach SET MaLoai=?, MaNXB=?, TacGia=?, TenSach=?, GiaSach=?, HinhAnh=?, SoLuong=? WHERE MaSach=?";
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             pre.setInt(1,s.getMaLoaiSach());
-            pre.setString(2,s.getTacGia());
-            pre.setString(3,s.getTenSach());
-            pre.setLong(4,s.getGiaSach());
-            pre.setString(5,s.getHinhAnh());
-            pre.setInt(6,s.getSoLuong());
-            pre.setInt(7,s.getMaSach());
+            pre.setInt(2,s.getMaNXB());
+            pre.setString(3,s.getTacGia());
+            pre.setString(4,s.getTenSach());
+            pre.setLong(5,s.getGiaSach());
+            pre.setString(6,s.getHinhAnh());
+            pre.setInt(7,s.getSoLuong());
+            pre.setInt(8,s.getMaSach());
             result = pre.executeUpdate() > 0;
         }catch (SQLException e){
             return false;
@@ -145,17 +149,18 @@ public class SachDAO {
     public boolean nhapSachTuExcel(Sach s){
         try{
             String sql = "DELETE * FROM sach; "+
-                    "INSERT INTO sach(MaSach,MaLoai,TacGia,TenSach,GiaSach,HinhAnh,SoLuong"+
-                    "VALUES (?,?,?,?,?,?,?)";
+                    "INSERT INTO sach(MaSach,MaLoai, MaNXB,TacGia,TenSach,GiaSach,HinhAnh,SoLuong"+
+                    "VALUES (?,?,?,?,?,?,?,?)";
 
             PreparedStatement pre = MyConnect.conn.prepareStatement(sql);
             pre.setInt(1,s.getMaSach());
             pre.setInt(2,s.getMaLoaiSach());
-            pre.setString(3,s.getTacGia());
-            pre.setString(4,s.getTenSach());
-            pre.setLong(5,s.getGiaSach());
-            pre.setString(6,s.getHinhAnh());
-            pre.setInt(7,s.getSoLuong());
+            pre.setInt(3,s.getMaNXB());
+            pre.setString(4,s.getTacGia());
+            pre.setString(5,s.getTenSach());
+            pre.setLong(6,s.getGiaSach());
+            pre.setString(7,s.getHinhAnh());
+            pre.setInt(8,s.getSoLuong());
             return pre.executeUpdate() > 0;
         }catch (SQLException e){
         }

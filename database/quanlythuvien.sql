@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 04, 2024 lúc 08:59 AM
+-- Thời gian đã tạo: Th10 11, 2024 lúc 11:53 AM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -59,25 +59,8 @@ INSERT INTO `ctphieumuon` (`MaPhieuMuon`, `MaSach`, `MaPhanSach`, `ThanhTien`) V
 (10, 3, 4, 5200),
 (10, 4, 2, 8500),
 (11, 1, 1, 1500),
-(1, 6, 0, 10000),
-(2, 7, 0, 21000),
-(2, 1, 0, 1500),
-(2, 2, 0, 1500),
-(3, 4, 0, 8500),
-(3, 5, 0, 1500),
-(4, 9, 0, 8000),
-(4, 11, 0, 8100),
-(5, 10, 0, 7900),
-(5, 8, 0, 11800),
-(6, 14, 0, 20000),
-(7, 13, 0, 18000),
-(7, 16, 0, 11500),
-(7, 17, 0, 11000),
-(7, 18, 0, 10000),
-(8, 11, 0, 8100),
-(8, 8, 0, 11800),
-(10, 3, 0, 5200),
-(10, 4, 0, 8500);
+(12, 1, 1, 1500),
+(12, 1, 2, 1500);
 
 -- --------------------------------------------------------
 
@@ -88,8 +71,6 @@ INSERT INTO `ctphieumuon` (`MaPhieuMuon`, `MaSach`, `MaPhanSach`, `ThanhTien`) V
 CREATE TABLE `ctphieunhap` (
   `MaPhieuNhap` int(11) NOT NULL,
   `MaSach` int(11) NOT NULL,
-  `MaMin` int(11) NOT NULL,
-  `MaMax` int(11) NOT NULL,
   `Gia` int(50) NOT NULL,
   `SoLuong` int(11) NOT NULL,
   `ThanhTien` int(50) NOT NULL
@@ -99,18 +80,17 @@ CREATE TABLE `ctphieunhap` (
 -- Đang đổ dữ liệu cho bảng `ctphieunhap`
 --
 
-INSERT INTO `ctphieunhap` (`MaPhieuNhap`, `MaSach`, `MaMin`, `MaMax`, `Gia`, `SoLuong`, `ThanhTien`) VALUES
-(1, 7, 1, 7, 210000, 7, 1470000),
-(2, 4, 1, 1, 85000, 1, 85000),
-(3, 5, 1, 1, 15000, 1, 15000),
-(4, 2, 1, 1, 15000, 1, 15000),
-(5, 3, 2, 4, 52000, 3, 156000),
-(6, 19, 1, 5, 130000, 5, 650000),
-(6, 20, 1, 5, 170000, 7, 1190000),
-(6, 5, 5, 6, 15000, 2, 30000),
-(7, 1, 8, 8, 15000, 1, 15000),
-(8, 1, 9, 9, 15000, 1, 15000),
-(9, 1, 10, 10, 15000, 1, 15000);
+INSERT INTO `ctphieunhap` (`MaPhieuNhap`, `MaSach`, `Gia`, `SoLuong`, `ThanhTien`) VALUES
+(1, 7, 210000, 7, 1470000),
+(2, 4, 85000, 1, 85000),
+(3, 5, 15000, 1, 15000),
+(4, 2, 15000, 1, 15000),
+(5, 3, 52000, 3, 156000),
+(6, 19, 130000, 5, 650000),
+(6, 20, 170000, 7, 1190000),
+(6, 5, 15000, 2, 30000),
+(6, 1, 15000, 1, 15000),
+(6, 1, 15000, 1, 15000);
 
 -- --------------------------------------------------------
 
@@ -125,6 +105,13 @@ CREATE TABLE `ctphieuphat` (
   `LyDo` varchar(255) NOT NULL,
   `TienPhat` int(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Đang đổ dữ liệu cho bảng `ctphieuphat`
+--
+
+INSERT INTO `ctphieuphat` (`MaPhieuPhat`, `MaSach`, `MaPhanSach`, `LyDo`, `TienPhat`) VALUES
+(1, 1, 2, 'Mất trang + Trả muộn 5 ngày', 9000);
 
 -- --------------------------------------------------------
 
@@ -156,19 +143,8 @@ INSERT INTO `ctphieutra` (`MaPhieuTra`, `MaSach`, `MaPhanSach`) VALUES
 (7, 3, 4),
 (7, 4, 2),
 (10, 10, 1),
-(1, 9, 0),
-(1, 11, 0),
-(2, 1, 0),
-(2, 2, 0),
-(3, 4, 0),
-(4, 13, 0),
-(4, 16, 0),
-(5, 14, 0),
-(6, 11, 0),
-(6, 8, 0),
-(7, 3, 0),
-(7, 4, 0),
-(10, 10, 0);
+(11, 1, 1),
+(11, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -574,7 +550,8 @@ INSERT INTO `phieumuon` (`MaPhieuMuon`, `MaDocGia`, `MaNhanVien`, `NgayMuon`, `N
 (7, 5, 1, '2024-05-19', '2024-06-08', 50500),
 (8, 6, 1, '2024-05-19', '2024-06-08', 19900),
 (10, 2, 1, '2024-05-19', '2024-06-08', 13700),
-(11, 1, 1, '2024-09-26', '2024-10-16', 1500);
+(11, 1, 1, '2024-09-26', '2024-10-16', 1500),
+(12, 1, 1, '2024-10-07', '2024-10-27', 3000);
 
 -- --------------------------------------------------------
 
@@ -600,10 +577,7 @@ INSERT INTO `phieunhap` (`MaPhieuNhap`, `MaNXB`, `MaNhanVien`, `NgayLap`, `TongT
 (3, 2, 1, '2024-05-18', 15000),
 (4, 1, 1, '2024-05-18', 15000),
 (5, 1, 1, '2024-05-18', 156000),
-(6, 5, 1, '2024-05-19', 1870000),
-(7, 1, 1, '2024-09-26', 15000),
-(8, 1, 1, '2024-09-26', 15000),
-(9, 1, 1, '2024-09-26', 15000);
+(6, 5, 1, '2024-05-19', 1870000);
 
 -- --------------------------------------------------------
 
@@ -624,7 +598,7 @@ CREATE TABLE `phieuphat` (
 --
 
 INSERT INTO `phieuphat` (`MaPhieuPhat`, `MaPhieuTra`, `MaDocGia`, `MaNhanVien`, `ThanhTien`) VALUES
-(1, 1, 1, 1, 1500);
+(1, 11, 1, 1, 9000);
 
 -- --------------------------------------------------------
 
@@ -652,7 +626,8 @@ INSERT INTO `phieutra` (`MaPhieuTra`, `MaPhieuMuon`, `MaDocGia`, `MaNhanVien`, `
 (5, 6, 4, 1, '2024-05-19'),
 (6, 8, 6, 1, '2024-05-19'),
 (7, 10, 2, 1, '2024-05-19'),
-(10, 5, 6, 1, '2024-05-20');
+(10, 5, 6, 1, '2024-05-20'),
+(11, 12, 1, 1, '2024-10-07');
 
 -- --------------------------------------------------------
 
@@ -663,6 +638,7 @@ INSERT INTO `phieutra` (`MaPhieuTra`, `MaPhieuMuon`, `MaDocGia`, `MaNhanVien`, `
 CREATE TABLE `sach` (
   `MaSach` int(11) NOT NULL,
   `MaLoai` int(11) NOT NULL,
+  `MaNXB` int(11) NOT NULL,
   `TacGia` varchar(255) NOT NULL,
   `TenSach` varchar(50) NOT NULL,
   `GiaSach` int(50) NOT NULL,
@@ -674,27 +650,27 @@ CREATE TABLE `sach` (
 -- Đang đổ dữ liệu cho bảng `sach`
 --
 
-INSERT INTO `sach` (`MaSach`, `MaLoai`, `TacGia`, `TenSach`, `GiaSach`, `HinhAnh`, `SoLuong`) VALUES
-(1, 1, 'Kim Khánh', 'Trạng Quỳnh tập 1', 15000, 'trangQuynh1.png', 10),
-(2, 1, 'Kim Khánh', 'Trạng Quỳnh tập 2', 15000, 'trangQuynh2.png', 10),
-(3, 3, 'Hồ Chí Minh', 'Nhật ký trong tù', 52000, 'nhatKiTrongTu.png', 11),
-(4, 1, 'Nguyễn Nhật Ánh', 'Tôi là Bêtô', 85000, 'toiLaBeTo.png', 7),
-(5, 1, 'Kim Khánh', 'Trạng Quỳnh tập 3', 15000, 'trangQuynh3.png', 11),
-(6, 4, 'Y Ban', 'I am Đàn bà', 99000, 'iAmDanBa.png', 8),
-(7, 2, 'JRR Tolkien', 'The Lord of the Rings', 210000, 'theLordsOfTheRings.png', 10),
-(8, 2, 'Ane Riel', 'Nhựa cây', 118000, 'nhuaCay.png', 9),
-(9, 1, 'Shinkai Makoto', 'Your name', 80000, 'yourName.png', 9),
-(10, 1, 'Hanekoto', 'Thiên sứ nhà bên', 79000, 'thienSuNhaKeBen.png', 10),
-(11, 3, 'Chu Chính Minh, Lý Thừa Vận', 'Điểm số không phải là tất cả', 81000, 'diemSoKhongPhaiLaTatca.png', 9),
-(12, 3, 'Nguyễn Ngọc Trường', 'Trung Quốc - Lịch sử kế thừa', 251000, 'TQ-lichSuKeThua.png', 8),
-(13, 1, 'Conan Doly', 'những vụ án của sherlock holmes', 180000, 'nhungVuAnCuaSherlockHolmes.png', 9),
-(14, 1, 'Nguyễn Nhật Ánh', 'Những người hàng xóm', 200000, 'nhungNguoiHangXom.png', 9),
-(15, 1, 'Nguyễn Nhật Ánh', 'Mắt biếc', 110000, 'matBiec.png', 10),
-(16, 1, 'Conan Doly', 'Sherlock Holmes quyển 1', 115000, 'SherlockHolmes1.png', 9),
-(17, 1, 'Conan Doly', 'Sherlock Holmes quyển 2', 110000, 'SherlockHolmes2.png', 9),
-(18, 1, 'Conan Doly', 'Sherlock Holmes quyển 3', 100000, 'SherlockHolmes3.png', 9),
-(19, 1, 'Nguyễn Nhật Ánh', 'Kính vạn hoa', 130000, 'kinhVanHoa.png', 10),
-(20, 2, 'Alex Banayan', 'Kẻ khôn đi lối khác', 170000, 'keKhonDiLoiKhac.png', 10);
+INSERT INTO `sach` (`MaSach`, `MaLoai`, `MaNXB`, `TacGia`, `TenSach`, `GiaSach`, `HinhAnh`, `SoLuong`) VALUES
+(1, 1, 1, 'Kim Khánh', 'Trạng Quỳnh tập 1', 15000, 'trangQuynh1.png', 6),
+(2, 1, 1, 'Kim Khánh', 'Trạng Quỳnh tập 2', 15000, 'trangQuynh2.png', 9),
+(3, 3, 3, 'Hồ Chí Minh', 'Nhật ký trong tù', 52000, 'nhatKiTrongTu.png', 11),
+(4, 1, 5, 'Nguyễn Nhật Ánh', 'Tôi là Bêtô', 85000, 'toiLaBeTo.png', 5),
+(5, 1, 1, 'Kim Khánh', 'Trạng Quỳnh tập 3', 15000, 'trangQuynh3.png', 9),
+(6, 4, 2, 'Y Ban', 'I am Đàn bà', 99000, 'iAmDanBa.png', 8),
+(7, 2, 4, 'JRR Tolkien', 'The Lord of the Rings', 210000, 'theLordsOfTheRings.png', 9),
+(8, 2, 5, 'Ane Riel', 'Nhựa cây', 118000, 'nhuaCay.png', 9),
+(9, 1, 4, 'Shinkai Makoto', 'Your name', 80000, 'yourName.png', 9),
+(10, 1, 4, 'Hanekoto', 'Thiên sứ nhà bên', 79000, 'thienSuNhaKeBen.png', 10),
+(11, 3, 5, 'Chu Chính Minh, Lý Thừa Vận', 'Điểm số không phải là tất cả', 81000, 'diemSoKhongPhaiLaTatca.png', 9),
+(12, 3, 5, 'Nguyễn Ngọc Trường', 'Trung Quốc - Lịch sử kế thừa', 251000, 'TQ-lichSuKeThua.png', 8),
+(13, 1, 4, 'Conan Doly', 'những vụ án của sherlock holmes', 180000, 'nhungVuAnCuaSherlockHolmes.png', 9),
+(14, 1, 5, 'Nguyễn Nhật Ánh', 'Những người hàng xóm', 200000, 'nhungNguoiHangXom.png', 9),
+(15, 1, 5, 'Nguyễn Nhật Ánh', 'Mắt biếc', 110000, 'matBiec.png', 10),
+(16, 1, 1, 'Conan Doly', 'Sherlock Holmes quyển 1', 115000, 'SherlockHolmes1.png', 9),
+(17, 1, 1, 'Conan Doly', 'Sherlock Holmes quyển 2', 110000, 'SherlockHolmes2.png', 9),
+(18, 1, 1, 'Conan Doly', 'Sherlock Holmes quyển 3', 100000, 'SherlockHolmes3.png', 9),
+(19, 1, 5, 'Nguyễn Nhật Ánh', 'Kính vạn hoa', 130000, 'kinhVanHoa.png', 10),
+(20, 2, 2, 'Alex Banayan', 'Kẻ khôn đi lối khác', 170000, 'keKhonDiLoiKhac.png', 10);
 
 -- --------------------------------------------------------
 
@@ -848,6 +824,76 @@ ALTER TABLE `sach`
 --
 ALTER TABLE `taikhoan`
   ADD PRIMARY KEY (`MaNhanVien`);
+
+--
+-- AUTO_INCREMENT cho các bảng đã đổ
+--
+
+--
+-- AUTO_INCREMENT cho bảng `docgia`
+--
+ALTER TABLE `docgia`
+  MODIFY `MaDocGia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT cho bảng `kesach`
+--
+ALTER TABLE `kesach`
+  MODIFY `MaKe` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT cho bảng `khuvuc`
+--
+ALTER TABLE `khuvuc`
+  MODIFY `Khu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT cho bảng `loaisach`
+--
+ALTER TABLE `loaisach`
+  MODIFY `MaLoai` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT cho bảng `nhanvien`
+--
+ALTER TABLE `nhanvien`
+  MODIFY `MaNhanVien` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT cho bảng `nxb`
+--
+ALTER TABLE `nxb`
+  MODIFY `MaNXB` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT cho bảng `phieumuon`
+--
+ALTER TABLE `phieumuon`
+  MODIFY `MaPhieuMuon` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT cho bảng `phieunhap`
+--
+ALTER TABLE `phieunhap`
+  MODIFY `MaPhieuNhap` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT cho bảng `phieuphat`
+--
+ALTER TABLE `phieuphat`
+  MODIFY `MaPhieuPhat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT cho bảng `phieutra`
+--
+ALTER TABLE `phieutra`
+  MODIFY `MaPhieuTra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT cho bảng `sach`
+--
+ALTER TABLE `sach`
+  MODIFY `MaSach` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

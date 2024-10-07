@@ -145,7 +145,7 @@ public class XuatPhieuNhapGUI extends javax.swing.JDialog {
         hd += "<h1 style='text-align:center;'>CHI TIẾT PHIẾU NHẬP</h1>";
         hd += "Nhân viên: " + nhanVien + "<br/>";
         hd += "Ngày lập: " + dtf.format(now) + "<br/>";
-        hd += "Nhà cung cấp: " + nxbBUS.getTenNXB(Integer.parseInt(nxb)) + "<br/>";
+        hd += "Nhà cung cấp: " + nxb + "<br/>";
         hd += "<div style='text-align:center;'>==========================================</div><br/>";
         hd += "<div style='text-align:center'>";
         hd += "<table style='max-width:100%'>";

@@ -51,10 +51,8 @@ public class PhanSachBUS {
                 ps.setTrangThai(trangThai);
 
                 if (phanSachDAO.themPhanSach(ps)) {
-                    new MyDialog("Thêm thành công!", MyDialog.SUCCESS_DIALOG);
                     return true;
                 } else {
-                    new MyDialog("Thêm thất bại!", MyDialog.ERROR_DIALOG);
                     return false;
                 }
             }

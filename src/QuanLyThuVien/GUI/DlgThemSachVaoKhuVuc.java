@@ -19,6 +19,7 @@ import java.text.DecimalFormat;
 public class DlgThemSachVaoKhuVuc extends  JDialog {
     private SachBUS sachBUS = new SachBUS();
     private LoaiBUS loaiBUS = new LoaiBUS();
+    private NXBBUS nxbBUS = new NXBBUS();
     private TacGiaBUS tacGiaBUS = new TacGiaBUS();
     private KhuVucBUS khuVucBUS = new KhuVucBUS();
     public static Sach sachThem= null;
@@ -57,6 +58,7 @@ public class DlgThemSachVaoKhuVuc extends  JDialog {
         dtmSach = new DefaultTableModel();
         dtmSach.addColumn("Mã");
         dtmSach.addColumn("Loại");
+        dtmSach.addColumn("NXB");
         dtmSach.addColumn("Tác giả");
         dtmSach.addColumn("Tên sách");
         dtmSach.addColumn("Giá");
@@ -109,16 +111,18 @@ public class DlgThemSachVaoKhuVuc extends  JDialog {
             int ma = Integer.parseInt(tblSach.getValueAt(row, 0) + "");
             String loai = String.valueOf(tblSach.getValueAt(row, 1));
             int maLoai = loaiBUS.getMaLoai(loai);
-            String tacGia = String.valueOf(tblSach.getValueAt(row, 2));
+            String nxb = String.valueOf(tblSach.getValueAt(row, 2));
+            int maNXB = loaiBUS.getMaLoai(nxb);
+            String tacGia = String.valueOf(tblSach.getValueAt(row, 3));
 //            int maTacGia = tacGiaBUS.getMaTacGia(tacGia);
-            String ten = tblSach.getValueAt(row, 3) + "";
-            String giaMuon = tblSach.getValueAt(row, 4).toString().replace(",", "");
+            String ten = tblSach.getValueAt(row, 4) + "";
+            String giaMuon = tblSach.getValueAt(row, 5).toString().replace(",", "");
             long gia = Long.parseLong(giaMuon);
-            String hinhAnh = tblSach.getValueAt(row,5) + "";
-            String soLuong = tblSach.getValueAt(row,6)+"";
+            String hinhAnh = tblSach.getValueAt(row,6) + "";
+            String soLuong = tblSach.getValueAt(row,7)+"";
             int sl = Integer.parseInt(soLuong);
 
-            sachThem = new Sach(ma, maLoai, tacGia, ten, gia, hinhAnh,sl);
+            sachThem = new Sach(ma, maLoai, maNXB, tacGia, ten, gia, hinhAnh,sl);
 
         }
         this.dispose();
@@ -143,6 +147,8 @@ public class DlgThemSachVaoKhuVuc extends  JDialog {
                     vec.add(s.getMaSach());
                     String tenLoai = loaiBUS.getTenLoai(s.getMaLoaiSach());
                     vec.add(tenLoai);
+                    String tenNXB = nxbBUS.getTenNXB(s.getMaNXB());
+                    vec.add(tenNXB);
 //                    String tenTacGia = tacGiaBUS.getTenTacGia(s.getMaTacGia());
                     String tenTacGia = s.getTacGia();
                     vec.add(tenTacGia);
@@ -171,6 +177,8 @@ public class DlgThemSachVaoKhuVuc extends  JDialog {
                 vec.add(s.getMaSach());
                 String tenLoai = loaiBUS.getTenLoai(s.getMaLoaiSach());
                 vec.add(tenLoai);
+                String tenNXB = nxbBUS.getTenNXB(s.getMaNXB());
+                vec.add(tenNXB);
 //                String tenTacGia = tacGiaBUS.getTenTacGia(s.getMaTacGia());
                 String tenTacGia = s.getTacGia();
                 vec.add(tenTacGia);
