@@ -520,8 +520,8 @@ public class PnQuanLyNhapSachGUI extends JPanel {
     }
 
     private void xuLyChonNXB(){
+        int x = cmbNXB.getSelectedIndex();
         if(dtmNhapSach.getRowCount()==0) {
-            int x = cmbNXB.getSelectedIndex();
             if (x != 0) {
                 String ten = cmbNXB.getItemAt(x);
                 loadDataLenTableSachTheoMaNXB(ten);
@@ -529,12 +529,16 @@ public class PnQuanLyNhapSachGUI extends JPanel {
                 loadDataLenTableSach();
             }
         }else {
-            new MyDialog("Bạn không thể nhập mặt hàng của nxb khác!!!", MyDialog.ERROR_DIALOG);
-            String ten = dtmSach.getValueAt(0,2)+"";
-            for(int i=0;i<cmbNXB.getItemCount();i++){
-                if(cmbNXB.getItemAt(i).contains(ten)){
-                    cmbNXB.setSelectedIndex(i);
-                    return;
+            int MaNXB = sachBUS.getSach(tblNhapSach.getValueAt(0,0)+"").getMaNXB();
+            String nxb = nxbBUS.getTenNXB(MaNXB);
+            if(!cmbNXB.getItemAt(x).contains(nxb)) {
+                new MyDialog("Bạn không thể nhập mặt hàng của nxb khác!!!", MyDialog.ERROR_DIALOG);
+                String ten = dtmSach.getValueAt(0, 2) + "";
+                for (int i = 0; i < cmbNXB.getItemCount(); i++) {
+                    if (cmbNXB.getItemAt(i).contains(ten)) {
+                        cmbNXB.setSelectedIndex(i);
+                        return;
+                    }
                 }
             }
         }
@@ -797,5 +801,8 @@ public class PnQuanLyNhapSachGUI extends JPanel {
         sachBUS.docDanhSach();
         loadDataLenTableSach();
         dtmNhapSach.setRowCount(0);
+        txtIDMin.setText("");
+        txtSoLuong.setText("");
+        cmbNXB.setSelectedIndex(0);
     }
 }

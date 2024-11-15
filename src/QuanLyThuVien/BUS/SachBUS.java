@@ -155,6 +155,10 @@ public class SachBUS {
             int mLoai = Integer.parseInt(maLoai[0]);
 //            int maTacGia = Integer.parseInt(maTG[0]);
             long giaSach = Long.parseLong(gia.replace(",",""));
+            if(giaSach <= 0){
+                new MyDialog("Nhập giá trị dương cho giá sách!", MyDialog.ERROR_DIALOG);
+                return false;
+            }
             int maNXB = nxbBUS.getMaNXB(nxb);
             int sl = 0;
             Sach sach = new Sach();
