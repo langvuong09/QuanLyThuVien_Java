@@ -80,12 +80,19 @@ public class TaiKhoanBUS {
     }
 
     public void khoaTaiKhoan(String ma) {
-        int maNhanVien = Integer.parseInt(ma);
-        boolean flag = taiKhoanDAO.khoaTaiKhoan(maNhanVien);
-        if (flag) {
-            new MyDialog("Khoá tài khoản thành công!", MyDialog.SUCCESS_DIALOG);
-        } else {
-            new MyDialog("Khoá tài khoản thất bại!", MyDialog.ERROR_DIALOG);
+        try {
+            int maNhanVien = Integer.parseInt(ma);
+            boolean flag = taiKhoanDAO.khoaTaiKhoan(maNhanVien);
+            if (flag) {
+                new MyDialog("Khoá tài khoản thành công!", MyDialog.SUCCESS_DIALOG);
+                return;
+            } else {
+                new MyDialog("Khoá tài khoản thất bại!", MyDialog.ERROR_DIALOG);
+                return;
+            }
+        }catch (Exception e){
+            new MyDialog("Chưa chọn nhân viên để khóa tài khoản!", MyDialog.ERROR_DIALOG);
+            return;
         }
     }
 

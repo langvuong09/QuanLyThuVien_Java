@@ -451,6 +451,7 @@ public class PnQuanLyNhanVienGUI extends JPanel{
                 txtIDNhanVien.setText("");
                 txtHoNhanVien.setText("");
                 txtTenNhanVien.setText("");
+                txtChucVu.setText("");
                 txtGmail.setText("");
                 txtSDT.setText("");
                 ButtonGroup group = new ButtonGroup();

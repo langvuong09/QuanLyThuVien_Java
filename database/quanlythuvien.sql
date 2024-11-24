@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th10 11, 2024 lúc 11:53 AM
+-- Thời gian đã tạo: Th10 24, 2024 lúc 04:22 PM
 -- Phiên bản máy phục vụ: 10.4.32-MariaDB
 -- Phiên bản PHP: 8.2.12
 
@@ -111,7 +111,7 @@ CREATE TABLE `ctphieuphat` (
 --
 
 INSERT INTO `ctphieuphat` (`MaPhieuPhat`, `MaSach`, `MaPhanSach`, `LyDo`, `TienPhat`) VALUES
-(1, 1, 2, 'Mất trang + Trả muộn 5 ngày', 9000);
+(1, 1, 1, 'Rách sách', 3750);
 
 -- --------------------------------------------------------
 
@@ -264,7 +264,8 @@ INSERT INTO `nhanvien` (`MaNhanVien`, `Ho`, `Ten`, `GioiTinh`, `SDT`, `ChucVu`, 
 (1, 'Tiến', 'Cường', 'Nam', '0962385165', 'admin', 'cuongcanlop7a@gmail.com'),
 (2, 'Lang', 'Vương', 'Nam', '0962385165', 'manage', 'cuongcaotien9a@gmail.com'),
 (3, 'Nguyễn Hoàng Thanh', 'Phương', 'Nữ', '0123456789', 'staff', 'phuongthanh12345@gmail.com'),
-(4, 'Huỳnh Thị Tuyết', 'Nhung', 'Nữ', '0945253645', 'staff', 'nhungnhinhanh123@gmail.com');
+(4, 'Huỳnh Thị Tuyết', 'Nhung', 'Nữ', '0945253645', 'staff', 'nhungnhinhanh123@gmail.com'),
+(5, 'ưdsacs', 'ưdsa', 'Nam', '0968315734', 'staff', 'ewfdscfrsd@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -330,7 +331,7 @@ CREATE TABLE `phansach` (
 --
 
 INSERT INTO `phansach` (`MaPhanSach`, `MaSach`, `TrangThai`) VALUES
-(1, 1, 'tốt'),
+(1, 1, 'Rách sách'),
 (2, 1, 'tốt'),
 (3, 1, 'tốt'),
 (4, 1, 'tốt'),
@@ -598,7 +599,7 @@ CREATE TABLE `phieuphat` (
 --
 
 INSERT INTO `phieuphat` (`MaPhieuPhat`, `MaPhieuTra`, `MaDocGia`, `MaNhanVien`, `ThanhTien`) VALUES
-(1, 11, 1, 1, 9000);
+(1, 11, 1, 1, 3750);
 
 -- --------------------------------------------------------
 
@@ -667,7 +668,7 @@ INSERT INTO `sach` (`MaSach`, `MaLoai`, `MaNXB`, `TacGia`, `TenSach`, `GiaSach`,
 (14, 1, 5, 'Nguyễn Nhật Ánh', 'Những người hàng xóm', 200000, 'nhungNguoiHangXom.png', 9),
 (15, 1, 5, 'Nguyễn Nhật Ánh', 'Mắt biếc', 110000, 'matBiec.png', 10),
 (16, 1, 1, 'Conan Doly', 'Sherlock Holmes quyển 1', 115000, 'SherlockHolmes1.png', 9),
-(17, 1, 1, 'Conan Doly', 'Sherlock Holmes quyển 2', 110000, 'SherlockHolmes2.png', 9),
+(17, 1, 1, 'Conan Doly', 'Sherlock Holmes quyển 2', 110000, 'SherlockHolmes2.png', 8),
 (18, 1, 1, 'Conan Doly', 'Sherlock Holmes quyển 3', 100000, 'SherlockHolmes3.png', 9),
 (19, 1, 5, 'Nguyễn Nhật Ánh', 'Kính vạn hoa', 130000, 'kinhVanHoa.png', 10),
 (20, 2, 2, 'Alex Banayan', 'Kẻ khôn đi lối khác', 170000, 'keKhonDiLoiKhac.png', 10);
@@ -857,7 +858,7 @@ ALTER TABLE `loaisach`
 -- AUTO_INCREMENT cho bảng `nhanvien`
 --
 ALTER TABLE `nhanvien`
-  MODIFY `MaNhanVien` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `MaNhanVien` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT cho bảng `nxb`
@@ -869,7 +870,7 @@ ALTER TABLE `nxb`
 -- AUTO_INCREMENT cho bảng `phieumuon`
 --
 ALTER TABLE `phieumuon`
-  MODIFY `MaPhieuMuon` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `MaPhieuMuon` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT cho bảng `phieunhap`
@@ -887,7 +888,7 @@ ALTER TABLE `phieuphat`
 -- AUTO_INCREMENT cho bảng `phieutra`
 --
 ALTER TABLE `phieutra`
-  MODIFY `MaPhieuTra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `MaPhieuTra` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT cho bảng `sach`
