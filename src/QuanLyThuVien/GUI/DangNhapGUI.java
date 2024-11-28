@@ -278,8 +278,4 @@ public class DangNhapGUI extends JFrame{
         }
         return 0;
     }
-
-
-
-
 }

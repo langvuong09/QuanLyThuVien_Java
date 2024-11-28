@@ -89,7 +89,7 @@ public class PnQuanLyNhanVienGUI extends JPanel{
         lblTabbedNhanVien = new JLabel("Nhân viên");
         lblTabbedNhanVien.setHorizontalTextPosition(JLabel.CENTER);
         lblTabbedNhanVien.setVerticalTextPosition(JLabel.CENTER);
-        lblTabbedNhanVien.setIcon(tabbedDefault);
+        lblTabbedNhanVien.setIcon(tabbedSelected);
         lblTabbedNhanVien.setBounds(2, 0, 140, 41);
         lblTabbedNhanVien.setFont(fonts);
         lblTabbedNhanVien.setForeground(Color.black);
@@ -257,6 +257,8 @@ public class PnQuanLyNhanVienGUI extends JPanel{
         btnSua.setIcon(scaleIcon("image/img_qltv/icon_sua.png", 30, 30));
         btnXuatExcel.setIcon(scaleIcon("image/img_qltv/icon_excel.png", 30, 30));
         btnNhapExcel.setIcon(scaleIcon("image/img_qltv/icon_excel.png", 30, 30));
+        btnCapTK.setIcon(scaleIcon("image/Pencil-icon.png", 30, 30));
+        
 
 //
 

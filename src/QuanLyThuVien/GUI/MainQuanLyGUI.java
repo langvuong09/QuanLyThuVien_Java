@@ -366,7 +366,7 @@ public class MainQuanLyGUI extends JFrame {
                 for (JButton lblDisable : listMenuLeft) {
                     lblDisable.setBackground(clLeftItem);
                 }
-                lblTrangChu.setBackground(clLeftItemSelected);
+
             }
         });
         btnDangXuat.addMouseListener(new MouseAdapter() {

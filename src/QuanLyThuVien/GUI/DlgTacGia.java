@@ -185,7 +185,6 @@ public class DlgTacGia extends javax.swing.JDialog {
     }//GEN-LAST:event_tblLoaiMouseClicked
 
     private void btnThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemActionPerformed
-        // TODO add your handling code here:
         if (tacGiaBUS.themTacGia(dtmTacGia.getRowCount(), txtTenTG.getText())) {
             loadDataLenTblTacGia();
         }
