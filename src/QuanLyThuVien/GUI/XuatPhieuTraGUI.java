@@ -1,24 +1,17 @@
 package QuanLyThuVien.GUI;
 
-import QuanLyThuVien.BUS.PhieuMuonBUS;
 import QuanLyThuVien.BUS.CTPhieuMuonBUS;
-import QuanLyThuVien.BUS.PhieuTraBUS;
 import QuanLyThuVien.BUS.CTPhieuTraBUS;
-import MyCustom.MyDialog;
-import QuanLyThuVien.DTO.PhieuMuon;
-import QuanLyThuVien.DTO.PhieuMuon;
+import QuanLyThuVien.BUS.PhieuMuonBUS;
+import QuanLyThuVien.BUS.PhieuTraBUS;
 
-import java.awt.Image;
-import java.awt.Toolkit;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.print.PrinterException;
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Vector;
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 
 public class XuatPhieuTraGUI extends JDialog{
     private PhieuMuonBUS phieuMuonBUS = new PhieuMuonBUS();
@@ -27,13 +20,13 @@ public class XuatPhieuTraGUI extends JDialog{
     private CTPhieuTraBUS ctPhieuTraBUS = new CTPhieuTraBUS();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnInPhieuTra;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JEditorPane txtPhieuTra;
+    private JButton btnInPhieuTra;
+    private JLabel jLabel1;
+    private JPanel jPanel1;
+    private JPanel jPanel2;
+    private JPanel jPanel3;
+    private JScrollPane jScrollPane1;
+    private JEditorPane txtPhieuTra;
 
     public XuatPhieuTraGUI() {
         initComponents();
@@ -52,7 +45,7 @@ public class XuatPhieuTraGUI extends JDialog{
     private String nhanVien, docGia;
     private String ngayMuon, ngayTraThuc;
 
-    public XuatPhieuTraGUI(ArrayList<Vector> dsCTPhieuTra, ArrayList<Vector> dsCTPhieuMuon,int maPT, Object docGia, Object nhanVien, String ngayMuon, String ngayTraThuc) {
+    public XuatPhieuTraGUI(ArrayList<Vector> dsCTPhieuTra, ArrayList<Vector> dsCTPhieuMuon, int maPT, Object docGia, Object nhanVien, String ngayMuon, String ngayTraThuc) {
         this();
         this.maPT = maPT;
         this.docGia = (String) docGia;
@@ -133,13 +126,13 @@ public class XuatPhieuTraGUI extends JDialog{
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     public void initComponents(){
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        txtPhieuTra = new javax.swing.JEditorPane();
-        btnInPhieuTra = new javax.swing.JButton();
+        jPanel1 = new JPanel();
+        jPanel2 = new JPanel();
+        jPanel3 = new JPanel();
+        jLabel1 = new JLabel();
+        jScrollPane1 = new JScrollPane();
+        txtPhieuTra = new JEditorPane();
+        btnInPhieuTra = new JButton();
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
@@ -158,10 +151,10 @@ public class XuatPhieuTraGUI extends JDialog{
 
         jScrollPane1.setViewportView(txtPhieuTra);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addComponent(jPanel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel3, GroupLayout.DEFAULT_SIZE,  611, Short.MAX_VALUE)
@@ -169,17 +162,17 @@ public class XuatPhieuTraGUI extends JDialog{
                         .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 0 , Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING))
+                                .addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING))
                                 .addGap(38, 38, 38)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 335, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 335, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jPanel3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
         );
 

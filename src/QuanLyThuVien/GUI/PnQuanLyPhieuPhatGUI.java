@@ -10,6 +10,9 @@ import MyCustom.XuLyFileExcel;
 import MyCustom.MyDialog;
 import MyCustom.MyTable;
 import MyCustom.TransparentPanel;
+
+import java.io.File;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,12 +22,14 @@ import java.util.Date;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Vector;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
 public class PnQuanLyPhieuPhatGUI extends JPanel{
@@ -41,12 +46,12 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
     private CTPhieuPhatBUS ctPhieuPhatBUS = new CTPhieuPhatBUS();
 
     public PnQuanLyPhieuPhatGUI(){
-        changLNF("Windows");
+
         addConTrolsPhieuPhat();
         addEventsPhieuPhat();
     }
 
-    final Color colorPanel = new Color(247, 247, 247);
+    final Color colorPanel = new Color(0xFBF1F1);
 
     MyTable tblCTPhieuPhat, tblPhieuPhat, tblXemCTPhieuPhat;
     DefaultTableModel dtmCTPhieuPhat, dtmPhieuPhat, dtmXemCTPhieuPhat;
@@ -56,26 +61,41 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
     JTextField txtMaPhieuPhat, txtMaPhieuTra, txtMaSach, txtMaPhanSach, txtDocGia, txtThanhTien, txtNgayTraMuon, txtTimKiemDG;
     JComboBox<String> cmbLyDo;
     JButton btnThem, btnXoa, btnInThe, btnReset, btnReset1, btnXuatExcel, btnNhapExcel, btnTimKiem, btnChon, btnPhieuTra, btnSachPhat, btnTimDG;
+    private JButton btnClose,btnClose1;
     final ImageIcon tabbedSelected = new ImageIcon("image/Manager-GUI/tabbed-btn--selected.png");
     final ImageIcon tabbedDefault = new ImageIcon("image/Manager-GUI/tabbed-btn.png");
 
+    public JButton getCloseButtonPhieuPhat() {
+        return btnClose;
+    }
+
+    public JButton getCloseButtonPhieuPhat1() {
+        return btnClose1;
+    }
+
     private void addConTrolsPhieuPhat(){
-        Font font = new Font("Tahoma", Font.PLAIN,16);
+        Font font = new Font("Tahoma", Font.PLAIN,20);
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
         this.setLayout(new BorderLayout());
         this.setBackground(colorPanel);
 
-        int w = 1050;
-        int h = 700;
+        int w = 1290;
+        int h = 740;
+
+        //Icon Close
+        ImageIcon imgiconclose=new ImageIcon("image/img_qltv/close_btn.png");
+        Image closescaledImage = imgiconclose.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH); // Kích thước 50x50
+        ImageIcon closescaledIcon = new ImageIcon(closescaledImage);
 
         /*
         =========================================================================
                                     PANEL TABBED
         =========================================================================
          */
-        JPanel pnTop = new TransparentPanel();
+        JPanel pnTop = new JPanel();
+        pnTop.setBackground(new Color(0xA5FDEC));
         //<editor-fold defaultstate="collapsed" desc="Panel Tab Sách & Phân sách">
         Font fonts = new Font("", Font.PLAIN, 20);
         pnTop.setPreferredSize(new Dimension(w, 41));
@@ -86,25 +106,25 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         lblTabbedPhieuPhat.setHorizontalTextPosition(JLabel.CENTER);
         lblTabbedPhieuPhat.setVerticalTextPosition(JLabel.CENTER);
         lblTabbedPhieuPhat.setIcon(tabbedSelected);
-        lblTabbedPhieuPhat.setBounds(2, 2, 140, 37);
+        lblTabbedPhieuPhat.setBounds(2, 0, 140, 41);
         lblTabbedPhieuPhat.setFont(fonts);
-        lblTabbedPhieuPhat.setForeground(Color.white);
+        lblTabbedPhieuPhat.setForeground(Color.black);
         lblTabbedPhieuPhat.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         lblTabbedQuanLyPhieu = new JLabel("Danh sách");
         lblTabbedQuanLyPhieu.setHorizontalTextPosition(JLabel.CENTER);
         lblTabbedQuanLyPhieu.setVerticalTextPosition(JLabel.CENTER);
         lblTabbedQuanLyPhieu.setIcon(tabbedDefault);
-        lblTabbedQuanLyPhieu.setBounds(143, 2, 140, 37);
+        lblTabbedQuanLyPhieu.setBounds(143, 0, 140, 41);
         lblTabbedQuanLyPhieu.setFont(fonts);
-        lblTabbedQuanLyPhieu.setForeground(Color.white);
+        lblTabbedQuanLyPhieu.setForeground(Color.black);
         lblTabbedQuanLyPhieu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         pnTop.add(lblTabbedPhieuPhat);
         pnTop.add(lblTabbedQuanLyPhieu);
         //</editor-fold>
         this.add(pnTop, BorderLayout.NORTH);
-        this.add(pnTop, BorderLayout.NORTH);
+
 
         /*
 
@@ -113,13 +133,19 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
                                     PANEL Phiếu phạt
         =========================================================================
          */
+        btnClose=new JButton(closescaledIcon);
+        btnClose.setBounds(1210,2,40,40);
         JPanel pnTablePhieuPhat = new TransparentPanel();
         pnTablePhieuPhat.setLayout(new BorderLayout());
-
         JPanel pnTitlePhieuPhat = new TransparentPanel();
         JLabel lblTitlePhieuPhat = new JLabel("Quản lý phiếu phạt");
         lblTitlePhieuPhat.setFont(new Font("Arial", Font.BOLD, 28));
-        btnReset = new JButton(new ImageIcon("image/Refresh-icon.png"));
+        ImageIcon originalIcon = new ImageIcon("image/img_qltv/icon_reload.png");
+        Image img = originalIcon.getImage(); // Lấy Image từ ImageIcon
+        Image scaledImg = img.getScaledInstance(30, 30, Image.SCALE_SMOOTH); // Thay đổi kích thước ảnh
+        ImageIcon scaledIcon = new ImageIcon(scaledImg); // Tạo ImageIcon mới với kích thước mới
+
+        btnReset = new JButton(scaledIcon); // Gán ImageIcon mới cho JButton
         btnReset.setFocusPainted(false);
         btnReset.setPreferredSize(new Dimension(40, 40));
         pnTitlePhieuPhat.add(lblTitlePhieuPhat);
@@ -147,29 +173,29 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         lblMaPhieuPhat.setFont(font);
         txtMaPhieuPhat.setFont(font);
         txtMaPhieuPhat.setEditable(false);
-        lblMaPhieuPhat.setBounds(20,10,150,25);
-        txtMaPhieuPhat.setBounds(160,10,220,25);
+        lblMaPhieuPhat.setBounds(20,10,150,40);
+        txtMaPhieuPhat.setBounds(160,10,300,40);
 
         JLabel lblMaPhieuTra = new JLabel("Mã phiếu trả:");
         lblMaPhieuTra.setFont(font);
         txtMaPhieuTra.setFont(font);
         txtMaPhieuTra.setEditable(false);
         lblMaPhieuTra.setBounds(20,55,150,25);
-        txtMaPhieuTra.setBounds(160,55,220,25);
+        txtMaPhieuTra.setBounds(160,55,300,40);
 
         JLabel lblMaSach = new JLabel("Mã sách:");
         lblMaSach.setFont(font);
         txtMaSach.setFont(font);
         txtMaSach.setEditable(false);
         lblMaSach.setBounds(20,100,150,25);
-        txtMaSach.setBounds(160,100,220,25);
+        txtMaSach.setBounds(160,100,300,40);
 
         JLabel lblMaPhanSach = new JLabel("Mã phân sách:");
         lblMaPhanSach.setFont(font);
         txtMaPhanSach.setFont(font);
         txtMaPhanSach.setEditable(false);
         lblMaPhanSach.setBounds(20,145,150,25);
-        txtMaPhanSach.setBounds(160,145,220,25);
+        txtMaPhanSach.setBounds(160,145,300,40);
 
         JLabel lblLyDo = new JLabel("Lý do:");
         lblLyDo.setFont(font);
@@ -177,34 +203,40 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         cmbLyDo = new JComboBox<>(luaChon);
         cmbLyDo.setFont(font);
         lblLyDo.setBounds(20,220,150,25);
-        cmbLyDo.setBounds(160,220,220,25);
+        cmbLyDo.setBounds(160,220,300,40);
 
         JLabel lblThanhTien = new JLabel("Thành tiền:");
         lblThanhTien.setFont(font);
         txtThanhTien.setFont(font);
         txtThanhTien.setEditable(false);
         lblThanhTien.setBounds(20,265,150,25);
-        txtThanhTien.setBounds(160,265,220,25);
+        txtThanhTien.setBounds(160,265,300,40);
 
         JLabel lblNgayTraMuon = new JLabel("Số ngày trả muộn: ");
         lblNgayTraMuon.setFont(font);
         txtNgayTraMuon.setFont(font);
-        lblNgayTraMuon.setBounds(450,10,200,25);
-        txtNgayTraMuon.setBounds(600,10,150,25);
+        lblNgayTraMuon.setBounds(650,10,200,25);
+        txtNgayTraMuon.setBounds(850,10,300,40);
 
 
         JLabel lblDocGia = new JLabel("Đọc giả:");
         lblDocGia.setFont(font);
         txtDocGia.setFont(font);
         txtDocGia.setEditable(false);
-        lblDocGia.setBounds(450,55,200,25);
-        txtDocGia.setBounds(600,55,150,25);
+        lblDocGia.setBounds(650,55,200,25);
+        txtDocGia.setBounds(850,55,300,40);
 
-        JLabel lblNoiDungPhat = new JLabel("<html><pre>      HÌNH THỨC PHẠT<br></pre>Trả muộn: 10% giá sách/10 ngày<br>Rách sách: 25% giá sách<br>Ướt, mất sách: 100% giá sách<br>Mất trang: 50% giá sách</html>");
+        JLabel lblNoiDungPhat = new JLabel("<html><h1 style='text-align:center;'>      HÌNH THỨC PHẠT</h1>Trả muộn: 10% giá sách/10 ngày<br>Rách sách: 25% giá sách<br>Ướt, mất sách: 100% giá sách<br>Mất trang: 50% giá sách</html>");
         lblNoiDungPhat.setFont(font);
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         lblNoiDungPhat.setBorder(border);
-        lblNoiDungPhat.setBounds(500,100,250,120);
+
+// Căn chỉnh nội dung HTML bên trong JLabel
+        lblNoiDungPhat.setHorizontalAlignment(SwingConstants.CENTER); // Căn ngang
+        lblNoiDungPhat.setVerticalAlignment(SwingConstants.CENTER);   // Căn dọc
+
+        lblNoiDungPhat.setBounds(650, 100, 400, 150);
+
 
         dtmCTPhieuPhat = new DefaultTableModel();
         dtmCTPhieuPhat.addColumn("Mã sách");
@@ -213,6 +245,12 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         dtmCTPhieuPhat.addColumn("Lý do");
         dtmCTPhieuPhat.addColumn("Tiền phạt");
         tblCTPhieuPhat = new MyTable(dtmCTPhieuPhat);
+
+        // Tăng kích thước font của header
+        JTableHeader tableHeader = tblCTPhieuPhat.getTableHeader();
+        tableHeader.setFont(new Font("Arial", Font.BOLD, 20)); // Thay đổi font và kích thước
+        tableHeader.setPreferredSize(new Dimension(1240, 30)); // Tăng chiều cao của header
+
 
         tblCTPhieuPhat.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
         tblCTPhieuPhat.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
@@ -224,8 +262,8 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         columnModelPhieuPhat.getColumn(3).setPreferredWidth(120);
         columnModelPhieuPhat.getColumn(4).setPreferredWidth(120);
         JScrollPane scrTblPhieuPhat = new JScrollPane(tblCTPhieuPhat);
-        scrTblPhieuPhat.setPreferredSize(new Dimension(900,150));
-        scrTblPhieuPhat.setBounds(0,365, 820,250);
+        scrTblPhieuPhat.setPreferredSize(new Dimension(1240,220));
+        scrTblPhieuPhat.setBounds(20,365, 1240,220);
         pnThongTinPhieuPhat.add(scrTblPhieuPhat, BorderLayout.CENTER);
 
         pnThongTinPhieuPhat.add(lblMaPhieuPhat);
@@ -245,6 +283,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         pnThongTinPhieuPhat.add(lblDocGia);
         pnThongTinPhieuPhat.add(txtDocGia);
         pnThongTinPhieuPhat.add(lblNoiDungPhat);
+        pnThongTinPhieuPhat.add(btnClose);
 
         pnTablePhieuPhat.add(pnThongTinPhieuPhat);
 
@@ -264,15 +303,16 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         btnSachPhat.setFont(fontButton);
         btnChon.setFont(fontButton);
 
-        btnThem.setIcon(new ImageIcon("image/add-icon.png"));
-        btnXoa.setIcon(new ImageIcon("image/delete-icon.png"));
-        btnChon.setIcon(new ImageIcon());
+        // Đặt icon vào JButton
+        btnThem.setIcon(new ImageIcon("image/img_qltv/icon_them.png"));
+        btnXoa.setIcon(new ImageIcon("image/img_qltv/icon_xoa.png"));
 
-        btnThem.setBounds(170,310,170,40);
-        btnXoa.setBounds(345,310,165,40);
-        btnPhieuTra.setBounds(390,55,30,25);
-        btnSachPhat.setBounds(390,100,30,25);
-        btnChon.setBounds(200,180,120,30);
+
+        btnThem.setBounds(450,310,170,40);
+        btnXoa.setBounds(650,310,170,40);
+        btnPhieuTra.setBounds(470,55,40,40);
+        btnSachPhat.setBounds(470,100,40,40);
+        btnChon.setBounds(470,145,120,40);
 
         pnThongTinPhieuPhat.add(btnThem);
         pnThongTinPhieuPhat.add(btnXoa);
@@ -291,15 +331,17 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         JPanel pnTableQuanLy = new TransparentPanel();
         pnTableQuanLy.setLayout(new BorderLayout());
 
-
         JPanel pnTitleQuanLy = new TransparentPanel();
         JLabel lblTitleQuanLy = new JLabel("Danh sách phiếu phạt");
         lblTitleQuanLy.setFont(new Font("Arial", Font.BOLD,28));
-        btnReset1 = new JButton(new ImageIcon("image/Refresh-icon.png"));
+        btnReset1 = new JButton(scaledIcon);
         btnReset1.setFocusPainted(false);
         btnReset1.setPreferredSize(new Dimension(40, 40));
         pnTitleQuanLy.add(lblTitleQuanLy);
         pnTitleQuanLy.add(btnReset1);
+        btnClose1=new JButton(closescaledIcon);
+        btnClose1.setBounds(1210,2,40,40);
+        pnTableQuanLy.add(btnClose1);
         pnTableQuanLy.add(pnTitleQuanLy,BorderLayout.NORTH);
 
         JPanel pnQuanLy = new TransparentPanel();
@@ -318,6 +360,10 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         tblPhieuPhat.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
         tblPhieuPhat.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
 
+        JTableHeader tableHeader2 = tblPhieuPhat.getTableHeader();
+        tableHeader2.setFont(new Font("Arial", Font.BOLD, 20)); // Thay đổi font và kích thước
+        tableHeader2.setPreferredSize(new Dimension(1240, 30)); // Tăng chiều cao của header
+
         TableColumnModel columnModelQuanLy = tblPhieuPhat.getColumnModel();
         columnModelQuanLy.getColumn(0).setPreferredWidth(50);
         columnModelQuanLy.getColumn(1).setPreferredWidth(50);
@@ -326,8 +372,8 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         columnModelQuanLy.getColumn(4).setPreferredWidth(50);
 
         JScrollPane scrTblQuanLy = new JScrollPane(tblPhieuPhat);
-        scrTblQuanLy.setPreferredSize(new Dimension(900,500));
-        scrTblQuanLy.setBounds(0,95,800,220);
+        scrTblQuanLy.setPreferredSize(new Dimension(1240,500));
+        scrTblQuanLy.setBounds(20,95,1240,220);
         //</editor-fold>
         pnQuanLy.add(scrTblQuanLy, BorderLayout.CENTER);
 
@@ -345,6 +391,10 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         tblXemCTPhieuPhat.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
         tblXemCTPhieuPhat.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
         tblXemCTPhieuPhat.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        // Tăng kích thước font của header
+        JTableHeader tableHeader1 = tblXemCTPhieuPhat.getTableHeader();
+        tableHeader1.setFont(new Font("Arial", Font.BOLD, 20)); // Thay đổi font và kích thước
+        tableHeader1.setPreferredSize(new Dimension(1240, 30)); // Tăng chiều cao của header
 
         TableColumnModel columnModelXemCT = tblXemCTPhieuPhat.getColumnModel();
         columnModelXemCT.getColumn(0).setPreferredWidth(50);
@@ -355,8 +405,8 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         columnModelXemCT.getColumn(5).setPreferredWidth(50);
 
         JScrollPane scrTblXemCT = new JScrollPane(tblXemCTPhieuPhat);
-        scrTblXemCT.setPreferredSize(new Dimension(900,500));
-        scrTblXemCT.setBounds(0,370,800,200);
+        scrTblXemCT.setPreferredSize(new Dimension(1240,500));
+        scrTblXemCT.setBounds(20,370,1240,200);
         //</editor-fold>
         pnQuanLy.add(scrTblXemCT, BorderLayout.CENTER);
 
@@ -364,16 +414,16 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
 
         JLabel lblPhieuPhat = new JLabel("Phiếu phạt");
         JLabel lblCTPhieuPhat = new JLabel("Chi tiết phiếu phạt");
-        lblPhieuPhat.setFont(new Font("Arial", Font.BOLD, 22));
-        lblCTPhieuPhat.setFont(new Font("Arial", Font.BOLD, 22));
-        lblPhieuPhat.setBounds(335,65,200,22);
-        lblCTPhieuPhat.setBounds(290,340,200,22);
+        lblPhieuPhat.setFont(new Font("Arial", Font.BOLD, 25));
+        lblCTPhieuPhat.setFont(new Font("Arial", Font.BOLD, 25));
+        lblPhieuPhat.setBounds(500,65,200,30);
+        lblCTPhieuPhat.setBounds(500,340,250,30);
 
         JLabel lblTimKiemDG = new JLabel("Tìm đọc giả theo tên:");
         txtTimKiemDG.setFont(font);
         lblTimKiemDG.setFont(font);
-        lblTimKiemDG.setBounds(5,20,200,25);
-        txtTimKiemDG.setBounds(165,20,180,26);
+        lblTimKiemDG.setBounds(5,20,250,25);
+        txtTimKiemDG.setBounds(210,15,580,40);
 
         btnTimDG = new JButton("Tìm");
         btnInThe = new JButton("In thẻ");
@@ -383,14 +433,10 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         btnInThe.setFont(fontButton);
         btnXuatExcel.setFont(fontButton);
         btnNhapExcel.setFont(fontButton);
-        btnTimDG.setIcon(new ImageIcon("image/Search-icon.png"));
-        btnInThe.setIcon(new ImageIcon("image/card-icon.png"));
-        btnXuatExcel.setIcon(new ImageIcon("image/excel-icon.png"));
-        btnNhapExcel.setIcon(new ImageIcon("image/excel-icon.png"));
-        btnTimDG.setBounds(350,15,100,40);
-        btnInThe.setBounds(455,15,110,40);
-        btnXuatExcel.setBounds(570,15,110,40);
-        btnNhapExcel.setBounds(685,15,110,40);
+        btnTimDG.setBounds(800,15,100,40);
+        btnInThe.setBounds(910,15,100,40);
+        btnXuatExcel.setBounds(1020,15,100,40);
+        btnNhapExcel.setBounds(1130,15,100,40);
 
         pnQuanLy.add(lblPhieuPhat);
         pnQuanLy.add(lblCTPhieuPhat);
@@ -400,6 +446,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         pnQuanLy.add(btnInThe);
         pnQuanLy.add(btnXuatExcel);
         pnQuanLy.add(btnNhapExcel);
+
 
         pnTableQuanLy.add(pnQuanLy);
 
@@ -414,6 +461,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
 
         this.add(pnCardTabPhieuPhat);
     }
+
 
     private void addEventsPhieuPhat(){
         lblTabbedPhieuPhat.addMouseListener(new MouseListener() {
@@ -711,7 +759,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
             return;
         }
         boolean flag = ppBUS.themPhieuPhat(txtMaPhieuPhat.getText(), txtMaPhieuTra.getText(),
-                            txtDocGia.getText(),String.valueOf(dangNhapGUI.maTaiKhoan()), txtThanhTien.getText());
+                txtDocGia.getText(),String.valueOf(dangNhapGUI.maTaiKhoan()), txtThanhTien.getText());
         int maPP = Integer.parseInt(txtMaPhieuPhat.getText());
         if(flag) {
             for (int i = 0; i < count; i++) {
@@ -748,7 +796,7 @@ public class PnQuanLyPhieuPhatGUI extends JPanel{
         }
     }
 
-//    private void xuLySuaPhieuPhat(){
+    //    private void xuLySuaPhieuPhat(){
 //        String lyDo="",lyDo1="",lyDoTong;
 //        if(!cmbLyDo.getSelectedItem().equals("Trả muộn")){
 //            lyDo = String.valueOf(cmbLyDo.getSelectedItem());

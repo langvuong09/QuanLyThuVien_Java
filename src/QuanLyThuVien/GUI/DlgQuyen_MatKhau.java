@@ -1,13 +1,12 @@
 package QuanLyThuVien.GUI;
 
+import MyCustom.MyDialog;
 import QuanLyThuVien.BUS.PhanQuyenBUS;
 import QuanLyThuVien.BUS.TaiKhoanBUS;
 import QuanLyThuVien.DTO.PhanQuyen;
-import MyCustom.MyDialog;
-import java.awt.Image;
-import java.awt.Toolkit;
+
+import java.awt.*;
 import java.util.ArrayList;
-import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 public class DlgQuyen_MatKhau extends javax.swing.JDialog {
 

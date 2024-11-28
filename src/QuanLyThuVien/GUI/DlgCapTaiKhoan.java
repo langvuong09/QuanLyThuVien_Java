@@ -3,10 +3,9 @@ package QuanLyThuVien.GUI;
 import QuanLyThuVien.BUS.PhanQuyenBUS;
 import QuanLyThuVien.BUS.TaiKhoanBUS;
 import QuanLyThuVien.DTO.PhanQuyen;
-import java.awt.Image;
-import java.awt.Toolkit;
+
+import java.awt.*;
 import java.util.ArrayList;
-import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 public class DlgCapTaiKhoan extends javax.swing.JDialog {
 

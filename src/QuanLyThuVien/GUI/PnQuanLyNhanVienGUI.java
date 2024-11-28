@@ -1,5 +1,6 @@
 package QuanLyThuVien.GUI;
 
+
 import MyCustom.MyDialog;
 import MyCustom.XuLyFileExcel;
 import QuanLyThuVien.BUS.*;
@@ -17,6 +18,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import javax.swing.table.TableColumnModel;
 
 import static Main.Main.changLNF;
@@ -51,45 +53,55 @@ public class PnQuanLyNhanVienGUI extends JPanel{
     final ImageIcon tabbedSelected = new ImageIcon("image/Manager-GUI/tabbed-btn--selected.png");
     final ImageIcon tabbedDefault = new ImageIcon("image/Manager-GUI/tabbed-btn.png");
 
+    private ImageIcon scaleIcon(String iconPath, int width, int height) {
+        ImageIcon icon = new ImageIcon(iconPath);
+        Image img = icon.getImage();
+        Image scaledImg = img.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+        return new ImageIcon(scaledImg);
+    }
+
     private void addConTrolsNhanVien(){
-        Font font = new Font("Tahoma", Font.PLAIN,16);
+        Font font = new Font("Tahoma", Font.PLAIN,20);
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
         this.setLayout(new BorderLayout());
         this.setBackground(colorPanel);
 
-        int w = 1050;
-        int h = 700;
+        int w = 1290;
+        int h = 740;
 
         /*
         =========================================================================
                                     PANEL TABBED
         =========================================================================
          */
-        JPanel pnTop = new TransparentPanel();
+        JPanel pnTop = new JPanel();
+        pnTop.setBackground(new Color(0xA5FDEC));
+
         //<editor-fold defaultstate="collapsed" desc="Panel Tab Nhân viên & Quyền">
         Font fonts = new Font("", Font.PLAIN, 20);
         pnTop.setPreferredSize(new Dimension(w, 41));
         pnTop.setLayout(null);
         pnTop.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.GRAY));
 
+
         lblTabbedNhanVien = new JLabel("Nhân viên");
         lblTabbedNhanVien.setHorizontalTextPosition(JLabel.CENTER);
         lblTabbedNhanVien.setVerticalTextPosition(JLabel.CENTER);
-        lblTabbedNhanVien.setIcon(tabbedSelected);
-        lblTabbedNhanVien.setBounds(2, 2, 140, 37);
+        lblTabbedNhanVien.setIcon(tabbedDefault);
+        lblTabbedNhanVien.setBounds(2, 0, 140, 41);
         lblTabbedNhanVien.setFont(fonts);
-        lblTabbedNhanVien.setForeground(Color.white);
+        lblTabbedNhanVien.setForeground(Color.black);
         lblTabbedNhanVien.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         lblTabbedQuyen = new JLabel("Quyền");
         lblTabbedQuyen.setHorizontalTextPosition(JLabel.CENTER);
         lblTabbedQuyen.setVerticalTextPosition(JLabel.CENTER);
         lblTabbedQuyen.setIcon(tabbedDefault);
-        lblTabbedQuyen.setBounds(143, 2, 140, 37);
+        lblTabbedQuyen.setBounds(143, 0, 140, 41);
         lblTabbedQuyen.setFont(fonts);
-        lblTabbedQuyen.setForeground(Color.white);
+        lblTabbedQuyen.setForeground(Color.black);
         lblTabbedQuyen.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         pnTop.add(lblTabbedNhanVien);
@@ -109,14 +121,19 @@ public class PnQuanLyNhanVienGUI extends JPanel{
         JPanel pnTitleNhanVien = new TransparentPanel();
         JLabel lblTitleNhanVien = new JLabel("Quản lý nhân viên");
         lblTitleNhanVien.setFont(new Font("Arial", Font.BOLD, 28));
-        btnReset = new JButton(new ImageIcon("image/Refresh-icon.png"));
+        ImageIcon originalIcon = new ImageIcon("image/img_qltv/icon_reset.png");
+        Image img = originalIcon.getImage(); // Lấy Image từ ImageIcon
+        Image scaledImg = img.getScaledInstance(30, 30, Image.SCALE_SMOOTH); // Thay đổi kích thước ảnh
+        ImageIcon scaledIcon = new ImageIcon(scaledImg); // Tạo ImageIcon mới với kích thước mới
+
+        btnReset = new JButton(scaledIcon); // Gán ImageIcon mới cho JButton
         btnReset.setFocusPainted(false);
         btnReset.setPreferredSize(new Dimension(40, 40));
         pnTitleNhanVien.add(lblTitleNhanVien);
         pnTitleNhanVien.add(btnReset);
         pnTableNhanVien.add(pnTitleNhanVien, BorderLayout.NORTH);
         //=================PANEL INPUT===========
-        int x =15;
+        int x =20;
         txtIDNhanVien = new JTextField(x);
         txtHoNhanVien = new JTextField(x);
         txtTenNhanVien = new JTextField(x);
@@ -137,25 +154,25 @@ public class PnQuanLyNhanVienGUI extends JPanel{
         txtIDNhanVien.setFont(font);
         txtIDNhanVien.setEditable(false);
         lblMaNhanVien.setBounds(20,20,150,25);
-        txtIDNhanVien.setBounds(170,20,200,25);
+        txtIDNhanVien.setBounds(170,20,300,40);
 
         JLabel lblHoNhanVien = new JLabel("Họ nhân viên:");
         lblHoNhanVien.setFont(font);
         txtHoNhanVien.setFont(font);
         lblHoNhanVien.setBounds(20,70,150,25);
-        txtHoNhanVien.setBounds(170,70,200,25);
+        txtHoNhanVien.setBounds(170,70,300,40);
 
         JLabel lblTenNhanVien = new JLabel("Tên nhân viên:");
         lblTenNhanVien.setFont(font);
         txtTenNhanVien.setFont(font);
         lblTenNhanVien.setBounds(20,120,150,25);
-        txtTenNhanVien.setBounds(170,120,200,25);
+        txtTenNhanVien.setBounds(170,120,300,40);
 
         JLabel lblChucVu = new JLabel("Chức vụ:");
         lblChucVu.setFont(font);
         txtChucVu.setFont(font);
         lblChucVu.setBounds(20,170,150,25);
-        txtChucVu.setBounds(170,170,200,25);
+        txtChucVu.setBounds(170,170,300,40);
 
         JLabel lblGioiTinh = new JLabel("Giới tính:");
         lblGioiTinh.setFont(font);
@@ -164,29 +181,29 @@ public class PnQuanLyNhanVienGUI extends JPanel{
         ButtonGroup group = new ButtonGroup();
         group.add(rdbNam);
         group.add(rdbNu);
-        lblGioiTinh.setBounds(440,20,150,25);
-        rdbNam.setBounds(540,20,70,25);
-        rdbNu.setBounds(630,20,70,25);
+        lblGioiTinh.setBounds(700,20,150,25);
+        rdbNam.setBounds(800,20,70,25);
+        rdbNu.setBounds(880,20,70,25);
 
         JLabel lblSDT = new JLabel("SDT:");
         lblSDT.setFont(font);
         txtSDT.setFont(font);
-        lblSDT.setBounds(440,70,150,25);
-        txtSDT.setBounds(520,70,200,25);
+        lblSDT.setBounds(700,70,150,25);
+        txtSDT.setBounds(770,70,300,40);
 
         JLabel lblGmail = new JLabel("Gmail:");
         lblGmail.setFont(font);
         txtGmail.setFont(font);
         txtGmail.setLineWrap(true);
         JScrollPane scrollPane = new JScrollPane(txtGmail);
-        lblGmail.setBounds(440,120,150,25);
-        scrollPane.setBounds(520,120,200,50);
+        lblGmail.setBounds(700,120,150,25);
+        scrollPane.setBounds(770,120,300,40);
 
         JLabel lblTimKiem = new JLabel("Tên nhân viên cần tìm:");
         lblTimKiem.setFont(font);
         txtTimKiem.setFont(font);
-        lblTimKiem.setBounds(120,220,300,25);
-        txtTimKiem.setBounds(320,220,300,25);
+        lblTimKiem.setBounds(100,225,300,25);
+        txtTimKiem.setBounds(350,220,800,45);
 
         pnThongTinNhanVien.add(lblMaNhanVien);
         pnThongTinNhanVien.add(txtIDNhanVien);
@@ -230,25 +247,33 @@ public class PnQuanLyNhanVienGUI extends JPanel{
         btnMKQuyen.setFont(fontButton);
         btnKhoa.setFont(font);
 
-        btnThem.setIcon(new ImageIcon("image/add-icon.png"));
-        btnXoa.setIcon(new ImageIcon("image/delete-icon.png"));
-        btnTim.setIcon(new ImageIcon("image/Search-icon.png"));
-        btnSua.setIcon(new ImageIcon("image/Pencil-icon.png"));
-        btnXuatExcel.setIcon(new ImageIcon("image/excel-icon.png"));
-        btnNhapExcel.setIcon(new ImageIcon("image/excel-icon.png"));
-        btnCapTK.setIcon(new ImageIcon("image/icons8_man_with_key_32px.png"));
-        btnMKQuyen.setIcon(new ImageIcon("image/icons8_password_reset_32px.png"));
-        btnKhoa.setIcon(new ImageIcon("image/icons8_denied_32px.png"));
 
-        btnSua.setBounds(55,270,110,40);
-        btnThem.setBounds(170,270,110,40);
-        btnXoa.setBounds(285,270,110,40);
-        btnTim.setBounds(400,270,110,40);
-        btnXuatExcel.setBounds(515,270,110,40);
-        btnNhapExcel.setBounds(630,270,110,40);
-        btnCapTK.setBounds(70,320,210,40);
-        btnMKQuyen.setBounds(290,320,210,40);
-        btnKhoa.setBounds(510,320,210,40);
+
+
+
+        btnThem.setIcon(scaleIcon("image/img_qltv/icon_them.png", 30, 30));
+        btnXoa.setIcon(scaleIcon("image/img_qltv/icon_xoa.png", 30, 30));
+        btnTim.setIcon(scaleIcon("image/img_qltv/icon_search.png", 30, 30));
+        btnSua.setIcon(scaleIcon("image/img_qltv/icon_sua.png", 30, 30));
+        btnXuatExcel.setIcon(scaleIcon("image/img_qltv/icon_excel.png", 30, 30));
+        btnNhapExcel.setIcon(scaleIcon("image/img_qltv/icon_excel.png", 30, 30));
+
+//
+
+        // Assuming panel width is 960px
+        int startingX = 50; // Starting point for the first button
+        int buttonWidth = 110; // Width of each button
+        int spaceBetweenButtons = 50; // Space between each button
+
+// Set the buttons' positions
+        btnSua.setBounds(startingX, 270, buttonWidth, 40);
+        btnThem.setBounds(startingX + buttonWidth + spaceBetweenButtons, 270, buttonWidth, 50);
+        btnXoa.setBounds(startingX + 2 * (buttonWidth + spaceBetweenButtons), 270, buttonWidth, 50);
+        btnTim.setBounds(startingX + 3 * (buttonWidth + spaceBetweenButtons), 270, buttonWidth, 50);
+        btnXuatExcel.setBounds(startingX + 4 * (buttonWidth + spaceBetweenButtons), 270, buttonWidth, 50);
+        btnNhapExcel.setBounds(startingX + 5 * (buttonWidth + spaceBetweenButtons), 270, buttonWidth, 50);
+        btnCapTK.setBounds(startingX + 6 * (buttonWidth + spaceBetweenButtons), 270, 200, 50);
+
 
         pnThongTinNhanVien.add(btnSua);
         pnThongTinNhanVien.add(btnThem);
@@ -279,6 +304,10 @@ public class PnQuanLyNhanVienGUI extends JPanel{
         tblNhanVien.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
         tblNhanVien.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
 
+        // Tăng kích thước font của header
+        JTableHeader tableHeader = tblNhanVien.getTableHeader();
+        tableHeader.setFont(new Font("Arial", Font.BOLD, 20)); // Thay đổi font và kích thước
+        tableHeader.setPreferredSize(new Dimension(1240, 30)); // Tăng chiều cao của header
         TableColumnModel columnModelPhieuMuon = tblNhanVien.getColumnModel();
         columnModelPhieuMuon.getColumn(0).setPreferredWidth(50);
         columnModelPhieuMuon.getColumn(1).setPreferredWidth(80);
@@ -290,9 +319,9 @@ public class PnQuanLyNhanVienGUI extends JPanel{
         columnModelPhieuMuon.getColumn(7).setPreferredWidth(90);
 
         JScrollPane scrTblNhanVien = new JScrollPane(tblNhanVien);
-        scrTblNhanVien.setPreferredSize(new Dimension(900,200));
+        scrTblNhanVien.setPreferredSize(new Dimension(1240,250));
 
-        scrTblNhanVien.setBounds(0,370,800,205);
+        scrTblNhanVien.setBounds(20,350,1240,250);
         //</editor-fold>
         pnThongTinNhanVien.add(scrTblNhanVien, BorderLayout.CENTER);
 
@@ -322,28 +351,28 @@ public class PnQuanLyNhanVienGUI extends JPanel{
         lblCmbQuyen.setFont(font);
         cmbPhanQuyen = new JComboBox<String>();
         cmbPhanQuyen.setFont(font);
-        lblCmbQuyen.setBounds(240,50,150,25);
-        cmbPhanQuyen.setBounds(370,50,200,25);
+        lblCmbQuyen.setBounds(400,50,150,40);
+        cmbPhanQuyen.setBounds(550,50,400,40);
 
         ckbQLSach = new JCheckBox("Quản lý sách.");
         ckbQLSach.setFont(font);
-        ckbQLSach.setBounds(320,100,200,30);
+        ckbQLSach.setBounds(400,100,200,30);
 
         ckbQLDocGia = new JCheckBox("Quản lý đọc giả.");
         ckbQLDocGia.setFont(font);
-        ckbQLDocGia.setBounds(320,150,200,30);
+        ckbQLDocGia.setBounds(400,150,200,30);
 
         ckbQLNhanVien = new JCheckBox("Quản lý nhân viên.");
         ckbQLNhanVien.setFont(font);
-        ckbQLNhanVien.setBounds(320,200,200,30);
+        ckbQLNhanVien.setBounds(400,200,200,30);
 
         ckbQLNhapSach = new JCheckBox("Quản lý nhập sách.");
         ckbQLNhapSach.setFont(font);
-        ckbQLNhapSach.setBounds(320,250,200,30);
+        ckbQLNhapSach.setBounds(400,250,200,30);
 
         ckbQLThongKe = new JCheckBox("Quản lý thống kê");
         ckbQLThongKe.setFont(font);
-        ckbQLThongKe.setBounds(320,300,200,30);
+        ckbQLThongKe.setBounds(400,300,200,30);
 
         Dimension ckbSize = ckbQLSach.getPreferredSize();
         cmbPhanQuyen.setPreferredSize(ckbSize);
@@ -364,9 +393,9 @@ public class PnQuanLyNhanVienGUI extends JPanel{
         btnXoaQuyen.setIcon(new ImageIcon("image/delete-icon.png"));
         btnSuaQuyen.setPreferredSize(btnThemQuyen.getPreferredSize());
         btnXoaQuyen.setPreferredSize(btnThemQuyen.getPreferredSize());
-        btnThemQuyen.setBounds(100,350,180,40);
-        btnXoaQuyen.setBounds(315,350,180,40);
-        btnSuaQuyen.setBounds(530,350,180,40);
+        btnThemQuyen.setBounds(350,350,180,40);
+        btnXoaQuyen.setBounds(550,350,180,40);
+        btnSuaQuyen.setBounds(750,350,180,40);
 
         pnPhanQuyen.add(lblCmbQuyen);
         pnPhanQuyen.add(cmbPhanQuyen);
@@ -451,7 +480,6 @@ public class PnQuanLyNhanVienGUI extends JPanel{
                 txtIDNhanVien.setText("");
                 txtHoNhanVien.setText("");
                 txtTenNhanVien.setText("");
-                txtChucVu.setText("");
                 txtGmail.setText("");
                 txtSDT.setText("");
                 ButtonGroup group = new ButtonGroup();
@@ -598,6 +626,12 @@ public class PnQuanLyNhanVienGUI extends JPanel{
     }
 
     private void xuLyThemNhanVien(){
+        for(int i =0;i<= tblNhanVien.getSelectedRow();i++) {
+            if (txtIDNhanVien.getText().equals(dtmNhanVien.getValueAt(i, 0).toString())) {
+                new MyDialog("Nhân viên đã tồn tại!!!", MyDialog.ERROR_DIALOG);
+                return;
+            }
+        }
         String gioi = "";
         if(rdbNam.isSelected()){
             gioi = "Nam";

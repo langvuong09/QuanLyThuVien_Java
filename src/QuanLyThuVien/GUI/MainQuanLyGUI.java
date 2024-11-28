@@ -1,6 +1,5 @@
 package QuanLyThuVien.GUI;
 
-
 import QuanLyThuVien.BUS.PhanQuyenBUS;
 import QuanLyThuVien.DTO.PhanQuyen;
 
@@ -10,231 +9,324 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.image.BufferedImage;
 
-public class MainQuanLyGUI extends JFrame{
+public class MainQuanLyGUI extends JFrame {
     public MainQuanLyGUI() {
-        this.setTitle("Phần mềm quản lý thư viện");
-        Image icon = Toolkit.getDefaultToolkit().getImage("image/BOOK1.gif.jpg");
+        // Đặt nền cho frame
+        Color backgroundColor = new Color(0xFBF1F1); // hoặc new Color(251, 241, 241)
+        getContentPane().setBackground(backgroundColor);
+        // Icon cho app
+        Image icon = Toolkit.getDefaultToolkit().getImage("image/img_qltv/icon_logo_qltv.png");
         this.setIconImage(icon);
-        this.setSize(1050, 700);
+        this.setSize(1540, 820);
         addControls();
         addEvents();
+
     }
 
     public void showWindow() {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        this.setUndecorated(true);
+
         this.setLocationRelativeTo(null);
         this.setVisible(true);
     }
+    PnQuanLySachGUI SachPanel;
+    PnQuanLyKhuVucGUI KhuVucPanel;
+    PnMuonTraPhat MuonTraPhatPanel;
+    PnQuanLyNhapSach NhapSachPanel;
+    PnQuanLyDocGiaGUI DocGiaPanel;
+    PnQuanLyNhanVienGUI NhanVienPanel;
+    PnQuanLyThongKeGUI ThongKePanel;
 
-    JLabel btnDoiMatKhau;
 
-    JPanel pnTitle, pnMenuLeft, pnCard, pnSach, pnKhuVuc, pnDocGia, pnMuonSach, pnTraSach, pnQuaHan, pnNhanVien, pnNhapSach, pnThongKe;
+    JButton btnDoiMatKhau, btnDangXuat;
+    JPanel pnTitle, pnTrangChu, pnMenuLeft, pnCard;
+    JButton lblTrangChu, lblSach, lblKhuVuc, lblDocGia, lblMuonSach, lblTraSach, lblQuaHan, lblNhanVien, lblNhapSach,
+            lblThongKe;
 
-    JLabel btnClose, btnMinimize,lblSach,lblKhuVuc,lblDocGia, lblMuonSach, lblTraSach, lblQuaHan, lblNhanVien, lblNhapSach, lblThongKe;
+    // Khởi tạo cái Panel
 
-    PnQuanLySachGUI sachPanel;
-    PnQuanLyKhuVucGUI khuVucPanel;
-    PnQuanLyDocGiaGUI docGiaPanel;
-    PnQuanLyPhieuMuonGUI phieuMuonPanel;
-    PnQuanLyPhieuTraGUI phieuTraPanel;
-    PnQuanLyPhieuPhatGUI phieuPhatPanel;
-    PnQuanLyNhanVienGUI nhanVienPanel;
-    PnQuanLyNhapSachGUI nhapSachPanel;
-    PnQuanLyThongKeGUI thongKePanel;
+    // Màu sắc của menu khi bình thường
+    final Color clLeftItem = new Color(0x0A032A);
+    // Màu sắc khi menu đc hover
+    final Color clLeftItemHover = new Color(0x160561);
+    // Màu sắc của menu khi được chọn
+    final Color clLeftItemSelected = new Color(0x65E0C7);
 
-    final Color clLeftItem = new Color(62, 62, 62);
-    final Color clLeftItemHover = new Color(88, 88, 88);
-    final Color clLeftItemSelected = new Color(128, 128, 128);
-
-    ArrayList<JLabel> listMenuLeft;
+    // Menusidebar và Panel chính
+    ArrayList<JButton> listMenuLeft;
     CardLayout cardMenuLeftGroup = new CardLayout();
 
+    // Phương thức để thay đổi kích thước icon
+    private static Image resizeImage(Image originalImage, int width, int height) {
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = bufferedImage.createGraphics();
+        g.drawImage(originalImage, 0, 0, width, height, null);
+        g.dispose();
+        return bufferedImage;
+    }
+
+    // Chỉnh các icon của các item trong MenuLeftSideBar
+    private JButton createItemSidebar(String linkicon, String namebutton) {
+        // TẠO LABEL CHỨA ICON
+        ImageIcon original_icon = new ImageIcon(linkicon);
+        Image scaledImage_icon = resizeImage(original_icon.getImage(), 50, 50);
+        ImageIcon scaledIcon_icon = new ImageIcon(scaledImage_icon);
+        JLabel icon = new JLabel(scaledIcon_icon);
+        // TẠO LABEL CHỨA TÊN
+        JLabel name = new JLabel(namebutton);
+        name.setFont(new Font("Times New Roman", Font.BOLD, 25));
+        name.setForeground(Color.WHITE);
+
+        JButton button = new JButton();
+        button.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 5));
+        button.setBackground(clLeftItem);
+        button.setBorderPainted(false);
+        button.setBorder(null);
+        button.setFocusPainted(false);
+        button.add(icon);
+        button.add(name);
+
+        return button;
+    }
+
+    // JPanel sẽ hiện ra khi click vào nút trang chủ
+    private JPanel Panel_TrangChu() {
+        JPanel trangchu = new JPanel();
+        trangchu.setPreferredSize(new Dimension(1290, 740));
+        ImageIcon original = new ImageIcon("image/img_qltv/img_trangchu.png");
+        Image scaledImage = resizeImage(original.getImage(), 1290, 740);
+        ImageIcon scaledIcon = new ImageIcon(scaledImage);
+        JLabel img = new JLabel(scaledIcon);
+        trangchu.add(img);
+        return trangchu;
+    }
+
+    // Thêm giao diện vào Jframe
     private void addControls() {
         int width = this.getWidth();
         int height = this.getHeight();
 
-        Container con = getContentPane();
+        // =======================TITLE BAR (TIÊU ĐỀ)========================//
+        pnTitle = new JPanel(new BorderLayout()); // Change to BorderLayout
+        pnTitle.setPreferredSize(new Dimension(1520, 80));
+        pnTitle.setBackground(new Color(0x65E0C7));
 
-        JPanel pnMain = new JPanel();
-        pnMain.setLayout(new BorderLayout());
+        /* PanelTitle bên trái */
+        FlowLayout left_titlepanel = new FlowLayout(FlowLayout.LEFT, 20, 10);
+        JPanel left_pnTitle = new JPanel(left_titlepanel);
+        left_pnTitle.setPreferredSize(new Dimension(770, 80));
+        left_pnTitle.setBackground(new Color(0x65E0C7));
 
-        /*
-        ============================================================
-                                TITLE BAR
-        ============================================================
-        */
+        ImageIcon original_icon_logo = new ImageIcon("image/img_qltv/logo.png");
+        Image scaledImage_icon_logo = resizeImage(original_icon_logo.getImage(), 60, 55);
+        ImageIcon scaledIcon_icon_logo = new ImageIcon(scaledImage_icon_logo);
+        JLabel lbl_icon_logo = new JLabel(scaledIcon_icon_logo);
 
-        pnTitle = new JPanel(null);
-        pnTitle.setPreferredSize(new Dimension(width,46));
-        pnTitle.setBackground(new Color(62, 62, 62));
+        JLabel Lbl_title_qltv = new JLabel("THƯ VIỆN");
+        Lbl_title_qltv.setFont(new Font("Times New Roman", Font.BOLD, 35));
+        Lbl_title_qltv.setForeground(Color.WHITE);
 
-        btnDoiMatKhau = new JLabel(new ImageIcon("image/Manager-GUI/setting.png"));
-        btnDoiMatKhau.setToolTipText("Đổi mật khẩu");
-        btnDoiMatKhau.setBounds(0, 0, 46, 46);
-        btnDoiMatKhau.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        left_pnTitle.add(lbl_icon_logo);
+        left_pnTitle.add(Lbl_title_qltv);
 
-        JLabel lblTitleText = new JLabel(new ImageIcon("image/Manager-GUI/title-text.png"));
-        lblTitleText.setBounds(width / 2 - 428 / 2, 3, 428, 38);
-
-        btnMinimize = new JLabel(new ImageIcon("image/Manager-GUI/btn-minimize.png"));
-        btnMinimize.setBounds(width - 85, 5, 38, 35);
-        btnMinimize.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-        btnClose = new JLabel(new ImageIcon("image/Manager-GUI/btn-close.png"));
-        btnClose.setBounds(width - 40, 5, 35, 35);
-        btnClose.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-
-        pnTitle.add(btnDoiMatKhau);
-        pnTitle.add(lblTitleText);
-        pnTitle.add(btnMinimize);
-        pnTitle.add(btnClose);
-
-        pnMain.add(pnTitle, BorderLayout.NORTH);
+        /* PanelTitle bên phải */
+        FlowLayout right_titlepanel = new FlowLayout(FlowLayout.RIGHT, 16, 10);
+        JPanel right_pnTitle = new JPanel(right_titlepanel);
+        right_pnTitle.setPreferredSize(new Dimension(770, 80));
+        right_pnTitle.setBackground(new Color(0x65E0C7));
 
         /*
-        ============================================================
-                                SIDE BAR MENU
-        ============================================================
+         * =======TÊN ĐĂNG NHẬP CỦA NHÂN VIÊN ====================NHỚ THÊM CODE VÔ ĐOẠN
+         * NÀY NHA TRỜI ƠI
          */
+        JLabel lbl_username = new JLabel("Lang Vương");
+        lbl_username.setFont(new Font("Times New Roman", Font.BOLD, 25));
+        lbl_username.setForeground(new Color(0x1B5453));
+
+        ImageIcon original_icon_user = new ImageIcon("image/img_qltv/icon_chaomung.png");
+        Image scaledImage_icon_user = resizeImage(original_icon_user.getImage(), 50, 50);
+        ImageIcon scaledIcon_icon_user = new ImageIcon(scaledImage_icon_user);
+        JLabel lbl_icon_user = new JLabel(scaledIcon_icon_user);
+
+        ImageIcon original_icon_DoiMatKhau = new ImageIcon("image/img_qltv/icon_doimatkhau.png");
+        Image scaledImage_icon_DoiMatKhau = resizeImage(original_icon_DoiMatKhau.getImage(), 50, 50);
+        ImageIcon scaledIcon_icon_DoiMatKhau = new ImageIcon(scaledImage_icon_DoiMatKhau);
+        btnDoiMatKhau = new JButton(scaledIcon_icon_DoiMatKhau);
+        btnDoiMatKhau.setBackground(new Color(0x65E0C7));
+        btnDoiMatKhau.setBorderPainted(false); // Tắt border được vẽ
+        btnDoiMatKhau.setBorder(null); // Set border là null (không viền)
+        btnDoiMatKhau.setFocusPainted(false);
+
+        ImageIcon original_icon_DangXuat = new ImageIcon("image/img_qltv/icon_dangxuat.png");
+        Image scaledImage_icon_DangXuat = resizeImage(original_icon_DangXuat.getImage(), 50, 50);
+        ImageIcon scaledIcon_icon_DangXuat = new ImageIcon(scaledImage_icon_DangXuat);
+        btnDangXuat = new JButton(scaledIcon_icon_DangXuat);
+        btnDangXuat.setBackground(new Color(0x65E0C7));
+        btnDangXuat.setBorderPainted(false); // Tắt border được vẽ
+        btnDangXuat.setBorder(null); // Set border là null (không viền)
+        btnDangXuat.setFocusPainted(false);
+
+        right_pnTitle.add(lbl_username);
+        right_pnTitle.add(lbl_icon_user);
+        right_pnTitle.add(btnDoiMatKhau);
+        right_pnTitle.add(btnDangXuat);
+
+        pnTitle.add(left_pnTitle, BorderLayout.WEST);
+        pnTitle.add(right_pnTitle, BorderLayout.EAST);
+
+        // ================================SIDE BAR (PHÂN QUYỀN KHÚC NÀY NHA)
+        // ==========================//
         pnMenuLeft = new JPanel();
-        pnMenuLeft.setPreferredSize(new Dimension(250, height - pnTitle.getHeight()));
+        pnMenuLeft.setPreferredSize(new Dimension(250, 740));
         pnMenuLeft.setBackground(clLeftItem);
-        pnMenuLeft.setLayout(new BoxLayout(pnMenuLeft, BoxLayout.Y_AXIS));
+        pnMenuLeft.setLayout(new GridLayout(0, 1, 0, 0));
+        // icon chào mừng
+        JLabel lbl_iconchaomung = new JLabel();
+        Image scaledImage_icon_user2 = resizeImage(original_icon_user.getImage(), 50, 50);
+        ImageIcon scaledIcon_icon_user2 = new ImageIcon(scaledImage_icon_user2);
+        lbl_iconchaomung.setIcon(scaledIcon_icon_user2);
+        JLabel lbl_chaomung = new JLabel("CHÀO MỪNG");
+        lbl_chaomung.setFont(new Font("Times New Roman", Font.BOLD, 25));
+        lbl_chaomung.setForeground(Color.WHITE);
+        JPanel pnChaoMung = new JPanel();
+        pnChaoMung.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 10));
 
-        JLabel lblAvatar = new JLabel(new ImageIcon("image/Manager-GUI/app.jpg"));
-        lblAvatar.setPreferredSize(new Dimension(250, 130));
+        pnChaoMung.setMaximumSize(new Dimension(250, 50));
+        pnChaoMung.setBackground(clLeftItem);
+        pnChaoMung.add(lbl_iconchaomung);
+        pnChaoMung.add(lbl_chaomung);
 
-        lblSach = new JLabel(new ImageIcon("image/Manager-GUI/lblSach.png"));
-        lblKhuVuc = new JLabel(new ImageIcon("image/Manager-GUI/lblKhuVuc.png"));
-        lblDocGia = new JLabel(new ImageIcon("image/Manager-GUI/lblDocGia.png"));
-        lblMuonSach = new JLabel(new ImageIcon("image/Manager-GUI/lblPhieuMuon.png"));
-        lblTraSach = new JLabel(new ImageIcon("image/Manager-GUI/lblPhieuTra.png"));
-        lblQuaHan = new JLabel(new ImageIcon("image/Manager-GUI/lblPhieuPhat.png"));
-        lblNhanVien = new JLabel(new ImageIcon("image/Manager-GUI/lblNhanVien.png"));
-        lblNhapSach = new JLabel(new ImageIcon("image/Manager-GUI/lblNhapSach.png"));
-        lblThongKe = new JLabel(new ImageIcon("image/Manager-GUI/lblThongKe.png"));
+        // BUTTON ITEM
+        // Tạo Button Trang Chủ
+        lblTrangChu = createItemSidebar("image/img_qltv/icon_trangchu.png", "Trang Chủ");
+        lblSach = createItemSidebar("image/img_qltv/icon_qlsach.png", "Quản Lí Sách");
+        lblKhuVuc = createItemSidebar("image/img_qltv/icon_khuvuc.png", "Khu Vực");
+        lblDocGia = createItemSidebar("image/img_qltv/icon_docgia.png", "Độc giả");
+        lblMuonSach = createItemSidebar("image/img_qltv/icon_muontra.png", "Mượn Trả");
+        lblNhanVien = createItemSidebar("image/img_qltv/icon_nhanvien.png", "Nhân Viên");
+        lblNhapSach = createItemSidebar("image/img_qltv/icon_nhapsach.png", "Nhập Sách");
+        lblThongKe = createItemSidebar("image/img_qltv/icon_thongke.png", "Thống Kê");
 
         listMenuLeft = new ArrayList<>();
-        pnMenuLeft.add(lblAvatar);
         listMenuLeft.add(lblSach);
         listMenuLeft.add(lblKhuVuc);
         listMenuLeft.add(lblDocGia);
         listMenuLeft.add(lblMuonSach);
-        listMenuLeft.add(lblTraSach);
-        listMenuLeft.add(lblQuaHan);
         listMenuLeft.add(lblNhanVien);
         listMenuLeft.add(lblNhapSach);
         listMenuLeft.add(lblThongKe);
 
-        for (JLabel lbl : listMenuLeft) {
-            lbl.setVisible(false);
-            lbl.setPreferredSize(new Dimension(250, 65));
-            lbl.setOpaque(true);
-            lbl.setBackground(clLeftItem);
+        pnMenuLeft.add(pnChaoMung);
+        pnMenuLeft.add(lblTrangChu);
+
+        for (JButton lbl : listMenuLeft) {
             lbl.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             pnMenuLeft.add(lbl);
+            lbl.setVisible(false);
         }
 
-        lblSach.setBackground(clLeftItemSelected);
         lblSach.setVisible(true);
         lblKhuVuc.setVisible(true);
         lblDocGia.setVisible(true);
         lblMuonSach.setVisible(true);
-        lblTraSach.setVisible(true);
-        lblQuaHan.setVisible(true);
 
-        pnMain.add(pnMenuLeft, BorderLayout.WEST);
-
-        /*
-        ============================================================
-                                CARD PANEL
-        ============================================================
-         */
+        // ===============================CÁC JPANEL ADD VÔ CARD
+        // LAYOUT================================//
         pnCard = new JPanel(cardMenuLeftGroup);
 
-        pnSach = new JPanel();
-        pnKhuVuc = new JPanel();
-        pnDocGia = new JPanel();
-        pnMuonSach = new JPanel();
-        pnTraSach = new JPanel();
-        pnQuaHan = new JPanel();
-        pnNhanVien = new JPanel();
-        pnNhapSach = new JPanel();
-        pnThongKe = new JPanel();
+        SachPanel=new PnQuanLySachGUI();
+        KhuVucPanel=new PnQuanLyKhuVucGUI();
+        MuonTraPhatPanel=new PnMuonTraPhat();
+        DocGiaPanel=new PnQuanLyDocGiaGUI();
 
-        pnCard.add(pnSach, "1");
-        pnCard.add(pnKhuVuc,"2");
-        pnCard.add(pnDocGia, "3");
-        pnCard.add(pnMuonSach, "4");
-        pnCard.add(pnTraSach, "5");
-        pnCard.add(pnQuaHan, "6");
-        pnCard.add(pnNhanVien,"7");
-        pnCard.add(pnNhapSach,"8");
-        pnCard.add(pnThongKe, "9");
+        pnCard.add(Panel_TrangChu(), "1");
+        pnCard.add(SachPanel,"2");
+        pnCard.add(KhuVucPanel,"3");
+        pnCard.add(DocGiaPanel,"4");
+        pnCard.add(MuonTraPhatPanel,"5");
 
-        //==========ADD PANEL KHÔNG PHÂN QUYỀN==========//
-        sachPanel = new PnQuanLySachGUI();
-        pnSach.setLayout(new BorderLayout());
-        pnSach.add(sachPanel,BorderLayout.CENTER);
 
-        khuVucPanel = new PnQuanLyKhuVucGUI();
-        pnKhuVuc.setLayout(new BorderLayout());
-        pnKhuVuc.add(khuVucPanel,BorderLayout.CENTER);
-
-        docGiaPanel = new PnQuanLyDocGiaGUI();
-        pnDocGia.setLayout(new BorderLayout());
-        pnDocGia.add(docGiaPanel,BorderLayout.CENTER);
-
-        phieuMuonPanel = new PnQuanLyPhieuMuonGUI();
-        pnMuonSach.setLayout(new BorderLayout());
-        pnMuonSach.add(phieuMuonPanel,BorderLayout.CENTER);
-
-        phieuTraPanel = new PnQuanLyPhieuTraGUI();
-        pnTraSach.setLayout(new BorderLayout());
-        pnTraSach.add(phieuTraPanel,BorderLayout.CENTER);
-
-        phieuPhatPanel = new PnQuanLyPhieuPhatGUI();
-        pnQuaHan.setLayout(new BorderLayout());
-        pnQuaHan.add(phieuPhatPanel,BorderLayout.CENTER);
-
-        //==========ADD PANEL PHÂN QUYỀN==========//
         PhanQuyen quyen = PhanQuyenBUS.quyenTK;
 
         if(quyen.getQlNhanVien()==1){
-            nhanVienPanel = new PnQuanLyNhanVienGUI();
-            pnNhanVien.setLayout(new BorderLayout());
-            pnNhanVien.add(nhanVienPanel,BorderLayout.CENTER);
+            NhanVienPanel = new PnQuanLyNhanVienGUI();
+            pnCard.add( NhanVienPanel,"6");
             lblNhanVien.setVisible(true);
         }
 
         if(quyen.getQlNhapSach()==1){
-            nhapSachPanel = new PnQuanLyNhapSachGUI();
-            pnNhapSach.setLayout(new BorderLayout());
-            pnNhapSach.add(nhapSachPanel,BorderLayout.CENTER);
+            NhapSachPanel = new PnQuanLyNhapSach();
+            pnCard.add(NhapSachPanel,"7");
             lblNhapSach.setVisible(true);
         }
 
         if(quyen.getThongKe()==1){
-            thongKePanel = new PnQuanLyThongKeGUI();
-            pnThongKe.setLayout(new BorderLayout());
-            pnThongKe.add(thongKePanel,BorderLayout.CENTER);
+            ThongKePanel = new PnQuanLyThongKeGUI();
+            pnCard.add(ThongKePanel,"8");
             lblThongKe.setVisible(true);
         }
 
-        pnMain.add(pnCard);
-        /*
-        ============================================================
-                                CARD PANEL
-        ============================================================
-         */
-        con.add(pnMain);
+
+
+        // =========================PANEL CHÍNH==============================//
+        JPanel pnMain = new JPanel();
+        pnMain.setLayout(new BorderLayout());
+        pnMain.add(pnTitle, BorderLayout.NORTH);
+        pnMain.add(pnMenuLeft, BorderLayout.WEST);
+        pnMain.add(pnCard, BorderLayout.CENTER);
+        this.add(pnMain);
+
     }
 
     int xMouse, yMouse;
-
     private void addEvents() {
+        for (JButton lbl : listMenuLeft) {
+            lbl.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    for (JButton lblDisable : listMenuLeft) {
+                        lblDisable.setBackground(clLeftItem);
+                    }
+                    lbl.setBackground(clLeftItemSelected);
+                    // Xử lý lật trang theo menu
+                    String cardName = "";
+                    if (lbl == lblSach) {
+                        cardName = "2";
+                    } else if (lbl == lblKhuVuc) {
+                        cardName = "3";
+                    } else if (lbl ==lblDocGia) {
+                        cardName = "4";
+                    } else if (lbl == lblMuonSach) {
+                        cardName = "5";
+                    }else if(lbl==lblNhanVien){
+                        cardName = "6";
+                    }else if(lbl==lblNhapSach){
+                        cardName = "7";
+                    } else if (lbl==lblThongKe) {
+                        cardName = "8";
+                    }
+                    cardMenuLeftGroup.show(pnCard, cardName);
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    if (lbl.getBackground().equals(clLeftItem)) {
+                        lbl.setBackground(clLeftItemHover);
+                    }
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    if (lbl.getBackground().equals(clLeftItemHover)) {
+                        lbl.setBackground(clLeftItem);
+                    }
+                }
+            });
+        }
+
         this.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
@@ -266,103 +358,37 @@ public class MainQuanLyGUI extends JFrame{
                 btnDoiMatKhau.setBackground(new Color(0, 0, 0, 0));
             }
         });
-
-        btnMinimize.addMouseListener(new MouseAdapter() {
+        lblTrangChu.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                thuNhoFrame();
+                super.mouseClicked(e);
+                cardMenuLeftGroup.show(pnCard, "1");
+                for (JButton lblDisable : listMenuLeft) {
+                    lblDisable.setBackground(clLeftItem);
+                }
+                lblTrangChu.setBackground(clLeftItemSelected);
             }
-
+        });
+        btnDangXuat.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseEntered(MouseEvent e) {
-                btnMinimize.setIcon(new ImageIcon("image/Manager-GUI/btn-minimize-hover.png"));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                btnMinimize.setIcon(new ImageIcon("image/Manager-GUI/btn-minimize.png"));
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
+                System.exit(0);
             }
         });
 
-        btnClose.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                thoatChuongTrinh();
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                btnClose.setIcon(new ImageIcon("image/Manager-GUI/btn-close-hover.png"));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                btnClose.setIcon(new ImageIcon("image/Manager-GUI/btn-close.png"));
-            }
-        });
-
-        for (JLabel lbl : listMenuLeft) {
-            lbl.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    for (JLabel lblDisable : listMenuLeft) {
-                        lblDisable.setBackground(clLeftItem);
-                    }
-                    lbl.setBackground(clLeftItemSelected);
-
-                    // Xử lý lật trang theo menu
-                    String cardName = "";
-                    if (lbl == lblSach) {
-                        cardName = "1";
-                    } else if (lbl == lblKhuVuc) {
-                        cardName = "2";
-                    } else if (lbl == lblDocGia) {
-                        cardName = "3";
-                    } else if (lbl == lblMuonSach) {
-                        cardName = "4";
-                    } else if (lbl == lblTraSach) {
-                        cardName = "5";
-                    } else if (lbl == lblQuaHan) {
-                        cardName = "6";
-                    } else if (lbl == lblNhanVien) {
-                        cardName = "7";
-                    } else if (lbl == lblNhapSach) {
-                        cardName = "8";
-                    } else {
-                        cardName = "9";
-                    }
-                    cardMenuLeftGroup.show(pnCard, cardName);
-                }
-
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    if (lbl.getBackground().equals(clLeftItem)) {
-                        lbl.setBackground(clLeftItemHover);
-                    }
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    if (lbl.getBackground().equals(clLeftItemHover)) {
-                        lbl.setBackground(clLeftItem);
-                    }
-                }
-            });
-        }
     }
 
     private void moverFrame(int x, int y) {
         this.setLocation(x - xMouse, y - yMouse);
     }
 
-    private void thuNhoFrame() {
-        this.setState(Frame.ICONIFIED);
-    }
 
-    private void thoatChuongTrinh() {
-        phieuMuonPanel.xuLyThoatPhieuMuon();
-        phieuTraPanel.xuLyThoatPhieuTra();
-        Main.Main.changLNF("Nimbus");
-        System.exit(0);
-    }
+
+
+
+
+
+
+
 }

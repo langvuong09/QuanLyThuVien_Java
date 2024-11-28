@@ -1,19 +1,18 @@
 package QuanLyThuVien.GUI;
 
+import MyCustom.MyTable;
 import QuanLyThuVien.BUS.*;
 import QuanLyThuVien.DTO.CTPhieuTra;
-import MyCustom.MyTable;
-import QuanLyThuVien.DTO.DocGia;
 
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Vector;
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.table.DefaultTableModel;
 
 public class DlgTimSachPhat extends JDialog{
     private CTPhieuTraBUS ctPhieuTraBUS = new CTPhieuTraBUS();

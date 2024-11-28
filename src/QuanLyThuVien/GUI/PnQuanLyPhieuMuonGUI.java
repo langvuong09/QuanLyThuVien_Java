@@ -1,290 +1,308 @@
 package QuanLyThuVien.GUI;
 
-import QuanLyThuVien.BUS.CTPhieuMuonBUS;
-import QuanLyThuVien.BUS.PhieuMuonBUS;
-import QuanLyThuVien.BUS.SachBUS;
+import MyCustom.MyDialog;
+import MyCustom.MyTable;
+import MyCustom.XuLyFileExcel;
+import QuanLyThuVien.BUS.*;
 import QuanLyThuVien.DTO.CTPhieuMuon;
 import QuanLyThuVien.DTO.PhieuMuon;
 import QuanLyThuVien.DTO.Sach;
-import QuanLyThuVien.BUS.NhanVienBUS;
-import QuanLyThuVien.DTO.NhanVien;
-import QuanLyThuVien.BUS.DocGiaBUS;
-import QuanLyThuVien.DTO.DocGia;
 
-import static Main.Main.changLNF;
-
-import MyCustom.XuLyFileExcel;
-import MyCustom.MyDialog;
-import MyCustom.MyTable;
-import MyCustom.TransparentPanel;
+import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumnModel;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-
-import java.awt.*;
-import java.awt.event.*;
 import java.util.Vector;
-import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
 
-public class PnQuanLyPhieuMuonGUI extends JPanel{
-
+public class PnQuanLyPhieuMuonGUI extends JPanel {
     private DlgTimDocGia timDocGiaGUI = new DlgTimDocGia();
     private DlgTimSach timSachGUI;
     private SachBUS sachBUS = new SachBUS();
     private DocGiaBUS docGiaBUS = new DocGiaBUS();
     private NhanVienBUS nhanVienBUS = new NhanVienBUS();
     private DangNhapGUI dangNhapGUI = new DangNhapGUI();
-
-
-    public PnQuanLyPhieuMuonGUI(){
-        changLNF("Windows");
-        addConTrolsPhieuMuon();
-        addEventsPhieuMuon();
-    }
+    private String tenNhanVien=nhanVienBUS.getTenNhanVien(dangNhapGUI.maTaiKhoan());
+    private String maNhanVien=dangNhapGUI.maTaiKhoan()+"";
 
     PhieuMuonBUS pmBUS = new PhieuMuonBUS();
     CTPhieuMuonBUS ctPhieuMuonBUS = new CTPhieuMuonBUS();
-    final Color colorPanel = new Color(247, 247, 247);
-    MyTable tblPhieuMuon, tblSachMuon;
-    DefaultTableModel dtmPhieuMuon, dtmSachMuon;
-    JTextField txtMaPhieuMuon,txtDocGia, txtNgayMuon, txtNgayTra, txtTongTien, txtTimKiem, txtMaSach, txtTenSach, txtThanhTien;
-    JButton btnThem, btnXoa, btnInthe, btnReset, btnXuatExcel, btnNhapExcel, btnTim, btnThemSach, btnXoaSach, btnDocGia, btnSach;
+    public PnQuanLyPhieuMuonGUI (){
+        addControlsPhieuMuon();
+        addEventsPhieuMuon();
+    }
 
-    private void addConTrolsPhieuMuon(){
-        Font font = new Font("Tahoma", Font.PLAIN,16);
+    private JLabel CreateJLabelItem (String name){
+        JLabel label=new JLabel();
+        label.setText(name);
+        label.setFont(new Font("Times New Roman",Font.BOLD,20));
+        return label;
+    }
+
+    private JTextField CreateJTextField (){
+        JTextField txt=new JTextField();
+        txt.setPreferredSize(new Dimension(300,30));
+        txt.setFont(new Font("Times New Roman",Font.BOLD,15));
+        txt.setBackground(Color.WHITE);
+        return txt;
+    }
+
+    private JButton createItemButton(String linkicon, String namebutton){
+        // TẠO LABEL CHỨA ICON
+        ImageIcon original_icon=new ImageIcon(linkicon);
+        Image scaledImage_icon=resizeImage(original_icon.getImage(), 30, 30);
+        ImageIcon scaledIcon_icon = new ImageIcon(scaledImage_icon);
+        JLabel icon=new JLabel(scaledIcon_icon);
+        //TẠO LABEL CHỨA TÊN
+        JLabel name =new JLabel(namebutton);
+        name .setFont(new Font("Times New Roman", Font.BOLD, 20));
+        name .setForeground(Color.BLACK);
+
+        JButton button=new JButton();
+        button.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
+        button.setBackground(new Color(0xB6F2E6));
+        button.setBorderPainted(false);
+        button.setBorder(null);
+        button.setFocusPainted(false);
+        button.add(icon);
+        button.add(name);
+
+        return button;
+    }
+    // Phương thức để thay đổi kích thước icon
+    private static Image resizeImage(Image originalImage, int width, int height) {
+        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = bufferedImage.createGraphics();
+        g.drawImage(originalImage, 0, 0, width, height, null);
+        g.dispose();
+        return bufferedImage;
+    }
+
+    final Color colorPanel = new Color(0xFBF1F1);
+    JTable tblPhieuMuon, tblSachMuon;
+    DefaultTableModel dtmPhieuMuon, dtmSachMuon;
+
+    JTextField txtMaPhieuMuon,txtDocGia, txtNgayMuon, txtNgayTra, txtTenDocGia,txtSDTDocGia,txtTenNhanVien,txtMaNhanVien ,txtTimKiem, txtMaSach, txtTenSach, txtThanhTien,txtTongTien;
+
+    JButton btnThem, btnXoa, btnInthe, btnReset, btnXuatExcel, btnNhapExcel, btnTim, btnThemSach, btnXoaSach, btnDocGia, btnSach,btnClose;
+    public void addControlsPhieuMuon(){
+        this.setPreferredSize(new Dimension(1290,740));
+        this.setLayout(new BorderLayout());
+        //=================================JPANEL CHỨA THÔNG TIN ĐỌC GIẢ=================================//
+        JPanel first_pn=new JPanel();
+        first_pn.setLayout(null);
+        first_pn.setBackground(colorPanel);
+        //Title
+        JLabel lb_title=new JLabel("PHIẾU MƯỢN");
+        lb_title.setFont(new Font("Times New Roman",Font.BOLD,25));
+        lb_title.setBounds(200,0,200,50);
+        ImageIcon imgiconclose=new ImageIcon("image/img_qltv/close_btn.png");
+        Image closescaledImage = imgiconclose.getImage().getScaledInstance(40, 40, Image.SCALE_SMOOTH); // Kích thước 50x50
+        ImageIcon closescaledIcon = new ImageIcon(closescaledImage);
+        btnClose=new JButton(closescaledIcon);
+        btnClose.setBounds(1210,5,40,40);
+        btnClose.setBackground(colorPanel);
+        btnClose.setBorderPainted(false); // Tắt border được vẽ
+        btnClose.setBorder(null); // Set border là null (không viền)
+
+        //TXT VÀ JTEXTFIELD
+        JLabel lb_MaPhieuMuon, lb_DocGia, lb_NgayMuon, lbNgayTra, lbTenDocGia,lbSDTDocGia, lbTenNhanVien,lbMaNhanVien,lbMaSach, lbTenSach, lbThanhTien, lbTitleChiTietPMuon,lblTongTien;
+        lb_MaPhieuMuon=CreateJLabelItem("ID: ");
+        lb_MaPhieuMuon.setBounds(20,50,100,30);
+        txtMaPhieuMuon=CreateJTextField();
+        txtMaPhieuMuon.setBounds(150,50,300,30);
+        txtMaPhieuMuon.setEnabled(false);
+
+        lb_NgayMuon =CreateJLabelItem("Ngày Mượn: ");
+        lb_NgayMuon.setBounds(20,90,150,30);
+        txtNgayMuon=CreateJTextField();
+        txtNgayMuon.setBounds(150,90,300,30);
+        txtNgayMuon.setEnabled(false);
+
+        lbNgayTra=CreateJLabelItem("Ngày Trả: ");
+        lbNgayTra.setBounds(20,130,100,30);
+        txtNgayTra=CreateJTextField();
+        txtNgayTra.setBounds(150,130,300,30);
+        txtNgayTra.setEnabled(false);
+
+        lb_DocGia=CreateJLabelItem("Thẻ: ");
+        lb_DocGia.setBounds(20,170,100,30);
+        txtDocGia=CreateJTextField();
+        txtDocGia.setEnabled(false);
+        txtDocGia.setBounds(150,170,300,30);
+        btnDocGia=new JButton("...");
+        btnDocGia.setPreferredSize(new Dimension(30,30));
+        btnDocGia.setBounds(460,170,30,30);
+
+        lbTenDocGia=CreateJLabelItem("Tên: ");
+        lbTenDocGia.setBounds(20,210,100,30);
+        txtTenDocGia=CreateJTextField();
+        txtTenDocGia.setBounds(150,210,300,30);
+        txtTenDocGia.setEnabled(false);
+
+        lblTongTien=CreateJLabelItem("Tổng Tiền: ");
+        lblTongTien.setBounds(20,250,100,30);
+        txtTongTien=CreateJTextField();
+        txtTongTien.setBounds(150,250,300,30);
+        txtTongTien.setEnabled(false);
+
+        lbTenNhanVien=CreateJLabelItem("Tên NV: ");
+        lbTenNhanVien.setBounds(600,50,100,30);
+        txtTenNhanVien=CreateJTextField();
+        txtTenNhanVien.setText(tenNhanVien);
+        txtTenNhanVien.setBounds(700,50,300,30);
+        txtTenNhanVien.setEnabled(false);
+
+        lbMaNhanVien=CreateJLabelItem("Mã NV: ");
+        lbMaNhanVien.setBounds(600,90,100,30);
+        txtMaNhanVien=CreateJTextField();
+        txtMaNhanVien.setText(maNhanVien);
+        txtMaNhanVien.setBounds(700,90,300,30);
+        txtMaNhanVien.setEnabled(false);
+        //=========JPANEL CHI TIẾT PHIẾU MƯỢN=======//
+        lbTitleChiTietPMuon=new JLabel("CHI TIẾT PHIẾU MƯỢN");
+        lbTitleChiTietPMuon.setFont(new Font("Times New Roman",Font.BOLD,25));
+        lbTitleChiTietPMuon.setBounds(150,0,300,30);
+
+        lbMaSach=CreateJLabelItem("ID Sách: ");
+        lbMaSach.setBounds(4,30,100,30);
+        txtMaSach=CreateJTextField();
+        txtMaSach.setBounds(150,30,300,30);
+        txtMaSach.setEnabled(false);
+        btnSach=new JButton("...");
+        btnSach.setPreferredSize(new Dimension(30,30));
+        btnSach.setBounds(460,29,30,30);
+
+        lbTenSach=CreateJLabelItem("Tên Sách: ");
+        lbTenSach.setBounds(4,70,100,30);
+        txtTenSach=CreateJTextField();
+        txtTenSach.setBounds(150,70,300,30);
+        txtTenSach.setEnabled(false);
+
+        lbThanhTien=CreateJLabelItem("Thành Tiền: ");
+        lbThanhTien.setBounds(4,110,130,30);
+        txtThanhTien=CreateJTextField();
+        txtThanhTien.setBounds(150,110,300,30);
+        txtThanhTien.setEnabled(false);
+        //BUTTON
+        btnThemSach=new JButton("Thêm");
+        btnThemSach.setFont(new Font("Arial",Font.BOLD,20));
+        btnThemSach.setPreferredSize(new Dimension(100,40));
+        btnThemSach.setBackground(new Color(0xE06576));
+        btnThemSach.setBounds(500,50,100,40);
+        btnXoaSach=new JButton("Xóa");
+        btnXoaSach.setFont(new Font("Times New Roman",Font.BOLD,20));
+        btnXoaSach.setPreferredSize(new Dimension(100,40));
+        btnXoaSach.setBackground(new Color(0xE06576));
+        btnXoaSach.setBounds(500,100,100,40);
+
+        JPanel pn_CTietPMuon=new JPanel();
+        // Thêm border cho JPanel
+        Border border = BorderFactory.createLineBorder(Color.black, 2); // Đường viền màu xanh dương, độ dày 3px
+        pn_CTietPMuon.setBorder(border);
+        pn_CTietPMuon.setPreferredSize(new Dimension(670,152));
+        pn_CTietPMuon.setBackground(colorPanel);
+        pn_CTietPMuon.setLayout(null);
+        pn_CTietPMuon.setBounds(600,130,670,152);
+        pn_CTietPMuon.add(lbTitleChiTietPMuon);
+        pn_CTietPMuon.add(lbMaSach);
+        pn_CTietPMuon.add(lbTenSach);
+        pn_CTietPMuon.add(lbThanhTien);
+        pn_CTietPMuon.add(txtMaSach);
+        pn_CTietPMuon.add(txtTenSach);
+        pn_CTietPMuon.add(txtThanhTien);
+        pn_CTietPMuon.add(btnSach);
+        pn_CTietPMuon.add(btnThemSach);
+        pn_CTietPMuon.add(btnXoaSach);
+
+        //=============TABLE CHI TIẾT PHIẾU MƯỢN VÀ KHU VỰC CÁC NÚT VÀ KHU VỰC TÌM KIẾM==========
+        tblSachMuon=new JTable();
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
-
-        this.setLayout(new BorderLayout());
-        this.setBackground(colorPanel);
-
-        int w = 1050;
-        int h = 700;
-
-        /*
-        =========================================================================
-                                    PANEL Phiếu mượn
-        =========================================================================
-         */
-        JPanel pnTablePhieuMuon = new TransparentPanel();
-        pnTablePhieuMuon.setLayout(new BorderLayout());
-
-        JPanel pnTitlePhieuMuon = new TransparentPanel();
-        JLabel lblTitlePhieuMuon = new JLabel("Quản lý phiếu mượn");
-        lblTitlePhieuMuon.setFont(new Font("Arial", Font.BOLD, 28));
-        btnReset = new JButton(new ImageIcon("image/Refresh-icon.png"));
-        btnReset.setFocusPainted(false);
-        btnReset.setPreferredSize(new Dimension(40, 40));
-        pnTitlePhieuMuon.add(lblTitlePhieuMuon);
-        pnTitlePhieuMuon.add(btnReset);
-        pnTablePhieuMuon.add(pnTitlePhieuMuon, BorderLayout.NORTH);
-
-        //=================PANEL INPUT===========
-        int x =15,y=15;
-        txtMaPhieuMuon = new JTextField(x);
-        txtDocGia = new JTextField(x);
-        txtNgayMuon = new JTextField(x);
-        txtNgayTra = new JTextField(x);
-        txtTongTien = new JTextField(x);
-        txtMaSach = new JTextField(y);
-        txtTenSach = new JTextField(y);
-        txtThanhTien = new JTextField(y);
-        txtTimKiem = new JTextField(y);
-
-
-        //=================Thông tin phiếu mượn==============
-
-        JPanel pnThongTinPhieuMuon = new TransparentPanel();
-        pnThongTinPhieuMuon.setLayout(null);
-
-        JLabel lblMaPhieuMuon = new JLabel("Mã phiếu mượn:");
-        lblMaPhieuMuon.setFont(font);
-        txtMaPhieuMuon.setFont(font);
-        txtMaPhieuMuon.setEditable(false);
-        lblMaPhieuMuon.setBounds(20,50,150,25);
-        txtMaPhieuMuon.setBounds(200,50,220,25);
-
-        JLabel lblDocGia = new JLabel("Đọc giả:");
-        lblDocGia.setFont(font);
-        txtDocGia.setFont(font);
-        txtDocGia.setEditable(false);
-        lblDocGia.setBounds(20,100,150,25);
-        txtDocGia.setBounds(200,100,220,25);
-
-        JLabel lblNgayMuon = new JLabel("Ngày mượn:");
-        lblNgayMuon.setFont(font);
-        txtNgayMuon.setFont(font);
-        txtNgayMuon.setEditable(false);
-        lblNgayMuon.setBounds(20,150,150,25);
-        txtNgayMuon.setBounds(200,150,220,25);
-
-        JLabel lblNgayTra = new JLabel("Hạn trả:");
-        lblNgayTra.setFont(font);
-        txtNgayTra.setFont(font);
-        txtNgayTra.setEditable(false);
-        lblNgayTra.setBounds(20,200,150,25);
-        txtNgayTra.setBounds(200,200,220,25);
-
-        JLabel lblTongTien = new JLabel("Tổng tiền:");
-        lblTongTien.setFont(font);
-        txtTongTien.setFont(font);
-        txtTongTien.setEditable(false);
-        lblTongTien.setBounds(20,250,150,25);
-        txtTongTien.setBounds(200,250,220,25);
-
-        JLabel lblTimKiem = new JLabel("Họ tên ĐG cần tìm:");
-        lblTimKiem.setFont(font);
-        txtTimKiem.setFont(font);
-        lblTimKiem.setBounds(20,300,300,25);
-        txtTimKiem.setBounds(170,300,250,25);
-
-        pnThongTinPhieuMuon.add(lblMaPhieuMuon);
-        pnThongTinPhieuMuon.add(txtMaPhieuMuon);
-        pnThongTinPhieuMuon.add(lblDocGia);
-        pnThongTinPhieuMuon.add(txtDocGia);
-        pnThongTinPhieuMuon.add(lblNgayMuon);
-        pnThongTinPhieuMuon.add(txtNgayMuon);
-        pnThongTinPhieuMuon.add(lblNgayTra);
-        pnThongTinPhieuMuon.add(txtNgayTra);
-        pnThongTinPhieuMuon.add(lblTongTien);
-        pnThongTinPhieuMuon.add(txtTongTien);
-        pnThongTinPhieuMuon.add(lblTimKiem);
-        pnThongTinPhieuMuon.add(txtTimKiem);
-
-        //=================Chi tiết phiếu mượn==========
-
-        JLabel lblTitleCTPhieuMuon = new JLabel("Chi tiết phiếu mượn");
-        lblTitleCTPhieuMuon.setFont(new Font("Arial", Font.BOLD, 22));
-        lblTitleCTPhieuMuon.setBounds(550,0,300,25);
-
-        JLabel lblMaSach = new JLabel("ID sách | ID PS:");
-        lblMaSach.setFont(font);
-        txtMaSach.setFont(font);
-        txtMaSach.setEditable(false);
-        lblMaSach.setBounds(465,50,120,25);
-        txtMaSach.setBounds(600,50,150,25);
-
-        JLabel lblTenSach = new JLabel("Tên sách:");
-        lblTenSach.setFont(font);
-        txtTenSach.setFont(font);
-        txtTenSach.setEditable(false);
-        lblTenSach.setBounds(510,100,120,25);
-        txtTenSach.setBounds(600,100,190,25);
-
-        JLabel lblThanhTien = new JLabel("Tiền mượn:");
-        lblThanhTien.setFont(font);
-        txtThanhTien.setFont(font);
-        txtThanhTien.setEditable(false);
-        lblThanhTien.setBounds(510,150,120,25);
-        txtThanhTien.setBounds(600,150,190,25);
-
-        Font fontB = new Font("Tahoma", Font.PLAIN, 16);
-        btnThemSach = new JButton("Thêm");
-        btnThemSach.setFont(fontB);
-        btnThemSach.setBounds(540,190,100,30);
-
-        btnXoaSach = new JButton("Xóa");
-        btnXoaSach.setFont(fontB);
-        btnXoaSach.setBounds(660,190,100,30);
-
         dtmSachMuon = new DefaultTableModel();
         dtmSachMuon.addColumn("Mã");
         dtmSachMuon.addColumn("Mã PS");
-        dtmSachMuon.addColumn("Tên sách");
-        dtmSachMuon.addColumn("Giá");
-        tblSachMuon = new MyTable(dtmSachMuon);
+        dtmSachMuon.addColumn("Tên");
+        dtmSachMuon.addColumn("Tiền Mượn");
 
+        tblSachMuon = new JTable( dtmSachMuon);
         tblSachMuon.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        tblSachMuon.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
         tblSachMuon.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+        tblSachMuon.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
 
         TableColumnModel columnModelSachMuon = tblSachMuon.getColumnModel();
-        columnModelSachMuon.getColumn(0).setPreferredWidth(20);
-        columnModelSachMuon.getColumn(1).setPreferredWidth(30);
-        columnModelSachMuon.getColumn(2).setPreferredWidth(120);
-        columnModelSachMuon.getColumn(3).setPreferredWidth(50);
+        columnModelSachMuon.getColumn(0).setPreferredWidth(50);
+        columnModelSachMuon.getColumn(1).setPreferredWidth(80);
+        columnModelSachMuon.getColumn(2).setPreferredWidth(320);
+        columnModelSachMuon.getColumn(3).setPreferredWidth(150);
 
-        JScrollPane srclblSachMuon = new JScrollPane(tblSachMuon);
-        srclblSachMuon.setPreferredSize(new Dimension(260,75));
-        srclblSachMuon.setBounds(450,230,350,105);
-        srclblSachMuon.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+        JScrollPane scrTblSachMuon = new JScrollPane(tblSachMuon);
+        scrTblSachMuon.setPreferredSize(new Dimension(600,150));
+        tblSachMuon.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+        tblSachMuon.setRowHeight(30);
+        JTableHeader header = tblSachMuon.getTableHeader();
+        header.setFont(new Font("Times New Roman", Font.BOLD, 20));
+        header.setBackground(Color.BLACK);
+        header.setForeground(Color.WHITE);
+        tblSachMuon.setShowGrid(true);
+        tblSachMuon.setGridColor(Color.BLACK);
+        tblSachMuon.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        scrTblSachMuon.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        tblSachMuon.setDefaultEditor(Object.class, null);
+        tblSachMuon.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        scrTblSachMuon.setBounds(20,300,600,150);
 
-        pnThongTinPhieuMuon.add(lblTitleCTPhieuMuon);
-        pnThongTinPhieuMuon.add(lblMaSach);
-        pnThongTinPhieuMuon.add(txtMaSach);
-        pnThongTinPhieuMuon.add(lblTenSach);
-        pnThongTinPhieuMuon.add(txtTenSach);
-        pnThongTinPhieuMuon.add(lblThanhTien);
-        pnThongTinPhieuMuon.add(txtThanhTien);
-        pnThongTinPhieuMuon.add(btnThemSach);
-        pnThongTinPhieuMuon.add(btnXoaSach);
-        pnThongTinPhieuMuon.add(srclblSachMuon,BorderLayout.CENTER);
+        //KHU VỰC TÌM KIẾM
+        JLabel lbTimKiem =new JLabel("Tìm Kiếm: ");
+        lbTimKiem.setFont(new Font("Times New Roman",Font.BOLD,25));
+        lbTimKiem.setBounds(630,300,200,30);
+        txtTimKiem=new JTextField();
+        txtTimKiem.setBackground(Color.WHITE);
+        txtTimKiem.setFont(new Font("Times New Roman",Font.BOLD,15));
+        txtTimKiem.setBounds(750,290,400,40);
+        btnTim=new JButton("Tìm");
+        btnTim.setFont(new Font("Times New Roman",Font.BOLD,20));
+        btnTim.setBackground(new Color(0xD4F7F0));
+        btnTim.setBounds(1170,290,100,40);
 
-        pnTablePhieuMuon.add(pnThongTinPhieuMuon);
+        //BUTTON
+        btnThem=createItemButton("image/img_qltv/icon_them.png","Thêm");
+        btnThem.setBounds(630,340,140,40);
+        btnReset=createItemButton("image/img_qltv/icon_reload.png","");
+        btnReset.setBounds(800,340,50,40);
+        btnReset.setBackground(new Color(0xE06576));
 
-        //=================BUTTON===============
+        btnXoa=createItemButton("image/img_qltv/icon_reload.png","Xóa");
+        btnXoa.setBounds(630,400,140,40);
+        btnInthe=createItemButton("image/img_qltv/icon_print.png","In Thẻ");
+        btnInthe.setBounds(795,400,140,40);
+        btnNhapExcel=createItemButton("image/img_qltv/icon_excel.png","Nhập");
+        btnNhapExcel.setBounds(960,400,140,40);
+        btnXuatExcel=createItemButton("image/img_qltv/icon_excel.png","Xuất");
+        btnXuatExcel.setBounds(1125,400,140,40);
 
-
-        btnThem = new JButton("Thêm");
-        btnXoa = new JButton("Xoá");
-        btnTim = new JButton("Tìm kiếm");
-        btnInthe = new JButton("In thẻ");
-        btnXuatExcel = new JButton("Xuất");
-        btnNhapExcel = new JButton("Nhập");
-        btnDocGia = new JButton("...");
-        btnSach = new JButton("...");
-
-        Font fontButton = new Font("Tahoma", Font.PLAIN, 16);
-        btnThem.setFont(fontButton);
-        btnXoa.setFont(fontButton);
-        btnTim.setFont(fontButton);
-        btnInthe.setFont(fontButton);
-        btnXuatExcel.setFont(fontButton);
-        btnNhapExcel.setFont(fontButton);
-        btnDocGia.setFont(fontButton);
-        btnSach.setFont(fontButton);
-
-        btnThem.setIcon(new ImageIcon("image/add-icon.png"));
-        btnXoa.setIcon(new ImageIcon("image/delete-icon.png"));
-        btnTim.setIcon(new ImageIcon("image/Search-icon.png"));
-        btnInthe.setIcon(new ImageIcon("image/card-icon.png"));
-        btnXuatExcel.setIcon(new ImageIcon("image/excel-icon.png"));
-        btnNhapExcel.setIcon(new ImageIcon("image/excel-icon.png"));
-
-        btnInthe.setBounds(55,350,110,40);
-        btnThem.setBounds(170,350,110,40);
-        btnXoa.setBounds(285,350,110,40);
-        btnTim.setBounds(400,350,110,40);
-        btnXuatExcel.setBounds(515,350,110,40);
-        btnNhapExcel.setBounds(630,350,110,40);
-        btnDocGia.setBounds(430,100,30,25);
-        btnSach.setBounds(760,50,30,25);
-
-        pnThongTinPhieuMuon.add(btnInthe);
-        pnThongTinPhieuMuon.add(btnThem);
-        pnThongTinPhieuMuon.add(btnXoa);
-        pnThongTinPhieuMuon.add(btnTim);
-        pnThongTinPhieuMuon.add(btnXuatExcel);
-        pnThongTinPhieuMuon.add(btnNhapExcel);
-        pnThongTinPhieuMuon.add(btnDocGia);
-        pnThongTinPhieuMuon.add(btnSach);
-
-        pnTablePhieuMuon.add(pnThongTinPhieuMuon);
-
-        //====================Bảng phiếu mượn====================
-        //<editor-fold defaultstate="collapsed" desc="Bảng phiếu mượn">
+        //==========================JTABLE PHIẾU MƯỢN=================================
         dtmPhieuMuon = new DefaultTableModel();
-        dtmPhieuMuon.addColumn("Mã");
-        dtmPhieuMuon.addColumn("Đọc giả");
-        dtmPhieuMuon.addColumn("Nhân viên");
-        dtmPhieuMuon.addColumn("Ngày mượn");
-        dtmPhieuMuon.addColumn("Hạn trả");
-        dtmPhieuMuon.addColumn("Tổng tiền");
-        tblPhieuMuon = new MyTable(dtmPhieuMuon);
+        dtmPhieuMuon.addColumn("ID");
+        dtmPhieuMuon.addColumn("Đọc Giả");
+        dtmPhieuMuon.addColumn("Nhân Viên");
+        dtmPhieuMuon.addColumn("Ngày Mượn");
+        dtmPhieuMuon.addColumn("Hạn Trả");
+        dtmPhieuMuon.addColumn("Tổng Tiền");
+        tblPhieuMuon = new JTable(dtmPhieuMuon);
 
         tblPhieuMuon.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
         tblPhieuMuon.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
@@ -293,34 +311,83 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         tblPhieuMuon.getColumnModel().getColumn(4).setCellRenderer(centerRenderer);
         tblPhieuMuon.getColumnModel().getColumn(5).setCellRenderer(centerRenderer);
 
+
         TableColumnModel columnModelPhieuMuon = tblPhieuMuon.getColumnModel();
-        columnModelPhieuMuon.getColumn(0).setPreferredWidth(70);
-        columnModelPhieuMuon.getColumn(1).setPreferredWidth(150);
-        columnModelPhieuMuon.getColumn(2).setPreferredWidth(150);
-        columnModelPhieuMuon.getColumn(3).setPreferredWidth(130);
-        columnModelPhieuMuon.getColumn(4).setPreferredWidth(130);
-        columnModelPhieuMuon.getColumn(5).setPreferredWidth(130);
+        columnModelPhieuMuon.getColumn(0).setPreferredWidth(50);
+        columnModelPhieuMuon.getColumn(1).setPreferredWidth(200);
+        columnModelPhieuMuon.getColumn(2).setPreferredWidth(200);
+        columnModelPhieuMuon.getColumn(3).setPreferredWidth(200);
+        columnModelPhieuMuon.getColumn(4).setPreferredWidth(200);
+        columnModelPhieuMuon.getColumn(5).setPreferredWidth(200);
+
 
         JScrollPane scrTblPhieuMuon = new JScrollPane(tblPhieuMuon);
-        scrTblPhieuMuon.setPreferredSize(new Dimension(900,150));
+        scrTblPhieuMuon.setPreferredSize(new Dimension(1250,200));
+        scrTblPhieuMuon.setBounds(20,460,1250,200);
+        tblPhieuMuon.setFont(new Font("Times New Roman", Font.PLAIN, 15));
+        tblPhieuMuon.setRowHeight(30);
+        JTableHeader headerpm = tblPhieuMuon.getTableHeader();
+        headerpm.setFont(new Font("Times New Roman", Font.BOLD, 20));
+        headerpm.setBackground(new Color(0xB6F2E6));
+        headerpm.setForeground(Color.BLACK);
+        tblPhieuMuon.setShowGrid(true);
+        tblPhieuMuon.setGridColor(Color.BLACK);
+        tblPhieuMuon.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        scrTblPhieuMuon.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        tblPhieuMuon.setDefaultEditor(Object.class, null);
+        tblPhieuMuon.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-        scrTblPhieuMuon.setBounds(0,410,820,195);
-        //</editor-fold>
-        pnThongTinPhieuMuon.add(scrTblPhieuMuon, BorderLayout.CENTER);
 
+
+        first_pn.add(lb_title);
+        first_pn.add(btnClose);
+        first_pn.add(lb_MaPhieuMuon);
+        first_pn.add(txtMaPhieuMuon);
+        first_pn.add(lb_NgayMuon);
+        first_pn.add(txtNgayMuon);
+        first_pn.add(lbNgayTra);
+        first_pn.add(txtNgayTra);
+        first_pn.add(lb_DocGia);
+        first_pn.add(txtDocGia);
+        first_pn.add(lbTenDocGia);
+        first_pn.add(btnDocGia);
+        first_pn.add(txtTenDocGia);
+        first_pn.add(lblTongTien);
+        first_pn.add(txtTongTien);
+        first_pn.add(lbTenNhanVien);
+        first_pn.add(txtTenNhanVien);
+        first_pn.add(lbMaNhanVien);
+        first_pn.add(txtMaNhanVien);
+        first_pn.add(pn_CTietPMuon);
+        first_pn.add(scrTblSachMuon);
+        first_pn.add(lbTimKiem);
+        first_pn.add(txtTimKiem);
+        first_pn.add(btnTim);
+        first_pn.add(btnThem);
+        first_pn.add(btnReset);
+        first_pn.add(btnXoa);
+        first_pn.add(btnInthe);
+        first_pn.add(btnNhapExcel);
+        first_pn.add(btnXuatExcel);
+        first_pn.add(scrTblPhieuMuon);
+
+        //====================Bảng phiếu mượn====================
         loadDataLenBangPhieuMuon();
+        this.add(first_pn,BorderLayout.CENTER);
 
-        pnTablePhieuMuon.add(pnThongTinPhieuMuon);
 
-        //=======================================================
-        this.add(pnTablePhieuMuon);
+    }
+    public JButton getCloseButtonPhieuMuon() {
+        return btnClose;
     }
 
     private void addEventsPhieuMuon(){
+
         btnReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 loadDataLenBangPhieuMuon();
+                txtTenDocGia.setText("");
                 txtMaPhieuMuon.setText("");
                 txtDocGia.setText("");
                 txtNgayMuon.setText("");
@@ -330,6 +397,8 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
                 txtTenSach.setText("");
                 txtThanhTien.setText("");
                 txtTimKiem.setText("");
+                txtTenNhanVien.setText(tenNhanVien);
+                txtMaNhanVien.setText(maNhanVien);
                 loadDataLenBangCTPhieuMuon("0");
             }
         });
@@ -355,6 +424,10 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 xuLyThemPhieuMuon();
+                loadDataLenBangPhieuMuon();
+                txtTenNhanVien.setText(tenNhanVien);
+                txtMaNhanVien.setText(maNhanVien);
+                txtTenDocGia.setText("");
                 txtMaPhieuMuon.setText("");
                 txtDocGia.setText("");
                 txtNgayMuon.setText("");
@@ -363,6 +436,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
                 txtMaSach.setText("");
                 txtTenSach.setText("");
                 txtThanhTien.setText("");
+                txtTimKiem.setText("");
                 loadDataLenBangCTPhieuMuon("0");
             }
         });
@@ -370,6 +444,10 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 xuLyXoaPhieuMuon();
+                loadDataLenBangPhieuMuon();
+                txtTenNhanVien.setText(tenNhanVien);
+                txtMaNhanVien.setText(maNhanVien);
+                txtTenDocGia.setText("");
                 txtMaPhieuMuon.setText("");
                 txtDocGia.setText("");
                 txtNgayMuon.setText("");
@@ -387,12 +465,6 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
                 xuLyTimKiem();
             }
         });
-        txtTimKiem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                xuLyTimKiem();
-            }
-        });
         btnXuatExcel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -405,19 +477,35 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
                 xuLyNhapFileExcel();
             }
         });
+
         btnDocGia.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                loadDataLenBangCTPhieuMuon("0");
+                txtTenNhanVien.setText(tenNhanVien);
+                txtMaNhanVien.setText(maNhanVien);
+                txtTenDocGia.setText("");
+                txtMaPhieuMuon.setText("");
+                txtDocGia.setText("");
+                txtNgayMuon.setText("");
+                txtNgayTra.setText("");
+                txtTongTien.setText("");
+                txtMaSach.setText("");
+                txtTenSach.setText("");
+                txtThanhTien.setText("");
+                txtTimKiem.setText("");
                 xuLyTimDocGia();
                 xuLyThemNgayThang();
             }
         });
+
         btnSach.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 xuLyTimSach();
             }
         });
+
         btnThemSach.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -427,11 +515,13 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
 
             }
         });
+
         btnXoaSach.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(kiemTraPhieuMuon(txtMaPhieuMuon.getText())) {
                     xuLyXoaCTPhieuMuon();
+
                 }
             }
         });
@@ -472,9 +562,12 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
             String ngayMuon =tblPhieuMuon.getValueAt(row,3)+"";
             String ngayTra =tblPhieuMuon.getValueAt(row,4)+"";
             String tongTien =tblPhieuMuon.getValueAt(row,5)+"";
-
+            PhieuMuon phieuMuon=pmBUS.getPhieuMuon(maPhieuMuon.trim());
+            txtDocGia.setText(phieuMuon.getMaDocGia()+"");
+            txtMaNhanVien.setText(phieuMuon.getMaNhanVien()+"");
             txtMaPhieuMuon.setText(maPhieuMuon);
-            txtDocGia.setText(docGia);
+            txtTenNhanVien.setText(nhanVien);
+            txtTenDocGia.setText(docGia);
             txtNgayMuon.setText(ngayMuon);
             txtNgayTra.setText(ngayTra);
             txtTongTien.setText(tongTien.replace(",",""));
@@ -509,12 +602,13 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         int row = tblSachMuon.getSelectedRow();
         if(row > -1){
             String maSach =tblSachMuon.getValueAt(row,0)+"";
-            String tenSach =tblSachMuon.getValueAt(row,1)+"";
-            String tongTien =tblSachMuon.getValueAt(row,2)+"";
+            String maPhanSach =""+tblSachMuon.getValueAt(row,1);
+            String tenSach=tblSachMuon.getValueAt(row,2)+"";
+            String tongTien =tblSachMuon.getValueAt(row,3)+"";
 
-            txtMaSach.setText(maSach);
+            txtMaSach.setText(maSach+"|"+maPhanSach);
             txtTenSach.setText(tenSach);
-            txtThanhTien.setText(tongTien.replace(",",""));
+            txtThanhTien.setText(tongTien);
         }
     }
 
@@ -538,7 +632,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
 
     private void xuLyThemPhieuMuon(){
         boolean flag = pmBUS.themPhieuMuon(txtMaPhieuMuon.getText(),
-                txtDocGia.getText(), String.valueOf(dangNhapGUI.maTaiKhoan()),
+                txtTenDocGia.getText(), String.valueOf(dangNhapGUI.maTaiKhoan()),
                 txtNgayMuon.getText(),
                 txtNgayTra.getText(),
                 txtTongTien.getText());
@@ -561,7 +655,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
 
     private void xuLyTimKiem(){
         String docGia = txtTimKiem.getText();
-        int maDocGia = docGiaBUS.getMaDocGia(docGia);
+        int maDocGia = docGiaBUS.getMaDocGia(docGia.trim());
         dtmPhieuMuon.setRowCount(0);
         ArrayList<PhieuMuon> dspm = null;
         dspm = pmBUS.getPhieuMuonTheoMaDocGia(maDocGia);
@@ -583,7 +677,8 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
     private void xuLyTimDocGia(){
         timDocGiaGUI.setVisible(true);
         if (timDocGiaGUI.docGiaTimDuoc != null) {
-            txtDocGia.setText(timDocGiaGUI.docGiaTimDuoc.getHo() + " " + timDocGiaGUI.docGiaTimDuoc.getTen());
+            txtTenDocGia.setText(timDocGiaGUI.docGiaTimDuoc.getHo() + " " + timDocGiaGUI.docGiaTimDuoc.getTen());
+            txtDocGia.setText(timDocGiaGUI.docGiaTimDuoc.getMaDocGia()+"");
         }
     }
 
@@ -595,9 +690,7 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
             txtTenSach.setText(sachBUS.getTenSach(timSachGUI.sachTimDuoc.getMaSach()));
             Sach sach = sachBUS.getSach(String.valueOf(timSachGUI.sachTimDuoc.getMaSach()));
             long tien = (sach.getGiaSach() * 10)/100 ;
-            DecimalFormat formatter = new DecimalFormat("###,###");
-            String tienMuon = formatter.format(tien);
-            txtThanhTien.setText(tienMuon);
+            txtThanhTien.setText(tien+"");
         }
     }
 
@@ -639,10 +732,6 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
             new MyDialog("Chưa chọn sách mượn!!!", MyDialog.ERROR_DIALOG);
             return;
         } else {
-//            if(sachBUS.getSach(txtMaSach.getText()).getSoLuong() == 0){
-//                new MyDialog("Sách đã được mượn hết!!!", MyDialog.ERROR_DIALOG);
-//                return;
-//            }
             int rowCount = dtmSachMuon.getRowCount();
             if (rowCount == 4) {
                 new MyDialog("Số lượng sách mượn đã đạt tối đa!!!", MyDialog.ERROR_DIALOG);
@@ -744,14 +833,13 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         int rowCount = dtmSachMuon.getRowCount();
         long tien = 0;
         for (int i = 0; i < rowCount; i++) {
-            String maSach = (String) dtmSachMuon.getValueAt(i, 0);
-            String maPhanSach = (String) dtmSachMuon.getValueAt(i, 1);
-            String tenSach = (String) dtmSachMuon.getValueAt(i, 2);
             String thanhTien = (String) dtmSachMuon.getValueAt(i, 3);
-            tien = tien + Long.parseLong(thanhTien.replace(",",""));
+            tien = tien + Long.parseLong(thanhTien.trim());
         }
         txtTongTien.setText(String.valueOf(tien));
     }
+
+
 
 
     public void xuLyXuatPhieuMuon(){
@@ -788,21 +876,5 @@ public class PnQuanLyPhieuMuonGUI extends JPanel{
         phieuMuonGUI.setVisible(true);
     }
 
-    public void xuLyThoatPhieuMuon(){
-        int rowCount = tblSachMuon.getRowCount();
-        int row = tblPhieuMuon.getRowCount();
-        int count = 0;
-        for(int j =0; j<row;j++){
-            String maPM = String.valueOf(dtmPhieuMuon.getValueAt(j, 0));
-            if(txtMaPhieuMuon.getText().equals(maPM)){
-                count = 1;
-            }
-        }
-        if(count != 1) {
-            for (int i = 0; i < rowCount; i++) {
-                String maSach = String.valueOf(dtmSachMuon.getValueAt(i, 0));
-                sachBUS.capNhatTrangThaiSach(maSach);
-            }
-        }else return;
-    }
+
 }

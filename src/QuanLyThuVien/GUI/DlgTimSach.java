@@ -1,21 +1,22 @@
 package QuanLyThuVien.GUI;
 
 import MyCustom.MyDialog;
-import QuanLyThuVien.BUS.*;
-import QuanLyThuVien.DAO.MyConnect;
-import QuanLyThuVien.DTO.*;
 import MyCustom.MyTable;
+import QuanLyThuVien.BUS.LoaiBUS;
+import QuanLyThuVien.BUS.PhanSachBUS;
+import QuanLyThuVien.BUS.SachBUS;
+import QuanLyThuVien.BUS.TacGiaBUS;
+import QuanLyThuVien.DTO.PhanSach;
 
+import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Vector;
-import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
-import javax.swing.table.DefaultTableModel;
-import java.text.DecimalFormat;
 
 public class DlgTimSach extends  JDialog {
     private SachBUS sachBUS = new SachBUS();

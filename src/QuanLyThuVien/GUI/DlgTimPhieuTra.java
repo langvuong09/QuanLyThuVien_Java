@@ -1,24 +1,25 @@
 package QuanLyThuVien.GUI;
 
+import MyCustom.MyTable;
 import QuanLyThuVien.BUS.DocGiaBUS;
 import QuanLyThuVien.BUS.NhanVienBUS;
 import QuanLyThuVien.BUS.PhieuMuonBUS;
-import QuanLyThuVien.DTO.PhieuTra;
 import QuanLyThuVien.BUS.PhieuTraBUS;
-import MyCustom.MyTable;
+import QuanLyThuVien.DTO.PhieuMuon;
+import QuanLyThuVien.DTO.PhieuTra;
 
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Vector;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
-import java.util.Date;
-import java.text.SimpleDateFormat;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Vector;
 
 public class DlgTimPhieuTra extends JDialog{
     private PhieuTraBUS phieuTraBUS = new PhieuTraBUS();
@@ -146,7 +147,14 @@ public class DlgTimPhieuTra extends JDialog{
                 vec.add(pt.getMaPhieuMuon());
                 vec.add(docGiaBUS.getTenDocGia(pt.getMaDocGia()));
                 vec.add(nhanVienBUS.getTenNhanVien(pt.getMaNhanVien()));
-                vec.add(sdf.format(phieuMuonBUS.getPhieuMuon(String.valueOf(pt.getMaPhieuMuon())).getNgayMuon())); // Định dạng ngày mượn
+                String maPM=pt.getMaPhieuMuon()+"";
+                PhieuMuon phieuMuon=phieuMuonBUS.getPhieuMuon(maPM.trim());
+                if (phieuMuon != null) {
+                    vec.add(sdf.format(phieuMuon.getNgayMuon()));
+                } else {
+                    vec.add("Ngày mượn không có");
+                }
+              // Định dạng ngày mượn
                 vec.add(sdf.format(pt.getNgayTraThuc())); // Định dạng hạn trả
                 dtmTimPhieuTra.addRow(vec);
             }

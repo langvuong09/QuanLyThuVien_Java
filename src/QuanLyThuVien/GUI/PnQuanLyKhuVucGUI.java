@@ -1,129 +1,108 @@
 package QuanLyThuVien.GUI;
 
 import MyCustom.MyDialog;
-import MyCustom.XuLyFileExcel;
-import QuanLyThuVien.BUS.*;
 import MyCustom.MyTable;
-import QuanLyThuVien.DTO.*;
+import QuanLyThuVien.BUS.KhuVucBUS;
+import QuanLyThuVien.BUS.PhanSachBUS;
+import QuanLyThuVien.BUS.SachBUS;
+import QuanLyThuVien.DTO.CTKeSach;
+import QuanLyThuVien.DTO.KeSach;
+import QuanLyThuVien.DTO.KhuVuc;
+import QuanLyThuVien.DTO.PhanSach;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Vector;
 import javax.swing.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumnModel;
-import java.util.*;
-
-import static Main.Main.changLNF;
-import MyCustom.TransparentPanel;
-import com.toedter.calendar.JDateChooser;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Vector;
 
 public class PnQuanLyKhuVucGUI extends JPanel {
     private KhuVucBUS khuVucBUS = new KhuVucBUS();
     private SachBUS sachBUS = new SachBUS();
     private PhanSachBUS phanSachBUS = new PhanSachBUS();
     private DlgThemSachVaoKhuVuc themSachVaoKe = new DlgThemSachVaoKhuVuc();
-
-    public PnQuanLyKhuVucGUI(){
-        changLNF("Windows");
-        addConTrolsKhuVuc();
-        addEventsKhuVuc();
-    }
-
-    final Color colorPanel = new Color(247, 247, 247);
+    final Color colorPanel = new Color(251, 241, 241);
+    final Color colorHeader = new Color(122, 213, 172);
+    final Color colorButtonAdd = new Color(230, 134, 134);
+    final Color colorButtonDelete = new Color(230, 134, 134);
+    final Color colorButtonSearch = new Color(122, 213, 172);
     MyTable tblKhuVuc, tblKe, tblSach;
     DefaultTableModel dtmSach, dtmKhu, dtmKe;
     JTextField txtTimKiem;
     JButton btnTimKiem, btnThemSach, btnXoaSach, btnThemKhu, btnXoaKhu, btnThemKe, btnXoaKe, btnReset;
 
+    public PnQuanLyKhuVucGUI(){
+        try {
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        addConTrolsKhuVuc();
+        addEventsKhuVuc();
+    }
+
     private void addConTrolsKhuVuc(){
-        Font font = new Font("Tahoma", Font.PLAIN,16);
+        Font font = new Font("Arial", Font.BOLD,14);
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
         this.setLayout(new BorderLayout());
         this.setBackground(colorPanel);
 
-        int w = 1050;
-        int h = 700;
-
-        /*
-        =========================================================================
-                                    PANEL Khu vực
-        =========================================================================
-         */
-        JPanel pnTableKhuVuc = new TransparentPanel();
+        JPanel pnTableKhuVuc = new JPanel();
         pnTableKhuVuc.setLayout(new BorderLayout());
 
-        JPanel pnTitleKhuVuc = new TransparentPanel();
-        JLabel lblTitleKhuVuc = new JLabel("Quản lý khu vực");
-        lblTitleKhuVuc.setFont(new Font("Arial", Font.BOLD, 28));
-        btnReset = new JButton(new ImageIcon("image/Refresh-icon.png"));
-        btnReset.setFocusPainted(false);
+        // Panel tiêu đề "Quản lý khu vực" với màu nền
+        JPanel pnTitleKhuVuc = new JPanel();
+        pnTitleKhuVuc.setBackground(new Color(0x65E0C7));
+        JLabel lblTitleKhuVuc = new JLabel("QUẢN LÝ KHU VỰC");
+        lblTitleKhuVuc.setFont(new Font("Arial", Font.BOLD, 24));
+        lblTitleKhuVuc.setForeground(Color.WHITE);
+        
+        btnReset = new JButton(new ImageIcon(new ImageIcon("image/img_qltv/icon_reset.png").getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH)));
         btnReset.setPreferredSize(new Dimension(40, 40));
+        btnReset.setBackground(Color.WHITE);
+        btnReset.setBorder(BorderFactory.createEmptyBorder());
+
         pnTitleKhuVuc.add(lblTitleKhuVuc);
         pnTitleKhuVuc.add(btnReset);
         pnTableKhuVuc.add(pnTitleKhuVuc, BorderLayout.NORTH);
 
-        //=================Quản l khu vực=====================//
-
-        JPanel pnKhuVuc = new TransparentPanel();
+        JPanel pnKhuVuc = new JPanel();
         pnKhuVuc.setLayout(null);
+        pnKhuVuc.setBackground(colorPanel);
 
-        //=================PANEL INPUT===========
-        int x =15,y=15;
-        txtTimKiem = new JTextField(y);
-
-        //=================Thông tin ==============
+        // Text field tìm kiếm
+        txtTimKiem = new JTextField(20);
         JLabel lblTimKiem = new JLabel("Tìm tên sách:");
         lblTimKiem.setFont(font);
         txtTimKiem.setFont(font);
-        lblTimKiem.setBounds(20,450,150,28);
-        txtTimKiem.setBounds(140,450,200,28);
-
+        lblTimKiem.setBounds(100,240,150,28);
+        txtTimKiem.setBounds(200,240,500,32);
         pnKhuVuc.add(lblTimKiem);
         pnKhuVuc.add(txtTimKiem);
 
-        //=================BUTTON===============
+        // Các nút chức năng
+        btnThemKhu = createButton("Thêm", colorButtonAdd);
+        btnXoaKhu = createButton("Xóa", colorButtonDelete);
+        btnThemKe = createButton("Thêm", colorButtonAdd);
+        btnXoaKe = createButton("Xóa", colorButtonDelete);
+        btnThemSach = createButton("Thêm", colorButtonAdd);
+        btnXoaSach = createButton("Xóa", colorButtonDelete);
+        btnTimKiem = createButton("Tìm", colorButtonSearch);
 
-        btnThemKhu = new JButton("Thêm");
-        btnXoaKhu = new JButton("Xoá");
-        btnThemKe = new JButton("Thêm");
-        btnXoaKe = new JButton("Xoá");
-        btnThemSach = new JButton("Thêm");
-        btnXoaSach = new JButton("Xoá");
-        btnTimKiem = new JButton("Tìm");
-
-        Font fontButton = new Font("Tahoma", Font.PLAIN, 16);
-        btnThemKhu.setFont(fontButton);
-        btnXoaKhu.setFont(fontButton);
-        btnThemKe.setFont(fontButton);
-        btnXoaKe.setFont(fontButton);
-        btnThemSach.setFont(fontButton);
-        btnXoaSach.setFont(fontButton);
-        btnTimKiem.setFont(fontButton);
-
-        btnThemKhu.setIcon(new ImageIcon("image/add-icon.png"));
-        btnXoaKhu.setIcon(new ImageIcon("image/delete-icon.png"));
-        btnThemKe.setIcon(new ImageIcon("image/add-icon.png"));
-        btnXoaKe.setIcon(new ImageIcon("image/delete-icon.png"));
-        btnThemSach.setIcon(new ImageIcon("image/add-icon.png"));
-        btnXoaSach.setIcon(new ImageIcon("image/delete-icon.png"));
-        btnTimKiem.setIcon(new ImageIcon("image/Search-icon.png"));
-
-        btnThemKhu.setBounds(520,240,110,40);
-        btnXoaKhu.setBounds(670,240,110,40);
-        btnThemKe.setBounds(520,530,110,40);
-        btnXoaKe.setBounds(670,530,110,40);
-        btnThemSach.setBounds(110,500,110,40);
-        btnXoaSach.setBounds(260,500,110,40);
-        btnTimKiem.setBounds(360,440,110,40);
+        btnThemKhu.setBounds(400,400,110,40);
+        btnXoaKhu.setBounds(400,450,110,40);
+        btnThemKe.setBounds(1060,400,110,40);
+        btnXoaKe.setBounds(1060,450,110,40);
+        btnThemSach.setBounds(900,240,110,40);
+        btnXoaSach.setBounds(1050,240,110,40);
+        btnTimKiem.setBounds(750,240,110,40);
 
         pnKhuVuc.add(btnThemKhu);
         pnKhuVuc.add(btnXoaKhu);
@@ -133,79 +112,68 @@ public class PnQuanLyKhuVucGUI extends JPanel {
         pnKhuVuc.add(btnXoaSach);
         pnKhuVuc.add(btnTimKiem);
 
-        //=================TABLE=====================//
-
-        //=================Bảng Khu vực==============
-
+        // Bảng khu vực
         dtmKhu = new DefaultTableModel();
         dtmKhu.addColumn("Mã khu vực");
         dtmKhu.addColumn("Số lượng kệ");
         tblKhuVuc = new MyTable(dtmKhu);
-
-        tblKhuVuc.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-        tblKhuVuc.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-
-        TableColumnModel columnModelKhuVuc = tblKhuVuc.getColumnModel();
-        columnModelKhuVuc.getColumn(0).setPreferredWidth(70);
-        columnModelKhuVuc.getColumn(1).setPreferredWidth(70);
+        tblKhuVuc.getTableHeader().setBackground(colorHeader);
         JScrollPane scrTblKhuVuc = new JScrollPane(tblKhuVuc);
-        scrTblKhuVuc.setPreferredSize(new Dimension(140,120));
-        scrTblKhuVuc.setBounds(520,20,260,200);
-
+        scrTblKhuVuc.setBounds(80,350,280,200);
         pnKhuVuc.add(scrTblKhuVuc);
-        pnTableKhuVuc.add(pnKhuVuc);
 
-        //=================Bảng kệ==========
-
+        // Bảng kệ
         dtmKe = new DefaultTableModel();
         dtmKe.addColumn("Mã kệ");
         dtmKe.addColumn("Số lượng sách");
         tblKe = new MyTable(dtmKe);
-
-        tblKe.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-        tblKe.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-
-        TableColumnModel columnModelKe = tblKe.getColumnModel();
-        columnModelKe.getColumn(0).setPreferredWidth(70);
-        columnModelKe.getColumn(1).setPreferredWidth(70);
+        tblKe.getTableHeader().setBackground(colorHeader);
         JScrollPane scrTblKe = new JScrollPane(tblKe);
-        scrTblKe.setPreferredSize(new Dimension(140,120));
-        scrTblKe.setBounds(520,310,260,200);
-
+        scrTblKe.setBounds(750,350,280,200);
         pnKhuVuc.add(scrTblKe);
-        pnTableKhuVuc.add(pnKhuVuc);
 
-        //====================Bảng sách====================
-
+        // Bảng sách
         dtmSach = new DefaultTableModel();
         dtmSach.addColumn("Mã sách");
         dtmSach.addColumn("Mã phân sách");
         dtmSach.addColumn("Tên sách");
         dtmSach.addColumn("Trạng thái");
         tblSach = new MyTable(dtmSach);
-
-        tblSach.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-        tblSach.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-        tblSach.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
-
-        TableColumnModel columnModelSach = tblSach.getColumnModel();
-        columnModelSach.getColumn(0).setPreferredWidth(60);
-        columnModelSach.getColumn(1).setPreferredWidth(100);
-        columnModelSach.getColumn(2).setPreferredWidth(160);
-        columnModelSach.getColumn(3).setPreferredWidth(80);
+        tblSach.getTableHeader().setBackground(colorHeader);
         JScrollPane scrTblSach = new JScrollPane(tblSach);
-        scrTblSach.setPreferredSize(new Dimension(140,120));
-        scrTblSach.setBounds(0,20,500,400);
-
+        scrTblSach.setBounds(80,20,1100,200);
         pnKhuVuc.add(scrTblSach);
-        pnTableKhuVuc.add(pnKhuVuc);
-        //====================================================
+
         loadDataLenBangKhuVuc();
         loadDataLenBangKe();
         loadDataLenBangSach();
-        //=======================================================
+
+        pnTableKhuVuc.add(pnKhuVuc);
+        // Tăng kích thước font và chiều cao của header bảng
+        tblKhuVuc.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        tblKhuVuc.getTableHeader().setPreferredSize(new Dimension(tblKhuVuc.getTableHeader().getPreferredSize().width, 30));
+
+        tblKe.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        tblKe.getTableHeader().setPreferredSize(new Dimension(tblKe.getTableHeader().getPreferredSize().width, 30));
+
+        tblSach.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+        tblSach.getTableHeader().setPreferredSize(new Dimension(tblSach.getTableHeader().getPreferredSize().width, 30));
+
         this.add(pnTableKhuVuc);
     }
+
+    private JButton createButton(String text, Color color) {
+        JButton button = new JButton(text);
+        button.setPreferredSize(new Dimension(80, 40));
+        button.setBackground(color);
+        button.setForeground(Color.BLACK);
+        button.setFocusPainted(false);
+        button.setContentAreaFilled(true);
+        button.setOpaque(true);
+        return button;
+    }
+
+
 
     private void addEventsKhuVuc(){
         btnReset.addActionListener(new ActionListener() {
@@ -504,7 +472,7 @@ public class PnQuanLyKhuVucGUI extends JPanel {
             new MyDialog("Chưa chọn kệ để thêm sách!", MyDialog.ERROR_DIALOG);
             return;
         }else
-        themSachVaoKe.loadDataLenTable();
+            themSachVaoKe.loadDataLenTable();
         themSachVaoKe.setVisible(true);
         dtmSach.setRowCount(0);
         if (row > -1) {
@@ -564,5 +532,8 @@ public class PnQuanLyKhuVucGUI extends JPanel {
         }
         MyDialog dlg = new MyDialog("Số kết quả tìm được: " + dsps.size(), MyDialog.INFO_DIALOG);
     }
-}
 
+
+
+
+}

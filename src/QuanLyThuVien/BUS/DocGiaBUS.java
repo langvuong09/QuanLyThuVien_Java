@@ -105,10 +105,10 @@ public class DocGiaBUS {
         dg.setGmail(gmail);
 
         if(docGiaDAO.themDocGia(dg)){
-            new MyDialog("Sửa thành công!",MyDialog.SUCCESS_DIALOG);
+            new MyDialog("Thêm thành công!",MyDialog.SUCCESS_DIALOG);
             return true;
         }else {
-            new MyDialog("Sửa thất bại!",MyDialog.ERROR_DIALOG);
+            new MyDialog("Thêm thất bại!",MyDialog.ERROR_DIALOG);
             return false;
         }
     }
@@ -203,10 +203,10 @@ public class DocGiaBUS {
         dg.setGmail(gmail);
 
         if(docGiaDAO.suaDocGia(maDG,dg)){
-            new MyDialog("Thêm thành công!",MyDialog.SUCCESS_DIALOG);
+            new MyDialog("Sửa thành công!",MyDialog.SUCCESS_DIALOG);
             return true;
         }else {
-            new MyDialog("Thêm thất bại!",MyDialog.ERROR_DIALOG);
+            new MyDialog("Sửa thất bại!",MyDialog.ERROR_DIALOG);
             return false;
         }
     }

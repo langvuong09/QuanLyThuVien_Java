@@ -22,6 +22,7 @@ public class MyConnect {
         docFileText();
 
         String strConnect = "jdbc:mysql://" + severName + "/" + dbName;
+
         Properties pro = new Properties();
         pro.put("user", userName);
         pro.put("password", password);
@@ -42,21 +43,21 @@ public class MyConnect {
         userName = "root";
         password = "";
 
-        try {
-            FileInputStream fis = new FileInputStream("MySQL.txt");
-            InputStreamReader isr = new InputStreamReader(fis);
-            BufferedReader br = new BufferedReader(isr);
-
-            severName = br.readLine();
-            dbName = br.readLine();
-            userName = br.readLine();
-            password = br.readLine();
-
-            if (password == null) {
-                password = "";
-            }
-
-        } catch (Exception e) {
-        }
+//        try {
+//            FileInputStream fis = new FileInputStream("MySQL.txt");
+//            InputStreamReader isr = new InputStreamReader(fis);
+//            BufferedReader br = new BufferedReader(isr);
+//
+//            severName = br.readLine();
+//            dbName = br.readLine();
+//            userName = br.readLine();
+//            password = br.readLine();
+//
+//            if (password == null) {
+//                password = "";
+//            }
+//
+//        } catch (Exception e) {
+//        }
     }
 }

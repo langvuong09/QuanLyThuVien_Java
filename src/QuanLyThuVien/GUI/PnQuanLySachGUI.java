@@ -1,15 +1,5 @@
 package QuanLyThuVien.GUI;
 
-import QuanLyThuVien.BUS.*;
-import QuanLyThuVien.DTO.*;
-
-import static Main.Main.changLNF;
-import MyCustom.MyTable;
-import MyCustom.MyDialog;
-import MyCustom.XuLyFileExcel;
-import MyCustom.TransparentPanel;
-import QuanLyThuVien.BUS.SachBUS;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -26,10 +16,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import MyCustom.MyDialog;
+import MyCustom.MyTable;
+import MyCustom.XuLyFileExcel;
+import QuanLyThuVien.BUS.*;
+import QuanLyThuVien.DTO.Loai;
+import QuanLyThuVien.DTO.NXB;
+import QuanLyThuVien.DTO.PhanSach;
+import QuanLyThuVien.DTO.Sach;
+
 public class PnQuanLySachGUI extends JPanel {
 
     public PnQuanLySachGUI() {
-        changLNF("Windows");
         addConTrolsSach();
         addEventsSach();
 
@@ -37,11 +35,12 @@ public class PnQuanLySachGUI extends JPanel {
 
     LoaiBUS loaiBUS = new LoaiBUS();
     NXBBUS nxbBUS = new NXBBUS();
+    PhanSachBUS phanSachBUS = new PhanSachBUS();
     TacGiaBUS tacGiaBUS = new TacGiaBUS();
     SachBUS sachBUS = new SachBUS();
-    PhanSachBUS phanSachBUS = new PhanSachBUS();
     final Color colorPanel = new Color(247, 247, 247);
-    MyTable tblSach,tblPhanSach;
+    MyTable tblSach;
+    Component tblPhanSach;
     CardLayout cardSachGroup = new CardLayout();
     JPanel pnCardTabNhanVien;
     DefaultTableModel dtmSach,dtmPhanSach;
@@ -69,29 +68,30 @@ public class PnQuanLySachGUI extends JPanel {
                                     PANEL TABBED
         =========================================================================
          */
-        JPanel pnTop = new TransparentPanel();
+        JPanel pnTop = new JPanel();
         //<editor-fold defaultstate="collapsed" desc="Panel Tab Sách & Phân sách">
         Font fonts = new Font("", Font.PLAIN, 20);
         pnTop.setPreferredSize(new Dimension(w, 41));
         pnTop.setLayout(null);
-        pnTop.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, Color.GRAY));
+        pnTop.setBackground(new Color(0xA5FDEC));
+
 
         lblTabbedSach = new JLabel("Sách");
         lblTabbedSach.setHorizontalTextPosition(JLabel.CENTER);
         lblTabbedSach.setVerticalTextPosition(JLabel.CENTER);
         lblTabbedSach.setIcon(tabbedSelected);
-        lblTabbedSach.setBounds(2, 2, 140, 37);
+        lblTabbedSach.setBounds(2, 0, 140, 41);
         lblTabbedSach.setFont(fonts);
-        lblTabbedSach.setForeground(Color.white);
+        lblTabbedSach.setForeground(Color.WHITE);
         lblTabbedSach.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         lblTabbedPhanSach = new JLabel("Phân sách");
         lblTabbedPhanSach.setHorizontalTextPosition(JLabel.CENTER);
         lblTabbedPhanSach.setVerticalTextPosition(JLabel.CENTER);
         lblTabbedPhanSach.setIcon(tabbedDefault);
-        lblTabbedPhanSach.setBounds(143, 2, 140, 37);
+        lblTabbedPhanSach.setBounds(143, 0, 140, 41);
         lblTabbedPhanSach.setFont(fonts);
-        lblTabbedPhanSach.setForeground(Color.white);
+        lblTabbedPhanSach.setForeground(Color.WHITE);
         lblTabbedPhanSach.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         pnTop.add(lblTabbedSach);
@@ -107,13 +107,13 @@ public class PnQuanLySachGUI extends JPanel {
                                     PANEL Sách
         =========================================================================
          */
-        JPanel pnTableSach = new TransparentPanel();
+        JPanel pnTableSach = new JPanel();
         pnTableSach.setLayout(new BorderLayout());
 
-        JPanel pnTitleSach = new TransparentPanel();
+        JPanel pnTitleSach = new JPanel();
         JLabel lblTitleSach = new JLabel("Quản lý Sách");
         lblTitleSach.setFont(new Font("Arial", Font.BOLD, 28));
-        btnReset = new JButton(new ImageIcon("image/Refresh-icon.png"));
+        btnReset = new JButton(new ImageIcon(new ImageIcon("image/img_qltv/icon_reset.png").getImage().getScaledInstance(35, 35, Image.SCALE_SMOOTH)));
         btnReset.setFocusPainted(false);
         btnReset.setPreferredSize(new Dimension(40, 40));
         pnTitleSach.add(lblTitleSach);
@@ -138,47 +138,47 @@ public class PnQuanLySachGUI extends JPanel {
 
         //=================Thông tin sách==============
 
-        JPanel pnThongTinSach = new TransparentPanel();
+        JPanel pnThongTinSach = new JPanel();
         pnThongTinSach.setLayout(null);
 
         JLabel lblIDSach = new JLabel("Mã sách:");
         lblIDSach.setFont(font);
         txtIDSach.setFont(font);
         txtIDSach.setEditable(false);
-        lblIDSach.setBounds(20, 0, 140, 25);
-        txtIDSach.setBounds(120, 0, 200, 25);
+        lblIDSach.setBounds(320, 0, 140, 25);
+        txtIDSach.setBounds(420, 0, 200, 25);
 
         JLabel lblTenSach = new JLabel("Tên sách:");
         lblTenSach.setFont(font);
         txtTenSach.setFont(font);
-        lblTenSach.setBounds(20, 50, 140, 25);
-        txtTenSach.setBounds(120, 50, 200, 25);
+        lblTenSach.setBounds(320, 50, 140, 25);
+        txtTenSach.setBounds(420, 50, 200, 25);
 
         JLabel lblLoaiSach = new JLabel("Loại sách:");
         lblLoaiSach.setFont(font);
         cmbLoai.setFont(font);
         cmbLoai.setPreferredSize(txtIDSach.getPreferredSize());
-        lblLoaiSach.setBounds(20, 100, 140, 25);
-        cmbLoai.setBounds(120,100,200,25);
+        lblLoaiSach.setBounds(320, 100, 140, 25);
+        cmbLoai.setBounds(420,100,200,25);
 
         JLabel lblNXB = new JLabel("Nhà xuất bản:");
         lblNXB.setFont(font);
         cmbNXB.setFont(font);
         cmbNXB.setPreferredSize(txtIDSach.getPreferredSize());
-        lblNXB.setBounds(15, 150, 140, 25);
-        cmbNXB.setBounds(120,150,200,25);
+        lblNXB.setBounds(315, 150, 140, 25);
+        cmbNXB.setBounds(420,150,200,25);
 
         JLabel lblTacGia = new JLabel("Tác giả:");
         lblTacGia.setFont(font);
         txtTacGia.setFont(font);
-        lblTacGia.setBounds(20, 200, 140, 25);
-        txtTacGia.setBounds(120, 200, 200, 25);
+        lblTacGia.setBounds(320, 200, 140, 25);
+        txtTacGia.setBounds(420, 200, 200, 25);
 
         JLabel lblGia = new JLabel("Giá:");
         lblGia.setFont(font);
         txtGia.setFont(font);
-        lblGia.setBounds (20, 250, 140, 25);
-        txtGia.setBounds (120, 250, 200, 25);
+        lblGia.setBounds (320, 250, 140, 25);
+        txtGia.setBounds (420, 250, 200, 25);
 
         pnThongTinSach.add(lblIDSach);
         pnThongTinSach.add(txtIDSach);
@@ -193,23 +193,23 @@ public class PnQuanLySachGUI extends JPanel {
         pnThongTinSach.add(lblGia);
         pnThongTinSach.add(txtGia);
 
-        lblHinhAnh.setPreferredSize(new Dimension(180,180));
+        lblHinhAnh.setPreferredSize(new Dimension(150,180));
         lblHinhAnh.setBorder(BorderFactory.createLineBorder(Color.GRAY));
         lblHinhAnh.setIcon(getAnhSach(""));
-        lblHinhAnh.setBounds(540, 0, 180, 180);
+        lblHinhAnh.setBounds(40, 0, 150, 180);
 
         JLabel lblSoLuong = new JLabel("Số lượng:");
         lblSoLuong.setFont(font);
         txtSoLuong.setFont(font);
         txtSoLuong.setEditable(false);
-        lblSoLuong.setBounds(400,200,140,25);
-        txtSoLuong.setBounds(520,200,220,25);
+        lblSoLuong.setBounds(320,300,140,25);
+        txtSoLuong.setBounds(420,300,200,25);
 
         JLabel lblTimKiem = new JLabel("Tên sách cần tìm:");
         lblTimKiem.setFont(font);
         txtTimKiem.setFont(font);
-        lblTimKiem.setBounds(350, 250, 300, 25);
-        txtTimKiem.setBounds(520, 250, 250, 25);
+        lblTimKiem.setBounds(750, 0, 300, 25);
+        txtTimKiem.setBounds(900, 0, 250, 25);
 
         pnThongTinSach.add(lblHinhAnh);
         pnThongTinSach.add(lblSoLuong);
@@ -244,20 +244,36 @@ public class PnQuanLySachGUI extends JPanel {
         btnDocGia.setFont(fontButton);
         btnChonAnh.setFont(fontButton);
 
-        btnThem.setIcon(new ImageIcon("image/add-icon.png"));
-        btnSua.setIcon(new ImageIcon("image/Pencil-icon.png"));
-        btnXoa.setIcon(new ImageIcon("image/delete-icon.png"));
-        btnTim.setIcon(new ImageIcon("image/Search-icon.png"));
-        btnXuatExcel.setIcon(new ImageIcon("image/excel-icon.png"));
-        btnNhapExcel.setIcon(new ImageIcon("image/excel-icon.png"));
+       
+        btnThem.setIcon(new ImageIcon(new ImageIcon("image/img_qltv/icon_them.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
+        btnSua.setIcon(new ImageIcon(new ImageIcon("image/img_qltv/icon_sua.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
+        btnXoa.setIcon(new ImageIcon(new ImageIcon("image/img_qltv/icon_xoa.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
+        btnTim.setIcon(new ImageIcon(new ImageIcon("image/img_qltv/icon_search.png").getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
 
-        btnThem.setBounds(65, 300, 110, 40);
-        btnSua.setBounds(180, 300, 110, 40);
-        btnXoa.setBounds(295, 300, 110, 40);
-        btnTim.setBounds(410, 300, 110, 40);
-        btnXuatExcel.setBounds(525, 300, 105, 40);
-        btnNhapExcel.setBounds(635, 300, 105, 40);
-        btnChonAnh.setBounds(400, 150, 120, 30);
+        btnXuatExcel.setIcon(new ImageIcon(""));
+        btnNhapExcel.setIcon(new ImageIcon(""));
+
+         // Thiết lập màu nền nhạt RGB và màu chữ
+        btnThem.setBackground(new Color(200, 255, 200)); 
+        btnThem.setForeground(Color.BLACK);
+
+        btnSua.setBackground(new Color(255, 230, 200)); 
+        btnSua.setForeground(Color.BLACK);
+
+        btnXoa.setBackground(new Color(255, 200, 200));
+        btnXoa.setForeground(Color.BLACK);
+
+        btnTim.setBackground(new Color(200, 220, 255)); 
+        btnTim.setForeground(Color.BLACK);
+
+        btnThem.setBounds(750, 100, 110, 40);
+        btnSua.setBounds(900, 100, 110, 40);
+        btnXoa.setBounds(1050, 100, 110, 40);
+        btnTim.setBounds(750, 150, 110, 40);
+        btnXuatExcel.setBounds(900, 150, 110, 40);
+        btnNhapExcel.setBounds(1050, 150, 110, 40);
+        btnChonAnh.setBounds(60, 200, 110, 30);
+        btnChonAnh.setBackground(new Color(101, 250, 206));
 
         pnThongTinSach.add(btnThem);
         pnThongTinSach.add(btnSua);
@@ -265,7 +281,7 @@ public class PnQuanLySachGUI extends JPanel {
         pnThongTinSach.add(btnTim);
         pnThongTinSach.add(btnXuatExcel);
         pnThongTinSach.add(btnNhapExcel);
-         pnThongTinSach.add(btnChonAnh);
+        pnThongTinSach.add(btnChonAnh);
 
         pnTableSach.add(pnThongTinSach);
 
@@ -283,9 +299,10 @@ public class PnQuanLySachGUI extends JPanel {
 
         tblSach = new MyTable(dtmSach);
 
-
         tblSach.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
         tblSach.getColumnModel().getColumn(7).setCellRenderer(centerRenderer);
+        tblSach.setDefaultEditor(Object.class, null);
+        tblSach.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
         TableColumnModel columnModelSach = tblSach.getColumnModel();
         columnModelSach.getColumn(0).setPreferredWidth(60);
@@ -299,9 +316,9 @@ public class PnQuanLySachGUI extends JPanel {
 
 
         JScrollPane scrTblSach = new JScrollPane(tblSach);
-        scrTblSach.setPreferredSize(new Dimension(900, 200));
+        scrTblSach.setPreferredSize(new Dimension(1200, 250));
 
-        scrTblSach.setBounds(0, 360, 820, 205);
+        scrTblSach.setBounds(50, 360, 1150, 230);
         //</editor-fold>
         pnThongTinSach.add(scrTblSach, BorderLayout.CENTER);
 
@@ -313,42 +330,42 @@ public class PnQuanLySachGUI extends JPanel {
         =========================================================================
          */
 
-        JPanel pnTablePhanSach = new TransparentPanel();
+        JPanel pnTablePhanSach = new JPanel();
         pnTablePhanSach.setLayout(new BorderLayout());
 
-        JPanel pnTitlePhanSach = new TransparentPanel();
+        JPanel pnTitlePhanSach = new JPanel();
         JLabel lblTitlePhanSach = new JLabel("Quản lý phân sách");
         lblTitlePhanSach.setFont(new Font("Arial", Font.BOLD,28));
         pnTitlePhanSach.add(lblTitlePhanSach);
         pnTablePhanSach.add(pnTitlePhanSach,BorderLayout.NORTH);
 
-        JPanel pnPhanSach = new TransparentPanel();
+        JPanel pnPhanSach = new JPanel();
         pnPhanSach.setLayout(null);
 
         JLabel lblTimPhanSach = new JLabel("Tìm phân sách:");
         lblTimPhanSach.setFont(font);
-        lblTimPhanSach.setBounds(20,35,130,26);
+        lblTimPhanSach.setBounds(50,35,150,26);
         JLabel lblMaSach = new JLabel("ID sách:");
         lblMaSach.setFont(font);
-        lblMaSach.setBounds(145,15,130,26);
+        lblMaSach.setBounds(250,15,200,26);
         JLabel lblMaPhanSach = new JLabel("ID Phân sách:");
         lblMaPhanSach.setFont(font);
-        lblMaPhanSach.setBounds(145,50,130,26);
+        lblMaPhanSach.setBounds(250,50,200,26);
         JLabel lblTenPhanSach = new JLabel("Tên sách:");
         lblTenPhanSach.setFont(font);
-        lblTenPhanSach.setBounds(340,35,130,26);
+        lblTenPhanSach.setBounds(600,35,130,26);
 
         txtMaPhanSach.setFont(font);
-        txtMaPhanSach.setBounds(260,50,60,26);
+        txtMaPhanSach.setBounds(400,50,150,26);
         txtMaSach.setFont(font);
-        txtMaSach.setBounds(260,15,60,26);
+        txtMaSach.setBounds(400,15,150,26);
         txtTenPhanSach.setFont(font);
-        txtTenPhanSach.setBounds(420,35,200,26);
+        txtTenPhanSach.setBounds(700,35,200,26);
 
         btnTimPhanSach = new JButton("Tìm kiếm");
         btnTimPhanSach.setFont(fontButton);
-        btnTimPhanSach.setIcon(new ImageIcon("image/Search-icon.png"));
-        btnTimPhanSach.setBounds(640,28,140,40);
+        btnTimPhanSach.setBounds(1000,28,140,40);
+        btnTimPhanSach.setBackground(new Color(200, 220, 255)); 
 
         pnPhanSach.add(lblTimPhanSach);
         pnPhanSach.add(lblMaPhanSach);
@@ -368,19 +385,9 @@ public class PnQuanLySachGUI extends JPanel {
         dtmPhanSach.addColumn("Trạng thái");
         tblPhanSach = new MyTable(dtmPhanSach);
 
-        tblPhanSach.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-        tblPhanSach.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-        tblPhanSach.getColumnModel().getColumn(3).setCellRenderer(centerRenderer);
-
-        TableColumnModel columnModelPhanSach = tblPhanSach.getColumnModel();
-        columnModelPhanSach.getColumn(0).setPreferredWidth(110);
-        columnModelPhanSach.getColumn(1).setPreferredWidth(80);
-        columnModelPhanSach.getColumn(2).setPreferredWidth(240);
-        columnModelPhanSach.getColumn(3).setPreferredWidth(120);
-
         JScrollPane scrTblPhanSach = new JScrollPane(tblPhanSach);
         scrTblPhanSach.setPreferredSize(new Dimension(900,500));
-        scrTblPhanSach.setBounds(0,115,818,500);
+        scrTblPhanSach.setBounds(50,115,1150,500);
         //</editor-fold>
         pnPhanSach.add(scrTblPhanSach, BorderLayout.CENTER);
 
@@ -392,12 +399,12 @@ public class PnQuanLySachGUI extends JPanel {
         pnCardTabNhanVien.add(pnTableSach,"1");
         pnCardTabNhanVien.add(pnTablePhanSach,"2");
 
-        this.add(pnCardTabNhanVien);
         loadDataLoai();
         loadDataNXB();
-//        loadDataTG();
         loadDataLenTableSach();
         loadDataLenTablePhanSach();
+        this.add(pnCardTabNhanVien);
+     
     }
 
     private void addEventsSach() {
@@ -457,6 +464,7 @@ public class PnQuanLySachGUI extends JPanel {
 
             }
         });
+
         btnReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -473,6 +481,7 @@ public class PnQuanLySachGUI extends JPanel {
 
             }
         });
+
         tblSach.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -560,18 +569,16 @@ public class PnQuanLySachGUI extends JPanel {
                 xuLyThemNXB();
             }
         });
-//        cmbTacGia.addActionListener(new ActionListener() {
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                xuLyThemTG();
-//            }
-//        });
+
         btnTimPhanSach.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 xuLyTimKiemPhanSach();
             }
         });
+
+
+
     }
 
     private void xuLyThemLoai(){
@@ -614,26 +621,6 @@ public class PnQuanLySachGUI extends JPanel {
         cmbNXB.addItem("Khác...");
     }
 
-//    private void xuLyThemTG(){
-//        int x = cmbTacGia.getSelectedIndex();
-//        if(x == cmbTacGia.getItemCount() -1){
-//            DlgTacGia tgGUI = new DlgTacGia();
-//            tgGUI.setVisible(true);
-//            loadDataTG();
-//        }
-//    }
-
-//    private void loadDataTG(){
-//        cmbTacGia.removeAllItems();
-//
-//        ArrayList<TacGia> dstg = tacGiaBUS.getListTacGia();
-//        cmbTacGia.addItem("0 - Chọn tác giả");
-//        for(TacGia tg : dstg){
-//            cmbTacGia.addItem(tg.getMaTacGia() +" - "+tg.getTenTacGia());
-//        }
-//        cmbTacGia.addItem("Khác...");
-//    }
-
     private void loadDataLenTableSach(){
         sachBUS.docDanhSach();
         dtmSach.setRowCount(0);
@@ -649,7 +636,7 @@ public class PnQuanLySachGUI extends JPanel {
             vec.add(s.getTenSach());
             vec.add(s.getGiaSach());
             vec.add(s.getHinhAnh());
-           vec.add(s.getSoLuong());
+            vec.add(s.getSoLuong());
             dtmSach.addRow(vec);
         }
     }
@@ -750,16 +737,11 @@ public class PnQuanLySachGUI extends JPanel {
                     break;
                 }
             }
-//            for(int i=0;i<cmbTacGia.getItemCount();i++){
-//                if(cmbTacGia.getItemAt(i).contains(tacGia)){
-//                    tg=i;
-//                    break;
-//                }
-//            }
+
 
             cmbLoai.setSelectedIndex(l);
             cmbNXB.setSelectedIndex(mnxb);
-//            cmbTacGia.setSelectedIndex(tg);
+
             loadAnh("image/Sach/"+ anh);
         }
     }
@@ -848,4 +830,7 @@ public class PnQuanLySachGUI extends JPanel {
         }
         MyDialog dlg = new MyDialog("Số kết quả tìm được: " + dsps.size(), MyDialog.INFO_DIALOG);
     }
+
+
+
 }

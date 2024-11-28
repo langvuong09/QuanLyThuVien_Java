@@ -1,12 +1,13 @@
 package QuanLyThuVien.GUI;
 
-import QuanLyThuVien.BUS.NXBBUS;
-import QuanLyThuVien.DTO.NXB;
 import MyCustom.MyDialog;
 import MyCustom.MyTable;
+import QuanLyThuVien.BUS.NXBBUS;
+import QuanLyThuVien.DTO.NXB;
+
+import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.Vector;
-import javax.swing.table.DefaultTableModel;
 
 public class DlgNXB extends javax.swing.JDialog {
 
@@ -67,7 +68,7 @@ public class DlgNXB extends javax.swing.JDialog {
         jPanel1.add(jLabel1);
 
         tblNXB.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        tblNXB.setModel(new javax.swing.table.DefaultTableModel(
+        tblNXB.setModel(new DefaultTableModel(
                 new Object [][] {
 
                 },

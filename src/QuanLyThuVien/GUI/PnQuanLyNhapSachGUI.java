@@ -70,7 +70,8 @@ public class PnQuanLyNhapSachGUI extends JPanel {
                                     PANEL TABBED
         =========================================================================
          */
-        JPanel pnTop = new TransparentPanel();
+        JPanel pnTop = new JPanel();
+        pnTop.setBackground(new Color(0xA5FDEC));
         //<editor-fold defaultstate="collapsed" desc="Panel Tab Nhân viên & Quyền">
         Font fonts = new Font("", Font.PLAIN, 20);
         pnTop.setPreferredSize(new Dimension(w, 41));
@@ -81,7 +82,7 @@ public class PnQuanLyNhapSachGUI extends JPanel {
         lblTabbedNhapSach.setHorizontalTextPosition(JLabel.CENTER);
         lblTabbedNhapSach.setVerticalTextPosition(JLabel.CENTER);
         lblTabbedNhapSach.setIcon(tabbedSelected);
-        lblTabbedNhapSach.setBounds(2,2,140,37);
+        lblTabbedNhapSach.setBounds(2,0,140,37);
         lblTabbedNhapSach.setFont(fonts);
         lblTabbedNhapSach.setForeground(Color.WHITE);
         lblTabbedNhapSach.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -90,7 +91,7 @@ public class PnQuanLyNhapSachGUI extends JPanel {
         lblTabbedLichSu.setHorizontalTextPosition(JLabel.CENTER);
         lblTabbedLichSu.setVerticalTextPosition(JLabel.CENTER);
         lblTabbedLichSu.setIcon(tabbedDefault);
-        lblTabbedLichSu.setBounds(143,2,140,37);
+        lblTabbedLichSu.setBounds(143,0,140,37);
         lblTabbedLichSu.setFont(fonts);
         lblTabbedLichSu.setForeground(Color.WHITE);
         lblTabbedLichSu.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));

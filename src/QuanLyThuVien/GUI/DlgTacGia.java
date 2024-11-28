@@ -1,12 +1,13 @@
 package QuanLyThuVien.GUI;
 
-import QuanLyThuVien.BUS.TacGiaBUS;
-import QuanLyThuVien.DTO.TacGia;
 import MyCustom.MyDialog;
 import MyCustom.MyTable;
+import QuanLyThuVien.BUS.TacGiaBUS;
+import QuanLyThuVien.DTO.TacGia;
+
+import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.Vector;
-import javax.swing.table.DefaultTableModel;
 
 public class DlgTacGia extends javax.swing.JDialog {
 
@@ -67,7 +68,7 @@ public class DlgTacGia extends javax.swing.JDialog {
         jPanel1.add(jLabel1);
 
         tblTacGia.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        tblTacGia.setModel(new javax.swing.table.DefaultTableModel(
+        tblTacGia.setModel(new DefaultTableModel(
                 new Object [][] {
 
                 },

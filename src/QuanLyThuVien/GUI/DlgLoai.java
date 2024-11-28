@@ -1,12 +1,13 @@
 package QuanLyThuVien.GUI;
 
-import QuanLyThuVien.BUS.LoaiBUS;
-import QuanLyThuVien.DTO.Loai;
 import MyCustom.MyDialog;
 import MyCustom.MyTable;
+import QuanLyThuVien.BUS.LoaiBUS;
+import QuanLyThuVien.DTO.Loai;
+
+import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 import java.util.Vector;
-import javax.swing.table.DefaultTableModel;
 
 public class DlgLoai extends javax.swing.JDialog {
 
@@ -67,7 +68,7 @@ public class DlgLoai extends javax.swing.JDialog {
         jPanel1.add(jLabel1);
 
         tblLoai.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        tblLoai.setModel(new javax.swing.table.DefaultTableModel(
+        tblLoai.setModel(new DefaultTableModel(
                 new Object [][] {
 
                 },
