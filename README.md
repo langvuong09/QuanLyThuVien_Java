@@ -1,5 +1,5 @@
 # ĐỒ ÁN QUẢN LÝ THƯ VIỆN
-**##1. Giới thiệu**
+## 1. Giới thiệu
 - Đồ án được tạo dựa trên hệ thống mượn sách ở các nhà sách tư nhân.
 - Ưu điểm:
 <br>\+ Hỗ trợ cho người dùng quản lý thư viện.
@@ -7,12 +7,12 @@
 <br>\+ Có đầy đủ các chức năng quản lý sách, phiếu mượn, phiếu trả, phiếu phạt, nhập sách, quản lý nhân viên, đọc giả, phân quyền, thống kê.
 - Nhược điểm:
 <br>\+ Phân quyền vẫn còn hạn chế nếu muốn thêm chức năng quản lý.
-**##2. Công nghệ sử dụng**
+## 2. Công nghệ sử dụng
 - Ngôn ngữ: Java.
 - Database: MySQL
 - Ứng dụng sử dụng: XAMPP, Intellij.
 - Version control: Git
-**##3. Các chức năng chính**
+## 3. Các chức năng chính
 - Quản lý sách
 - Quản lý khu vực
 - Quản lý phiếu mượn
@@ -23,7 +23,7 @@
 - Quản lý đọc giả
 - Phân quyền
 - Thống kê
-**##4. Cách cài đặt**
+## 4. Cách cài đặt
 - Bước 1: Tải file ZIP của dự án về máy và giải nén.
 - Bước 2: Cài đặt XAMPP bảng mới nhất về máy tính.
   link XAMPP: [XAMPP_Download](https://www.apachefriends.org/download.html)
