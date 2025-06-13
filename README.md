@@ -11,7 +11,7 @@
 2. Cách cài đặt:
 - Bước 1: Tải file ZIP của dự án về máy và giải nén.
 - Bước 2: Cài đặt XAMPP về máy tính.
-  link XAMPP: https://www.apachefriends.org/download.html [XAMPP_Download]
+  link XAMPP: [https://www.apachefriends.org/download.html] (XAMPP_Download)
 - Bước 3: Bật apache và mysql của XAMPP. Nhấn vào admin của MySQL sẽ dẫn tới trang web localhost.
   Nhấn vào thêm "New" tạo 1 database tên là quanlythuvien.
 - Bước 4: Nhấn vào "Enter" trên thanh công cụ. Sau đó nhấn vào "Chọn tệp" rồi tìm file nằm trong folder database có tên là "quanlythuvien.sql" trong file ZIP được giải nén. Rồi nhấn nút enter dưới cùng.
