@@ -2,8 +2,8 @@
 # ĐỒ ÁN QUẢN LÝ THƯ VIỆN
 1. Mô tả
 - Đồ án được tạo dựa trên hệ thống mượn sách ở các nhà sách tư nhân.
-- Ưu điểm: \+ Hỗ trợ cho người dùng quản lý thư viện. \+ Đáp ứng phần lớn các yêu cầu trong vấn đề quản lý thư viện. \+ Có đầy đủ các chức năng quản lý sách, phiếu mượn, phiếu trả, phiếu phạt, nhập sách, quản lý nhân viên, đọc giả, phân quyền, thống kê.
-- Nhược điểm: \+ Phân quyền vẫn còn hạn chế nếu muốn thêm chức năng quản lý.
+- Ưu điểm:  \+ Hỗ trợ cho người dùng quản lý thư viện.  \+ Đáp ứng phần lớn các yêu cầu trong vấn đề quản lý thư viện.  \+ Có đầy đủ các chức năng quản lý sách, phiếu mượn, phiếu trả, phiếu phạt, nhập sách, quản lý nhân viên, đọc giả, phân quyền, thống kê.
+- Nhược điểm:  \+ Phân quyền vẫn còn hạn chế nếu muốn thêm chức năng quản lý.
 2. Cách cài đặt:
 - Bước 1: Tải file ZIP của dự án về máy và giải nén.
 - Bước 2: Cài đặt XAMPP về máy tính.
