@@ -34,3 +34,6 @@
   Nếu chưa có ứng dụng có thể tải 1 trong 2 link dưới đây:
   <br>link VSCode: [VSCode_Download](https://code.visualstudio.com/)
   <br>link Intellij: [Intellij_2023.3.3_Download](https://download.jetbrains.com/idea/ideaIU-2023.3.3.exe?_gl=1*lqud24*_gcl_au*MTc5NTUxOTA3NC4xNzQ5ODM0NDM5*FPAU*MTc5NTUxOTA3NC4xNzQ5ODM0NDM5*_ga*MTE3MjA4NTg4Mi4xNzExMTkyOTgy*_ga_9J976DJZ68*czE3NDk4MzQ0MzkkbzEyJGcxJHQxNzQ5ODM0Njk1JGozMyRsMCRoMA..)
+## 5. Giao diện
+- Đăng nhập
+  ![Screenshot 2025-06-14 194330](https://github.com/user-attachments/assets/dc4993b4-2a7a-47d8-9779-3b9865f219d3)
