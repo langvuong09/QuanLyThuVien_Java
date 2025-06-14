@@ -132,7 +132,7 @@ public class ThongKeDAO {
         return kq;
     }
 
-    public double getDoanhThuThang(int thang, int nam) {
+    public int getDoanhThuThang(int thang, int nam) {
         try {
             String thangBD = nam + "-" + thang + "-01";
             String thangKT = nam + "-" + (thang + 1) + "-01";
@@ -148,7 +148,7 @@ public class ThongKeDAO {
             pre.setString(4, thangKT);
             ResultSet rs = pre.executeQuery();
             while (rs.next()) {
-                return Double.parseDouble(rs.getInt(1) + "");
+                return Integer.parseInt(rs.getInt(1) + "");
             }
         } catch (Exception e) {
             e.printStackTrace();

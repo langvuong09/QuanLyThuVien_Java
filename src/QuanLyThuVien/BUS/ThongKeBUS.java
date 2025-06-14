@@ -12,7 +12,7 @@ public class ThongKeBUS {
         return thongKeDAO.getThongKe(nam);
     }
 
-    public double getDoanhThuThang(int thang, int nam) {
+    public int getDoanhThuThang(int thang, int nam) {
         return thongKeDAO.getDoanhThuThang(thang, nam);
     }
 

@@ -4,10 +4,13 @@ package QuanLyThuVien.GUI;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Vector;
+import java.util.Calendar;
 
 import QuanLyThuVien.BUS.*;
 import QuanLyThuVien.DAO.PhieuPhatDAO;
@@ -16,11 +19,20 @@ import QuanLyThuVien.DTO.PhieuMuon;
 import com.toedter.calendar.JDateChooser;
 import javax.swing.border.TitledBorder;
 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 public class PnQuanLyThongKeGUI extends JPanel {
     public PnQuanLyThongKeGUI(){
         addControls();
+        addEvents();
     }
+    ThongKeBUS tkBUS = new ThongKeBUS();
     DocGiaBUS dgBUS = new DocGiaBUS();
     PhieuMuonBUS pmBUS = new PhieuMuonBUS();
     private DocGiaBUS docGiaBUS = new DocGiaBUS();
@@ -28,7 +40,9 @@ public class PnQuanLyThongKeGUI extends JPanel {
     private LoaiBUS loaiBUS=new LoaiBUS();
     private PhieuTraBUS ptBUS=new PhieuTraBUS();
     private PhieuPhatDAO ppBUS=new PhieuPhatDAO();
-    DefaultTableModel tableModel,modelChuaTra,modelDaTra;
+    DefaultTableModel modelChuaTra,modelDaTra;
+    JFreeChart fctThuNhap;
+    JComboBox<String> cbNam;
 
     public void addControls(){
         this.setSize(1290, 740);
@@ -55,11 +69,11 @@ public class PnQuanLyThongKeGUI extends JPanel {
         statsPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         statsPanel.setPreferredSize(new Dimension(this.getWidth(), 180));
 
-        String[] labels = {"THỂ LOẠI", "ĐỌC GIẢ", "PHIẾU MƯỢN", "PHIẾU TRẢ", "PHIẾU PHẠT"};
+        String[] labels = {"NHÂN VIÊN", "ĐỌC GIẢ", "PHIẾU MƯỢN", "PHIẾU TRẢ", "PHIẾU PHẠT"};
         Color[] colors = {new Color(102, 204, 255), new Color(153, 255, 153), new Color(255, 204, 102),
                 new Color(255, 102, 102), new Color(102, 153, 255), new Color(255, 153, 102)};
 
-        String theloai=loaiBUS.getListLoai().size()+"";
+        String theloai=nhanVienBUS.getListNhanVien().size()+"";
         String docgia=docGiaBUS.getListDocGia().size()+"";
         String pmuon=pmBUS.getListPhieuMuon().size()+"";
         String ptra=ptBUS.getListPhieuTra().size()+"";
@@ -88,30 +102,25 @@ public class PnQuanLyThongKeGUI extends JPanel {
 
         mainPanel.add(statsPanel, BorderLayout.NORTH);
 
-        // Bảng thông tin mượn sách
-        String[] columnNames = {"Mã", "Đọc Gỉa", "Nhân Viên", "Ngày Mượn", "Hạn Trả", "Tổng tiền"};
-        Object[][] data = {};
+        //BIEU DO COT
+        cbNam = new JComboBox<>();
 
-        tableModel = new DefaultTableModel(data, columnNames);
-        JTable table = new JTable(tableModel);
+        int namHienTai = Calendar.getInstance().get(Calendar.YEAR);
+        for(int nam = 2024; nam <= namHienTai;nam++){
+            cbNam.addItem(String.valueOf(nam));
+        }
+        fctThuNhap = ChartFactory.createBarChart("BIỂU ĐỒ DOANH THU CỦA THƯ VIỆN","THÁNG","VND",duLieuThuNhap(),
+        PlotOrientation.VERTICAL,false,false,false);
+        ChartPanel chartPanel =new ChartPanel(fctThuNhap);
+        JPanel pnChart = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        mainPanel.add(chartPanel,BorderLayout.CENTER);
+        JPanel pnCB = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        cbNam.setPreferredSize(new Dimension(80,30));
+        cbNam.setFont(new Font("Arial", Font.PLAIN, 16));
+        pnCB.add(cbNam);
+        pnCB.setPreferredSize(new Dimension(1000,50));
+        mainPanel.add(pnCB,BorderLayout.SOUTH);
 
-        JTableHeader tableHeader = table.getTableHeader();
-        DefaultTableCellRenderer headerRenderer = (DefaultTableCellRenderer) tableHeader.getDefaultRenderer();
-        headerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        TableColumnModel columnModelPhieuMuon = table.getColumnModel();
-        columnModelPhieuMuon.getColumn(0).setPreferredWidth(50);
-        columnModelPhieuMuon.getColumn(1).setPreferredWidth(200);
-        columnModelPhieuMuon.getColumn(2).setPreferredWidth(200);
-        columnModelPhieuMuon.getColumn(3).setPreferredWidth(200);
-        columnModelPhieuMuon.getColumn(4).setPreferredWidth(200);
-        columnModelPhieuMuon.getColumn(5).setPreferredWidth(200);
-        tableHeader.setFont(new Font("Arial", Font.BOLD, 18));
-        tableHeader.setForeground(Color.BLACK);
-        tableHeader.setBackground(new Color(101, 224, 199));
-        table.setRowHeight(30);
-        table.setFont(new Font("Arial", Font.PLAIN, 18));
-        JScrollPane scrollPane = new JScrollPane(table);
-        mainPanel.add(scrollPane, BorderLayout.CENTER);
         cardPanel.add(mainPanel, "Main");
 
         // Tạo JPanel cho DS chưa trả
@@ -276,10 +285,29 @@ public class PnQuanLyThongKeGUI extends JPanel {
         }
         xuLyLocDocGiaDaTraHetSach();
         xuLyLocDocGiaConMuonSach();
-        loadDataLenBangPhieuMuon();
         this.add(buttonPanel1, BorderLayout.SOUTH);
 
+    }
 
+    private void addEvents(){
+        cbNam.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Gọi lại hàm cập nhật dataset cho biểu đồ
+                CategoryPlot plot = fctThuNhap.getCategoryPlot();
+                plot.setDataset(duLieuThuNhap()); // Gán lại dataset mới
+            }
+        });
+    }
+
+    private CategoryDataset duLieuThuNhap(){
+        int namDuocChon = Integer.parseInt(cbNam.getSelectedItem().toString());
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for(int i = 1; i <= 12; i++) {
+            int doanhThuThang = tkBUS.getDoanhThuThang(i, namDuocChon);
+            dataset.addValue(doanhThuThang, "VND", String.valueOf(i));
+        }
+        return dataset;
     }
 
     public void xuLyLocDocGiaConMuonSach(){
@@ -317,28 +345,4 @@ public class PnQuanLyThongKeGUI extends JPanel {
                 modelDaTra.addRow(vec);
         }
     }
-
-    private void loadDataLenBangPhieuMuon(){
-        pmBUS.docListPhieuMuon();
-        tableModel.setRowCount(0);
-
-        ArrayList<PhieuMuon> dspm = pmBUS.getListPhieuMuon();
-
-        DecimalFormat dcf = new DecimalFormat("###,###");
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
-        for (PhieuMuon pm : dspm) {
-            Vector vec = new Vector();
-            vec.add(pm.getMaPhieuMuon());
-            String tenDG = docGiaBUS.getTenDocGia(pm.getMaDocGia());
-            vec.add(tenDG);
-            String tenNV = nhanVienBUS.getTenNhanVien(pm.getMaNhanVien());
-            vec.add(tenNV);
-            vec.add(sdf.format(pm.getNgayMuon()));
-            vec.add(sdf.format(pm.getNgayTra()));
-            vec.add(dcf.format(pm.getTongTien()));
-            tableModel.addRow(vec);
-        }
-    }
-
 }
