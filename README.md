@@ -37,27 +37,38 @@
 ## 5. Giao diện
 **Đăng nhập**
 ![Screenshot 2025-06-14 194330](https://github.com/user-attachments/assets/dc4993b4-2a7a-47d8-9779-3b9865f219d3)
+
 **Trang chủ**
 ![Screenshot 2025-06-14 194352](https://github.com/user-attachments/assets/15007073-1937-49e0-a00a-40a0f3f8c3d0)
+
 **Quản lý sách**
 ![Screenshot 2025-06-14 194411](https://github.com/user-attachments/assets/61edb8d2-d05c-4f94-b58f-50af790815df)
 ![Screenshot 2025-06-14 194428](https://github.com/user-attachments/assets/bd1f3d61-23c7-4700-9c3e-9f91a5b945e3)
+
 **Quản lý khu vực**
 ![Screenshot 2025-06-14 194441](https://github.com/user-attachments/assets/dda25491-5a34-4bd5-9eae-9bc4a7c85668)
+
 **Quản lý đọc giả**
 ![Screenshot 2025-06-14 194455](https://github.com/user-attachments/assets/e75f1073-6193-485d-93a8-d9693b118299)
+
 **Quản lý phiếu mượn**
 ![Screenshot 2025-06-14 194521](https://github.com/user-attachments/assets/b1da52a0-4a4e-4853-948a-512dd99556fa)
+
 **Quản lý phiếu phạt**
 ![Screenshot 2025-06-14 194537](https://github.com/user-attachments/assets/cbd102d1-838b-4617-8580-e3dce5198a97)
+
 **Quản lý phiếu trả**
 ![Screenshot 2025-06-14 194549](https://github.com/user-attachments/assets/b39eae7c-ff87-4717-bbdb-1b598244a17c)
+
 **Quản lý nhân viên**
 ![Screenshot 2025-06-14 194604](https://github.com/user-attachments/assets/b5ec1f81-cd6b-45c7-82a8-ea8bf6acab3c)
+
 **Phân quyền**
 ![Screenshot 2025-06-14 194618](https://github.com/user-attachments/assets/05629e0d-867a-4b9f-bcb1-5d2d1861407b)
+
 **Quản lý nhập sách**
 ![Screenshot 2025-06-14 194641](https://github.com/user-attachments/assets/6342e46b-738d-49c1-b851-3d120e79789d)
 ![Screenshot 2025-06-14 194721](https://github.com/user-attachments/assets/08b5f634-f72b-4676-a05f-34b25cd572cf)
+
 **Thống kê**
 ![Screenshot 2025-06-14 194932](https://github.com/user-attachments/assets/2bfdea70-37e9-4ec8-b1d1-da1a3a3bfc83)
