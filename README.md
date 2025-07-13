@@ -71,4 +71,5 @@
 ![Screenshot 2025-06-14 194721](https://github.com/user-attachments/assets/08b5f634-f72b-4676-a05f-34b25cd572cf)
 
 **Thống kê**
-![Screenshot 2025-06-14 194932](https://github.com/user-attachments/assets/2bfdea70-37e9-4ec8-b1d1-da1a3a3bfc83)
+<img width="1908" height="1016" alt="Screenshot 2025-07-14 011457" src="https://github.com/user-attachments/assets/7d6ec003-99f8-4be2-a23d-be17b5217c5d" />
+
